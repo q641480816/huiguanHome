@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { withRouter, Route } from 'react-router-dom';
 
+import BottomNavigator from "../../component/bottomNavigator/BottomNavigator";
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -16,11 +18,12 @@ class Home extends Component {
 
     render() {
         return (
-            <Route exact path="/">
-                <div>
-                   fuck
-                </div>
-            </Route>
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <Route exact path="/">
+                    fuck
+                </Route>
+                <BottomNavigator/>
+            </div>
         );
     }
 
