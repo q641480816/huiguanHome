@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import logo from './recources/img/tits.jpg';
 import './App.css';
-import Home from "./js/pages/home/home";
+import Home from "./js/pages/home/Home";
 
 class App extends Component {
   componentDidMount(){

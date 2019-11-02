@@ -60,7 +60,7 @@ class BottomNavigator extends Component {
     renderEvent = () => {
         let eventList = this.state.events.map(e => {
             return (
-                <div style={{margin: '10px 0 10px 0'}}>
+                <div key={e.id} style={{margin: '10px 0 10px 0'}}>
                     <div className={"text textBold"}>{e.name}</div>
                     <div className={"text"}>{e.location}</div>
                 </div>
@@ -72,8 +72,8 @@ class BottomNavigator extends Component {
     renderProperties = () => {
         let propertyList = this.state.properties.map(p => {
             return (
-                <div style={{margin: '10px 0 10px 0'}}>
-                    <div className={"text textBold link"}
+                <div key={p.id} style={{margin: '10px 0 10px 0'}}>
+                    <div className={"text textBold link"} style={{cursor: 'pointer'}}
                          onClick={() => this.openLinkInNewTab(p.direction)}>{p.name}</div>
                     <div className={"text"}>{p.address}</div>
                 </div>
@@ -91,7 +91,7 @@ class BottomNavigator extends Component {
         return (
             <div className="base">
                 <div className="fullWidthColumn">
-                    <img src={divider} alt="Logo" className="responsive-image"/>
+                    <img src={divider} alt="" className="responsive-image"/>
                 </div>
 
                 <div className={this.styles.bottomContainer}>
