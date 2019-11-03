@@ -1,0 +1,44 @@
+.base {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.imgItem {
+    height: 100%;
+}
+
+.igmItemCover{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background:rgba(255,255,255,0.7);
+    width: inherit;
+    height: inherit;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.igmItemCover:hover{
+    opacity: 1;
+}
+
+.imgTitle{
+    font-size: 25px;
+    font-weight: 700;
+    color: #585555;
+}
+
+.imgDes{
+    font-weight: 500;
+    color: #585555;
+    margin-top: 25px;
+}
