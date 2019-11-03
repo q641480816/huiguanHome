@@ -17,10 +17,6 @@ class Home extends Component {
         this.styles = this.props.classes;
     }
 
-    componentWillMount() {
-
-    }
-
     render() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>

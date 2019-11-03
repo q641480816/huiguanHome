@@ -32,10 +32,6 @@ class BottomNavigator extends Component {
         this.openLinkInNewTab = this.openLinkInNewTab.bind(this);
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         let events = this.getEvent();
         let properties = this.getProperties();

@@ -23,10 +23,6 @@ class TopNavigator extends Component {
         this.openMenu = this.openMenu.bind(this);
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         let naviItems = this.getNaviItems();
 
@@ -111,7 +107,7 @@ const styles = theme => ({
     navigatorBase: {
         position: 'fixed',
         width: '100%',
-        zIndex: '100',
+        zIndex: '200',
         backgroundColor: 'white',
         [theme.breakpoints.down('xs')]: {
             height: '12vh',

@@ -23,10 +23,6 @@ class HomeBody extends Component {
         this.renderHomeCarousel = this.renderHomeCarousel.bind(this);
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         let homeCarousel = this.getHomeCarousel();
 
