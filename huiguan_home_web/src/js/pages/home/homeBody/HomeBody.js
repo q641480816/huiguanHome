@@ -8,6 +8,7 @@ import SectionDivider from "../../../component/sectionDivider/SectionDivider";
 import utils from "../../../common/util";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './HomeBody.css';
+import Gallery from "./gallery/Gallery";
 
 class HomeBody extends Component {
     constructor(props) {
@@ -40,8 +41,8 @@ class HomeBody extends Component {
 
     renderHomeCarousel = () => {
         return this.state.homeCarousel.map((i) => {
-            return(
-                <div>
+            return (
+                <div key={i.id}>
                     <img src={i.src} alt={"p1"}/>
                     <p className={this.styles.homeCarouselLegend}>{i.legend}</p>
                 </div>
@@ -56,14 +57,14 @@ class HomeBody extends Component {
                     {this.renderHomeCarousel()}
                 </Carousel>
                 <div>
-                    <SectionDivider title={"News/Events"} showDivider={false} short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
+                    <SectionDivider title={"News/Events"} showDivider={false}
+                                    short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
                 </div>
                 <div>
-                    <SectionDivider title={"Announcements"} showDivider={true} short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
+                    <SectionDivider title={"Announcements"} showDivider={true}
+                                    short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
                 </div>
-                <div>
-                    <SectionDivider title={"Gallery"} showDivider={true} short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
-                </div>
+                <Gallery/>
             </div>
         );
     }

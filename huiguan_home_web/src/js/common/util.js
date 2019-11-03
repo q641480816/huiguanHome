@@ -2,6 +2,12 @@ import p1 from '../../recources/temp/1.jpg';
 import p2 from '../../recources/temp/2.png';
 import p3 from '../../recources/temp/3.jpg';
 
+import p1g from '../../recources/temp/1_g.jpg';
+import p2g from '../../recources/temp/2_g.jpg';
+import p3g from '../../recources/temp/3_g.jpg';
+import p4g from '../../recources/temp/4_g.jpg';
+import p5g from '../../recources/temp/5_g.png';
+
 const utils = {
     contact: {
         name: 'Chin Kang Huay Kuan',
@@ -62,6 +68,38 @@ const utils = {
             id: 3,
             src: p3,
             legend: 'Legend 3'
+        }
+    ],
+    gallery: [
+        {
+            id: 1,
+            src: p1g,
+            title: 'Legend 1',
+            description: 'cqqcqw'
+        },
+        {
+            id: 2,
+            src: p2g,
+            title: 'Legend 2',
+            description: 'fdssfercrqqcqrqrq'
+        },
+        {
+            id: 3,
+            src: p3g,
+            title: 'Legend 3',
+            description: 'njqcjhqnqnc hnqhqiwiq eq'
+        },
+        {
+            id: 4,
+            src: p4g,
+            title: 'Legend 4',
+            description: 'enq xnqjnxjq eqxxqqx'
+        },
+        {
+            id: 5,
+            src: p5g,
+            title: 'Legend 5',
+            description: 'xeqewxqn qwe'
         }
     ]
 };
