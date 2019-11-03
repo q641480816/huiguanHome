@@ -19,7 +19,7 @@ class SectionDivider extends Component {
         this.renderDivider = this.renderDivider.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             title: this.props.title,
             short: this.props.short ? this.props.short : '',
