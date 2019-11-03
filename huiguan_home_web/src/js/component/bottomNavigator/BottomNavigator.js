@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {withRouter, Route} from 'react-router-dom';
 import {withStyles, Button, Divider} from "@material-ui/core";
 import {Room, ContactPhone, Email} from '@material-ui/icons';
 
@@ -196,8 +195,6 @@ const styles = theme => ({
     }
 });
 
-BottomNavigator.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
+BottomNavigator.propTypes = {};
 
 export default withStyles(styles)(BottomNavigator);
