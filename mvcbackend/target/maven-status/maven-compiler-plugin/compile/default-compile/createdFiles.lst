@@ -1,2 +1,7 @@
-blog\controllers\HomeController.class
+blog\services\PostService.class
+blog\services\PostServiceStubImpl$1.class
+blog\models\User.class
+blog\services\PostServiceStubImpl.class
 blog\SpringBlogMvcApp.class
+blog\models\Post.class
+blog\controllers\HomeController.class
