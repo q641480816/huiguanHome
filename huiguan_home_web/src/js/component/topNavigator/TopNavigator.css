@@ -37,11 +37,12 @@
 }
 
 .textBold {
-    font-weight: 700;
+    font-weight: 900;
 }
 
 .naviTimeWrapper{
     color: #585555;
+    text-decoration: none;
     transition: 0.3s;
 }
 

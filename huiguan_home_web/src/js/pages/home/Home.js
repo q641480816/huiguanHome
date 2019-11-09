@@ -19,7 +19,7 @@ class Home extends Component {
 
     render() {
         return (
-            <div style={{display: "flex", flexDirection: "column"}}>
+            <div style={{display: "flex", flexDirection: "column", overflow: 'hidden'}}>
                 <TopNavigator/>
                 <div className={this.styles.bodyContainer}>
                     <Route exact path="/">

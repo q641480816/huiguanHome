@@ -146,11 +146,14 @@ const styles = theme => ({
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
+
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
+            marginBottom: '20px',
         },
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
+            marginBottom: '50px',
         }
     },
     columnContainer: {
