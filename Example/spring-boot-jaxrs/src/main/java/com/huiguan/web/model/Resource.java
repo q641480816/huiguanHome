@@ -1,4 +1,4 @@
-package blog.models;
+package com.huiguan.web.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,3 +21,4 @@ public class Resource {
     @Column(name="type")
     private int resourceType;
 }
+
