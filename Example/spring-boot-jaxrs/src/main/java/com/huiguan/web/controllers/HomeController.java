@@ -29,8 +29,4 @@ public class HomeController extends Application {
         return Response.status(Response.Status.OK).entity(resource).build();
     }
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        return new HashSet(Arrays.asList(HelloWorldRestService.class));
-    }
 }
