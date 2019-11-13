@@ -25,7 +25,12 @@ public class Article {
     @Column(name="creation_time")
     private Timestamp creationTime;
 
-    @ManyToMany(mappedBy = "articles",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Article> articles = new ArrayList<>();
+    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Resource> resources = new ArrayList<>();
+
+    public Article(String content, Timestamp creationTime){
+        this.content=content;
+        this.creationTime = creationTime;
+    }
+    public Article(){}
 }
