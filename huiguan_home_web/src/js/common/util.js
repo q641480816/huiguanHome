@@ -17,13 +17,44 @@ const utils = {
         address: '29 Bukit Pasoh Road #04-01 Singapore 089843'
     },
     naviItems: [
-        {id: 1, title: 'HOME', navigation: '/'},
-        {id: 2, title: 'ABOUT US', navigation: '/'},
-        {id: 3, title: 'EVENT', navigation: '/'},
-        {id: 4, title: 'BOARD', navigation: '/'},
-        {id: 5, title: 'RESOURCES', navigation: '/'},
-        {id: 6, title: 'JOIN US', navigation: '/'},
-        {id: 7, title: 'CONTACT US', navigation: '/'},
+        {id: 1, title: '主页', navigation: '/', sub: []},
+        {
+            id: 2, title: '会馆概况', navigation: '/about', sub: [
+                {id: 1, title: '会馆简介', navigation: '/about/introduction', sub: []},
+                {id: 2, title: '会馆章程', navigation: '/about/rules', sub: []},
+                {id: 3, title: '组织结构', navigation: '/about/structure', sub: []}
+            ]
+        },
+        {
+            id: 3, title: '会馆新闻', navigation: '/news', sub: [
+                {id: 1, title: '会馆动态', navigation: '/news/events', sub: []},
+                {id: 2, title: '会馆人物', navigation: '/news/people', sub: []},
+                {id: 3, title: '会馆视频', navigation: '/news/videos', sub: []},
+                {id: 4, title: '企业动态', navigation: '/news/corporate', sub: []}
+            ]
+        },
+        {
+            id: 4, title: '会馆服务', navigation: '/service', sub: [
+                {id: 1, title: '互助部', navigation: '/service/help', sub: []},
+                {id: 2, title: '妇女部', navigation: '/service/women', sub: []},
+                {id: 3, title: '康乐股', navigation: '/service/kangle', sub: []},
+                {id: 4, title: '教育股', navigation: '/service/education', sub: []},
+                {id: 5, title: '青年团', navigation: '/service/youth', sub: []},
+            ]
+        },
+        {
+            id: 5, title: '情缘晋江', navigation: '/history', sub: [
+                {id: 1, title: '晋江时事', navigation: '/history/now', sub: []},
+                {id: 2, title: '晋江历史', navigation: '/history/past', sub: []},
+                {id: 3, title: '世界晋江', navigation: '/history/world', sub: []},
+            ]
+        },
+        {
+            id: 6, title: '联系我们', navigation: '/contact', sub: [
+                {id: 1, title: '晋江时事', navigation: '/contact/contact', sub: []},
+                {id: 2, title: '晋江历史', navigation: '/contact/join', sub: []},
+            ]
+        }
     ],
     events: [
         {name: 'Event 1', id: 3, location: 'Lor Rong Ah Soo 20C'},

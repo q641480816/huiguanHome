@@ -8,6 +8,7 @@ import './Home.css';
 import BottomNavigator from "../../component/bottomNavigator/BottomNavigator";
 import TopNavigator from "../../component/topNavigator/TopNavigator";
 import HomeBody from "./homeBody/HomeBody";
+import News from "../news/News";
 
 class Home extends Component {
     constructor(props) {
@@ -19,12 +20,13 @@ class Home extends Component {
 
     render() {
         return (
-            <div style={{display: "flex", flexDirection: "column"}}>
+            <div style={{display: "flex", flexDirection: "column", overflow: 'hidden'}}>
                 <TopNavigator/>
                 <div className={this.styles.bodyContainer}>
                     <Route exact path="/">
                         <HomeBody/>
                     </Route>
+                    <News/>
                 </div>
                 <BottomNavigator/>
             </div>
@@ -36,10 +38,10 @@ class Home extends Component {
 const styles = theme => ({
     bodyContainer: {
         position: 'relative',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             margin: '10vh 0 10px 0',
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             margin: '20vh 0 10px 0',
         }
     }
