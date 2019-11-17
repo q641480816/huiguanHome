@@ -8,4 +8,6 @@ import lombok.Setter;
 public class CreateNewResourceRequest {
     String url;
     int type;
+    String content;
+    String title;
 }

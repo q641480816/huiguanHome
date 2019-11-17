@@ -39,6 +39,29 @@ create table articles_resources
 		foreign key (resources_id) references resources (id)
 );
 
+alter table articles
+	add title varchar(36) null;
+
+alter table articles
+	add url varchar(36) null;
+
+alter table articles
+	add description varchar(36) null;
+
+alter table resources
+	add content text null;
+
+alter table resources
+	add creation_time datetime null;
+
+alter table resources
+	add title nvarchar(36) null;
+
+alter table resources
+	add description nvarchar(36) null;
+
+
+
 
 
 

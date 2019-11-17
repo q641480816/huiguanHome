@@ -4,10 +4,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.sql.Array;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,11 +21,20 @@ public class Article {
     @Type(type = "text")
     private String content;
 
+    @Column(name="description")
+    private String description;
+
+    @Column(name="url")
+    private String url;
+
+    @Column(name="title")
+    private String title;
+
     @Column(name="creation_time")
     private Timestamp creationTime;
 
-    @ManyToMany(mappedBy = "articles", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Resource> resources = new ArrayList<>();
+    @ManyToMany(mappedBy = "articles", cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
+    private Set<Resource> resources = new HashSet<>();
 
     public Article(String content, Timestamp creationTime){
         this.content=content;
