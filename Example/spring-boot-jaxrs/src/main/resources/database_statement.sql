@@ -60,6 +60,36 @@ alter table resources
 alter table resources
 	add description nvarchar(36) null;
 
+create table sections
+(
+	id int auto_increment,
+	title nvarchar(36) null,
+	url nvarchar(36) null
+);
+
+create index sections_id_uindex
+	on section (id);
+
+alter table sections
+	add constraint sections_pk
+		primary key (id);
+
+alter table resources
+	add time datetime null;
+
+alter table articles
+	add time datetime null;
+
+alter table articles
+	add sections_id int null;
+
+alter table articles
+	add constraint articles_sections_id_fk
+		foreign key (sections_id) references sections (id);
+
+
+
+
 
 
 

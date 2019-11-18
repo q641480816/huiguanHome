@@ -1,6 +1,7 @@
 package com.huiguan.web.model;
 import lombok.Getter;
 import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -33,8 +34,16 @@ public class Article {
     @Column(name="creation_time")
     private Timestamp creationTime;
 
+    @Column(name="time")
+    private Timestamp time;
+
     @ManyToMany(mappedBy = "articles", cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
     private Set<Resource> resources = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "sections_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private Section section;
 
     public Article(String content, Timestamp creationTime){
         this.content=content;

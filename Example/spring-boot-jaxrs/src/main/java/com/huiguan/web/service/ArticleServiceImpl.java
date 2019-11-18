@@ -32,7 +32,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public int addNewResource(Article toBeAdded) {
+    public int addNewArticle(Article toBeAdded) {
         articleRepository.save(toBeAdded);
         return toBeAdded.getId();
     }

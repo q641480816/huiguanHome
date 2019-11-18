@@ -23,6 +23,9 @@ public class Resource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name="time")
+    private Timestamp time;
+
     @Column(name="description")
     private String description;
 
