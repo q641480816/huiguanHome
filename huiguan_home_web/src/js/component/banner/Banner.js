@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import {withStyles} from "@material-ui/core";
 
 import './Banner.css';
+import utils from "../../common/util";
 
 class Banner extends Component {
     constructor(props) {
@@ -21,7 +22,17 @@ class Banner extends Component {
         this.setState({
             title: this.props.title,
             banner: this.props.banner ? this.props.banner : this.state.banner
-        })
+        });
+        console.log(this.props.title);
+    }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.title !== this.props.title){
+            this.setState({
+                title: this.props.title
+            })
+        }
     }
 
     render() {
@@ -55,15 +66,14 @@ const styles = theme => ({
         alignItems: 'center',
     },
     titleWrapper: {
-        color: '#fff',
-        fontWeight: 900,
+        color: utils.colorScheme.back,
         [theme.breakpoints.down('xs')]: {
             paddingLeft: '40px',
-            fontSize: '60px',
+            fontSize: '55px',
         },
         [theme.breakpoints.up('sm')]: {
             paddingLeft: '120px',
-            fontSize: '75px',
+            fontSize: '70px',
         }
     }
 });

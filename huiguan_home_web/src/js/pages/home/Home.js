@@ -8,7 +8,8 @@ import './Home.css';
 import BottomNavigator from "../../component/bottomNavigator/BottomNavigator";
 import TopNavigator from "../../component/topNavigator/TopNavigator";
 import HomeBody from "./homeBody/HomeBody";
-import News from "../news/News";
+import ContentBase from "../../component/contentBase/ContentBase";
+import utils from "../../common/util";
 
 class Home extends Component {
     constructor(props) {
@@ -20,13 +21,13 @@ class Home extends Component {
 
     render() {
         return (
-            <div style={{display: "flex", flexDirection: "column", overflow: 'hidden'}}>
+            <div id='container' style={{display: "flex", flexDirection: "column", overflow: 'hidden'}}>
                 <TopNavigator/>
                 <div className={this.styles.bodyContainer}>
                     <Route exact path="/">
                         <HomeBody/>
                     </Route>
-                    <News/>
+                    <ContentBase/>
                 </div>
                 <BottomNavigator/>
             </div>
@@ -38,11 +39,12 @@ class Home extends Component {
 const styles = theme => ({
     bodyContainer: {
         position: 'relative',
+        marginBottom: '15px',
         [theme.breakpoints.down('xs')]: {
-            margin: '10vh 0 10px 0',
+            marginTop: utils.uiConfig.topNavigator.heightSm,
         },
         [theme.breakpoints.up('sm')]: {
-            margin: '20vh 0 10px 0',
+            marginTop: utils.uiConfig.topNavigator.heightMd,
         }
     }
 });

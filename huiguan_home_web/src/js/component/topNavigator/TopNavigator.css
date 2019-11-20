@@ -37,7 +37,7 @@
 }
 
 .textBold {
-    font-weight: 900;
+    font-weight: bold;
 }
 
 .naviTimeWrapper{
@@ -47,5 +47,5 @@
 }
 
 .naviTimeWrapper:hover{
-    color: #09d3ac;
+    color: #F21B54;
 }

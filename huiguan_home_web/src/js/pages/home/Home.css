@@ -1,3 +1,7 @@
+#container{
+    font-family: microsoft yahei,helvetica,simhei,simsun,sans-serif !important;
+}
+
 .bodyContainer{
     position: relative;
     margin: 20vh 0 10px 0 ;
