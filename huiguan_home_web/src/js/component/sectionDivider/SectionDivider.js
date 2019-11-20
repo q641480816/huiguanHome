@@ -11,7 +11,9 @@ class SectionDivider extends Component {
         this.state = {
             title: "",
             short: '',
-            showDivider: true
+            showDivider: true,
+            fullLength: false,
+            color: 'grey'
         };
 
         this.styles = this.props.classes;
@@ -23,7 +25,9 @@ class SectionDivider extends Component {
         this.setState({
             title: this.props.title,
             short: this.props.short ? this.props.short : '',
-            showDivider: this.props.showDivider
+            showDivider: this.props.showDivider,
+            fullLength: this.props.fullLength ? this.props.fullLength : this.state.fullLength,
+            color: this.props.color ? this.props.color : this.state.color
         })
     }
 
@@ -40,7 +44,7 @@ class SectionDivider extends Component {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <div style={{width: '80%', height: '2px', backgroundColor: 'grey'}}/>
+                <div style={{width: this.state.fullLength ? '100%' : '80%', height: '2px', backgroundColor: this.state.color}}/>
             </div>
         }
         return <div/>;
@@ -93,7 +97,9 @@ const styles = theme => ({
 SectionDivider.propTypes = {
     title: PropTypes.string.isRequired,
     short: PropTypes.string,
-    showDivider: PropTypes.bool.isRequired
+    showDivider: PropTypes.bool.isRequired,
+    fullLength: PropTypes.bool,
+    color: PropTypes.string
 };
 
 export default withStyles(styles)(SectionDivider);

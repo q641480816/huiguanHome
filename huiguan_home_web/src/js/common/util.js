@@ -9,6 +9,20 @@ import p4g from '../../recources/temp/4_g.jpg';
 import p5g from '../../recources/temp/5_g.png';
 
 const utils = {
+    uiConfig:{
+        topNavigator: {
+            heightMd: '135px',
+            heightSm: '90px'
+        }
+    },
+    colorScheme: {
+        primary: '#D91E2E',
+        secondary: '#F21B54',
+        tertiary: '#FFEFE5',
+        back: '#FFFFFF',
+        reflect: '#000000',
+        text: '#5A5A5A'
+    },
     contact: {
         name: 'Chin Kang Huay Kuan',
         tel: '(65)62235913 & 62231952 ',
@@ -17,42 +31,42 @@ const utils = {
         address: '29 Bukit Pasoh Road #04-01 Singapore 089843'
     },
     naviItems: [
-        {id: 1, title: '主页', navigation: '/', sub: []},
+        {id: 1, title: '主页', navigation: '/', sub: [], isRenderList: true},
         {
             id: 2, title: '会馆概况', navigation: '/about', sub: [
-                {id: 1, title: '会馆简介', navigation: '/about/introduction', sub: []},
-                {id: 2, title: '会馆章程', navigation: '/about/rules', sub: []},
-                {id: 3, title: '组织结构', navigation: '/about/structure', sub: []}
+                {id: 1, title: '会馆简介', navigation: '/introduction', sub: [], isRenderList: true},
+                {id: 2, title: '会馆章程', navigation: '/rules', sub: [], isRenderList: true},
+                {id: 3, title: '组织结构', navigation: '/structure', sub: [], isRenderList: true}
             ]
         },
         {
             id: 3, title: '会馆新闻', navigation: '/news', sub: [
-                {id: 1, title: '会馆动态', navigation: '/news/events', sub: []},
-                {id: 2, title: '会馆人物', navigation: '/news/people', sub: []},
-                {id: 3, title: '会馆视频', navigation: '/news/videos', sub: []},
-                {id: 4, title: '企业动态', navigation: '/news/corporate', sub: []}
+                {id: 1, title: '会馆动态', navigation: '/events', sub: [], isRenderList: true},
+                {id: 2, title: '会馆人物', navigation: '/people', sub: [], isRenderList: true},
+                {id: 3, title: '会馆视频', navigation: '/videos', sub: [], isRenderList: true},
+                {id: 4, title: '企业动态', navigation: '/corporate', sub: [], isRenderList: true}
             ]
         },
         {
             id: 4, title: '会馆服务', navigation: '/service', sub: [
-                {id: 1, title: '互助部', navigation: '/service/help', sub: []},
-                {id: 2, title: '妇女部', navigation: '/service/women', sub: []},
-                {id: 3, title: '康乐股', navigation: '/service/kangle', sub: []},
-                {id: 4, title: '教育股', navigation: '/service/education', sub: []},
-                {id: 5, title: '青年团', navigation: '/service/youth', sub: []},
+                {id: 1, title: '互助部', navigation: '/help', sub: [], isRenderList: true},
+                {id: 2, title: '妇女部', navigation: '/women', sub: [], isRenderList: true},
+                {id: 3, title: '康乐股', navigation: '/kangle', sub: [], isRenderList: true},
+                {id: 4, title: '教育股', navigation: '/education', sub: [], isRenderList: true},
+                {id: 5, title: '青年团', navigation: '/youth', sub: [], isRenderList: true},
             ]
         },
         {
             id: 5, title: '情缘晋江', navigation: '/history', sub: [
-                {id: 1, title: '晋江时事', navigation: '/history/now', sub: []},
-                {id: 2, title: '晋江历史', navigation: '/history/past', sub: []},
-                {id: 3, title: '世界晋江', navigation: '/history/world', sub: []},
+                {id: 1, title: '晋江时事', navigation: '/now', sub: [], isRenderList: true},
+                {id: 2, title: '晋江历史', navigation: '/past', sub: [], isRenderList: true},
+                {id: 3, title: '世界晋江', navigation: '/world', sub: [], isRenderList: true},
             ]
         },
         {
             id: 6, title: '联系我们', navigation: '/contact', sub: [
-                {id: 1, title: '晋江时事', navigation: '/contact/contact', sub: []},
-                {id: 2, title: '晋江历史', navigation: '/contact/join', sub: []},
+                {id: 1, title: '晋江时事', navigation: '/contact', sub: [], isRenderList: false},
+                {id: 2, title: '晋江历史', navigation: '/join', sub: [], isRenderList: false},
             ]
         }
     ],
@@ -131,7 +145,69 @@ const utils = {
             src: p5g,
             title: 'Legend 5',
             description: 'xeqewxqn qwe'
-        }
+        },
+    ],
+    dummyArticlesShort: [
+        {
+            id:1,
+            title: '通知：独特会员识别号码',
+            description: '<p>奖金：获奖作品可获得现金 $3000 （如无作品获选，将颁发三份各 $500 的佳作奖）</p><p>所有参赛作品必须于2019年11月29日（星期五）午夜12点之前，通过线上报名表格提交</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:2,
+            title: '通知：独特会员识别号码',
+            description: '<p>奖金：获奖作品可获得现金 $3000 （如无作品获选，将颁发三份各 $500 的佳作奖）</p><p>所有参赛作品必须于2019年11月29日（星期五）午夜12点之前，通过线上报名表格提交</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:3,
+            title: '通知：独特会员识别号码',
+            description: '<p>从2019年9月1日起，为符合新加坡个人资料保护委员会的身份证件条例，以及为巩固会员个人资料的安全性，福建会馆将不再收集或使用会员的完整身份证号码。</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:4,
+            title: '通知：独特会员识别号码',
+            description: '<p>从2019年9月1日起，为符合新加坡个人资料保护委员会的身份证件条例，以及为巩固会员个人资料的安全性，福建会馆将不再收集或使用会员的完整身份证号码。</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:5,
+            title: '通知：独特会员识别号码',
+            description: '<p>奖金：获奖作品可获得现金 $3000 （如无作品获选，将颁发三份各 $500 的佳作奖）</p><p>所有参赛作品必须于2019年11月29日（星期五）午夜12点之前，通过线上报名表格提交</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:6,
+            title: '通知：独特会员识别号码',
+            description: '<p>从2019年9月1日起，为符合新加坡个人资料保护委员会的身份证件条例，以及为巩固会员个人资料的安全性，福建会馆将不再收集或使用会员的完整身份证号码。</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:7,
+            title: '通知：独特会员识别号码',
+            description: '<p>奖金：获奖作品可获得现金 $3000 （如无作品获选，将颁发三份各 $500 的佳作奖）</p><p>所有参赛作品必须于2019年11月29日（星期五）午夜12点之前，通过线上报名表格提交</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:8,
+            title: '通知：独特会员识别号码',
+            description: '<p>从2019年9月1日起，为符合新加坡个人资料保护委员会的身份证件条例，以及为巩固会员个人资料的安全性，福建会馆将不再收集或使用会员的完整身份证号码。</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:9,
+            title: '通知：独特会员识别号码',
+            description: '<p>奖金：获奖作品可获得现金 $3000 （如无作品获选，将颁发三份各 $500 的佳作奖）</p><p>所有参赛作品必须于2019年11月29日（星期五）午夜12点之前，通过线上报名表格提交</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
+        {
+            id:10,
+            title: '通知：独特会员识别号码',
+            description: '<p>从2019年9月1日起，为符合新加坡个人资料保护委员会的身份证件条例，以及为巩固会员个人资料的安全性，福建会馆将不再收集或使用会员的完整身份证号码。</p>',
+            resource: 'https://img17.3lian.com/d/file/201702/09/e95f84c4b5a845481f529bfaeca10a98.jpg'
+        },
     ]
 };
 

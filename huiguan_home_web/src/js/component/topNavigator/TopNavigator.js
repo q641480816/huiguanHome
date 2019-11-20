@@ -69,8 +69,13 @@ class TopNavigator extends Component {
                         <Paper className={this.styles.subMenuWrapper}>
                             {i.sub.map(s => {
                                 return (
-                                    <div>
-                                        <Link to={s.navigation} className={"text textBold naviTimeWrapper"}>
+                                    <div key={s.id}>
+                                        <Link to={'/topics' + s.navigation} className={"text textBold naviTimeWrapper"} onClick={()=> {
+                                            this.setState({
+                                                subMenu: null,
+                                                subMenuAnchorEl: null
+                                            })
+                                        }}>
                                             <div style={{
                                                 margin: '10px 10px 10px 10px',
                                                 fontSize: '15px',
@@ -79,7 +84,7 @@ class TopNavigator extends Component {
                                                 <div>{s.title}</div>
                                             </div>
                                         </Link>
-                                        <Divider/>
+                                        {s.id !== i.sub[i.sub.length - 1].id ? <Divider/> : <div/>}
                                     </div>
                                 )
                             })}
@@ -98,7 +103,7 @@ class TopNavigator extends Component {
             return this.state.naviItems.map(i => {
                 return (
                     <div key={i.id}>
-                        <Link to={i.navigation} className={"text textBold naviTimeWrapper"}
+                        <Link to={'/'} className={"text textBold naviTimeWrapper"}
                               onMouseEnter={(event) => this.openSubMenu(event, i)} onMouseLeave={() => this.setState({
                             subMenu: null
                         })}>
@@ -170,10 +175,10 @@ const styles = theme => ({
         zIndex: '200',
         backgroundColor: 'white',
         [theme.breakpoints.down('xs')]: {
-            height: '12vh',
+            height: utils.uiConfig.topNavigator.heightSm,
         },
         [theme.breakpoints.up('sm')]: {
-            height: '20vh'
+            height: utils.uiConfig.topNavigator.heightMd,
         }
     },
     logoBase: {
@@ -184,10 +189,10 @@ const styles = theme => ({
         width: '20vw',
         minWidth: '85px',
         [theme.breakpoints.down('xs')]: {
-            height: '12vh',
+            height: utils.uiConfig.topNavigator.heightSm,
         },
         [theme.breakpoints.up('sm')]: {
-            height: '20vh'
+            height: utils.uiConfig.topNavigator.heightMd,
         }
     },
     logo_title: {
