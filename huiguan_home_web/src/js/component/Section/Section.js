@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Route, useParams} from 'react-router-dom';
 import {Button, withStyles} from "@material-ui/core";
 import parse from 'html-react-parser';
+import Pagination from "material-ui-flat-pagination";
 
 import Banner from "../banner/Banner";
 import utils from "../../common/util";
@@ -15,24 +16,44 @@ class Section extends Component {
         super(props);
         this.state = {
             section: {title: '', navigation: '', isRenderList: true},
-            articles: []
+            articles: [],
+            offset: 0,
+            count: 0,
+            limit: 4
         };
 
         this.styles = this.props.classes;
 
         this.getArticleList = this.getArticleList.bind(this);
+        this.refreshArticle = this.refreshArticle.bind(this);
         this.renderArticleList = this.renderArticleList.bind(this);
     }
 
     componentDidMount() {
         this.setState({
             section: this.props.section ? this.props.section : this.state.section,
-            articles: this.getArticleList()
+            articles: this.getArticleList(this.state.offset),
+            count: utils.dummyArticlesShort.length
         });
     }
 
-    getArticleList = () => {
-        return utils.dummyArticlesShort;
+    getArticleList = (offset) => {
+        let as = [];
+        for (let i = offset + 1; i < offset + this.state.limit + 1; i++) {
+            if (utils.dummyArticlesShort[i-1]) {
+                as.push(utils.dummyArticlesShort[i-1]);
+            }
+        }
+        return as;
+    };
+
+    refreshArticle = (offset) => {
+        let articles = this.getArticleList(offset);
+        this.setState({
+            articles: articles,
+            offset: offset
+        });
+        window.scroll({top: 0, left: 0, behavior: 'smooth' });
     };
 
     renderArticleList = () => {
@@ -64,7 +85,8 @@ class Section extends Component {
                                 </div>
                                 {a.id !== this.state.articles[this.state.articles.length - 1].id ?
                                     <SectionDivider showDivider={true} fullLength={true}
-                                                    color={utils.colorScheme.secondary} title={""}/> : <div style={{marginBottom: '10px'}}/>}
+                                                    color={utils.colorScheme.secondary} title={""}/> :
+                                    <div style={{marginBottom: '10px'}}/>}
 
                             </div>
                         )
@@ -80,10 +102,20 @@ class Section extends Component {
 
     render() {
         return (
-            <div style={{display: "flex", flexDirection: "column"}}>
+            <div>
                 <Banner title={this.state.section.title}/>
                 <div className={this.styles.contentContainer}>
                     {this.renderArticleList()}
+                    {this.state.count <= this.state.limit ? <div/> :
+                        <div style={{marginTop: '50px'}}>
+                            <Pagination
+                                limit={this.state.limit}
+                                offset={this.state.offset}
+                                total={this.state.count}
+                                onClick={(e, offset) => this.refreshArticle(offset)}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         );
@@ -104,8 +136,8 @@ const styles = theme => ({
     },
     contentContainer: {
         display: "flex",
-        flexDirection: "row",
-        justifyContent: 'center',
+        flexDirection: "column",
+        alignItems: 'center',
         marginTop: '30px'
     },
     listWrapper: {
@@ -118,7 +150,7 @@ const styles = theme => ({
             width: '80%',
         },
         [theme.breakpoints.up('md')]: {
-            width: '55%',
+            width: '60%',
         }
     },
     articleWrapper: {
@@ -164,10 +196,10 @@ const styles = theme => ({
             width: '100%',
         },
         [theme.breakpoints.up('sm')]: {
-            width: '175px',
+            width: '240px',
         },
         [theme.breakpoints.up('md')]: {
-            width: '250px',
+            width: '340px',
         }
     },
     descriptionWrapper: {
@@ -186,17 +218,18 @@ const styles = theme => ({
         },
         [theme.breakpoints.up('sm')]: {
             position: 'absolute',
-            bottom: '-17.5px',
+            bottom: '-20px',
             right: 0,
         },
         [theme.breakpoints.up('md')]: {
             bottom: 0,
         }
-    }
+    },
+
 });
 
 Section.propTypes = {
-    section: PropTypes.object.isRequired
+    section: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Section);
