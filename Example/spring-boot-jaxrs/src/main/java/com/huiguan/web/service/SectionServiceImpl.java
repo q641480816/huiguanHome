@@ -30,6 +30,11 @@ public class SectionServiceImpl implements SectionService{
     }
 
     @Override
+    public Section findByTitle(String title){
+        return sectionRepository.findByTitle(title);
+    }
+
+    @Override
     public int addNewSection(Section toBeAdded) {
         sectionRepository.save(toBeAdded);
         return toBeAdded.getId();

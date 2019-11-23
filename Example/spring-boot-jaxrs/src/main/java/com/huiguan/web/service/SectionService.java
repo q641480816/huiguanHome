@@ -11,4 +11,5 @@ public interface SectionService {
     int addNewSection(Section toBeAdded);
     Section edit(int id, Section article);
     void deleteById(int id);
+    Section findByTitle(String title);
 }

@@ -1,6 +1,8 @@
 package com.huiguan.web.service;
 
 
+import com.huiguan.web.dto.GetResourceResponse;
+import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Resource;
 import com.huiguan.web.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class ResourceServiceImpl implements ResourceService{
 
     @Autowired
     private ResourceRepository resourceRepository;
+    @Autowired
+    private ConvertToEntityService convertToEntityService;
     @Override
     public List<Resource> findAll() {
         return resourceRepository.findAll();
@@ -27,8 +31,9 @@ public class ResourceServiceImpl implements ResourceService{
 
     @Override
     @Transactional
-    public Optional<Resource> findById(int id) {
-        return resourceRepository.findById(id);
+    public GetResourceResponse findById(int id) throws ApiException {
+        Resource resource = resourceRepository.findById(id).orElseThrow(() -> new ApiException("Resource not found"));
+        return convertToEntityService.convertToResourceDto(resource);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class ResourceServiceImpl implements ResourceService{
     public Resource edit(int id, Resource resource) {
         Resource toBeEdited = resourceRepository.findById(id).get();
         toBeEdited.setCreationTime(resource.getCreationTime());
-        toBeEdited.setArticles(toBeEdited.getArticles());
+        toBeEdited.setArticle(toBeEdited.getArticle());
         toBeEdited.setContent(resource.getContent());
         toBeEdited.setTitle(resource.getTitle());
         toBeEdited.setResourceType(resource.getResourceType());

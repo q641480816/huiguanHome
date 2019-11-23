@@ -1,8 +1,6 @@
 package com.huiguan.web.controllers;
 
-import com.huiguan.web.dto.CreateNewArticleRequest;
-import com.huiguan.web.dto.CreateNewResourceRequest;
-import com.huiguan.web.dto.CreateNewSectionRequest;
+import com.huiguan.web.dto.*;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Article;
 import com.huiguan.web.model.Resource;
@@ -23,6 +21,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.Set;
+
 @Component
 @Path("/list")
 @Api(value = "/list",description ="123")
@@ -41,11 +42,25 @@ public class HomeController extends Application {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/resources/{id}")
     @Transactional
-    public Response getResource(@PathParam("id") int id) throws ApiException {
+    public GetResourceResponse getResource(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving resource info");
-        Resource resource = resourceService.findById(id).orElseThrow(() -> new ApiException("Resource not found"));
-        return Response.status(Response.Status.OK).entity(resource).build();
+        GetResourceResponse res = resourceService.findById(id);
+        return res;
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/page/{section}/{pageNum}/{pageSize}")
+    @Transactional
+    public Set<GetArticleResponse> getArticleByPage(
+            @PathParam("section") String section,
+            @PathParam("pageNum") int pageNum,
+            @PathParam("pageSize")int pageSize) throws ApiException {
+        logger.info("Retrieving resource info");
+        Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum,pageSize,section);
+        return res;
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -86,10 +101,10 @@ public class HomeController extends Application {
     @Path("/articles/{id}")
     @ApiOperation(value = "Finds an article with Id")
     @Transactional
-    public Response getArticle(@PathParam("id") int id) throws ApiException {
+    public GetArticleResponse getArticle(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving article info");
-        Article article = articleService.findById(id).orElseThrow(() -> new ApiException("Resource not found"));
-        return Response.status(Response.Status.OK).entity(article).build();
+        GetArticleResponse res = articleService.findById(id);
+        return res;
     }
 
     @GET

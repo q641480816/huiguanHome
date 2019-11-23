@@ -87,7 +87,17 @@ alter table articles
 	add constraint articles_sections_id_fk
 		foreign key (sections_id) references sections (id);
 
+-- add foreign  key
+alter table resources
+	add resources_articles_fk int null;
 
+alter table resources
+	add constraint resources_articles_fk
+		foreign key (resources_articles_fk) references articles (id);
+
+
+create unique index sections_title_uindex
+	on sections (title);
 
 
 

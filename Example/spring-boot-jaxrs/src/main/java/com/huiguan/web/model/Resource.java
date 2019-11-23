@@ -2,6 +2,9 @@ package com.huiguan.web.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -49,25 +52,28 @@ public class Resource {
         this.url=url;
         this.resourceType = resourceType;
     }
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
+//    @JsonIgnore
+//    @JoinTable(name = "articles_resources", joinColumns = {@JoinColumn(
+//                            name = "resources_id",
+//                            referencedColumnName = "id"
+//                    )
+//            },
+//            inverseJoinColumns = {@JoinColumn(
+//                            name = "articles_id",
+//                            referencedColumnName = "id"
+//                    )
+//            }
+//
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "resources_articles_fk")
     @JsonIgnore
-    @JoinTable(name = "articles_resources", joinColumns = {@JoinColumn(
-                            name = "resources_id",
-                            referencedColumnName = "id"
-                    )
-            },
-            inverseJoinColumns = {@JoinColumn(
-                            name = "articles_id",
-                            referencedColumnName = "id"
-                    )
-            }
-    )
-    private Set<Article> articles = new HashSet<>();
+    private Article article;
 
-    public Resource(String url, int resourceType, Set<Article> articles) {
+    public Resource(String url, int resourceType, Article article) {
         this.url = url;
         this.resourceType = resourceType;
-        this.articles = articles;
+        this.article = article;
     }
     public Resource(){}
 

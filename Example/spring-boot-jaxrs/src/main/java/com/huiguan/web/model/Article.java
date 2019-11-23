@@ -1,4 +1,6 @@
 package com.huiguan.web.model;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "articles")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,7 @@ public class Article {
     @Column(name="time")
     private Timestamp time;
 
-    @ManyToMany(mappedBy = "articles", cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "article",cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
     private Set<Resource> resources = new HashSet<>();
 
     @ManyToOne
