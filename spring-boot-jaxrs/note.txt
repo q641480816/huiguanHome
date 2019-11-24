@@ -1,0 +1,13 @@
+- implement the Serializable interface when you need to store a copy of the object, send them to another process which runs on the same system or over the network.
+- xceptionMapper is a contract for a provider that maps Java exceptions to Response object. An implementation of ExceptionMapper interface must be annotated with @Provider to work correctly.
+- fetch = FetchType.EAGER, cascade = CascadeType.PERSIST
+
+
+
+
+
+
+
+
+
+

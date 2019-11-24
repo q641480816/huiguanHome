@@ -1,0 +1,15 @@
+com\huiguan\web\model\Resource.class
+com\huiguan\web\SpringBootJaxrsApplication.class
+com\huiguan\web\model\Student.class
+com\huiguan\web\exception\StudentNotFoundException.class
+com\huiguan\web\model\User.class
+com\huiguan\web\model\Article.class
+com\huiguan\web\repository\StudentRepository.class
+com\huiguan\web\service\StudentService.class
+com\huiguan\web\service\StudentServiceImpl.class
+com\huiguan\web\repository\ResourceRepository.class
+com\huiguan\web\controllers\HomeController.class
+com\huiguan\web\repository\UserRepository.class
+com\huiguan\web\service\ResourceServiceImpl.class
+com\huiguan\web\exception\StudentNotFoundExceptionMapper.class
+com\huiguan\web\service\ResourceService.class
