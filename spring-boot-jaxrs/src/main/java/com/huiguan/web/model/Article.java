@@ -40,7 +40,8 @@ public class Article {
     @Column(name="time")
     private Timestamp time;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="resources_articles_fk")
     private Set<Resource> resources = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)

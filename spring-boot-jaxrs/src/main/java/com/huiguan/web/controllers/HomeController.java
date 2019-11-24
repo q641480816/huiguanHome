@@ -9,6 +9,7 @@ import com.huiguan.web.service.ArticleService;
 import com.huiguan.web.service.ConvertToEntityService;
 import com.huiguan.web.service.ResourceService;
 import com.huiguan.web.service.SectionService;
+import io.swagger.annotations.ApiResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +128,7 @@ public class HomeController extends Application {
 
 
     @GET
+    @ApiResponse(code =200, message = "success")
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/articles/{id}")
     @ApiOperation(value = "Finds an article with Id")

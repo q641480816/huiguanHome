@@ -24,3 +24,5 @@ public class CreateNewArticleRequest {
     String description;
     Section section;
 }
+
+
