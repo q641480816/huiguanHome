@@ -20,4 +20,7 @@ public class BaseResponse {
         this.isSuccess = false;
     }
 
+    public BaseResponse() {
+    }
+
 }

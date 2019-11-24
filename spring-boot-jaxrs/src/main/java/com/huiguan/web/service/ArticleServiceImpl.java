@@ -25,7 +25,7 @@ import java.util.Set;
 @Primary
 @Service
 @Transactional
-public class ArticleServiceImpl implements ArticleService{
+public class ArticleServiceImpl implements ArticleService {
 
 
     @Autowired
@@ -44,12 +44,32 @@ public class ArticleServiceImpl implements ArticleService{
     public GetArticleResponse findById(int id) throws ApiException {
         GetArticleResponse res = new GetArticleResponse();
         Article article = articleRepository.findById(id).orElseThrow(() -> new ApiException("Article not found"));
-        res=convertToEntityService.convertToArticleDto(article);
+        res = convertToEntityService.convertToArticleDto(article);
         return res;
     }
 
     @Override
     public int addNewArticle(Article toBeAdded) {
+        if (toBeAdded.getSection() != null) {
+            Section section = toBeAdded.getSection();
+            if (section.getId() > 0 ) {
+                Optional<Section> existedSection =sectionService.findById(section.getId());
+                if (existedSection.isPresent()) {
+                    toBeAdded.setSection(existedSection.get());
+                }
+                else{
+                    toBeAdded.setSection(null);
+                }
+            } else if (section.getTitle() != null) {
+                Section existedSection = sectionService.findByTitle(section.getTitle());
+                if (existedSection != null) {
+                    toBeAdded.setSection(existedSection);
+                }
+                else{
+                    toBeAdded.setSection(null);
+                }
+            }
+        }
         articleRepository.save(toBeAdded);
         return toBeAdded.getId();
     }
@@ -69,17 +89,18 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, String section){
-        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC,"id");
+    public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, String section) {
+        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "id");
         Section articleSection = sectionService.findByTitle(section);
         Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection, req);
         List<Article> articleList = resEntityPage.getContent();
         Set<GetArticleResponse> articleDtoList = new HashSet<>();
-        for (Article article:articleList){
+        for (Article article : articleList) {
             articleDtoList.add(convertToEntityService.convertToArticleDto(article));
         }
         return articleDtoList;
     }
+
     @Override
     public void deleteById(int id) {
         articleRepository.deleteById(id);

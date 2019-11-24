@@ -65,7 +65,7 @@ public class Resource {
 //                    )
 //            }
 //
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "resources_articles_fk")
     @JsonIgnore
     private Article article;

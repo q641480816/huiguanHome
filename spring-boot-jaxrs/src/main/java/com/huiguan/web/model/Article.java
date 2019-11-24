@@ -40,11 +40,11 @@ public class Article {
     @Column(name="time")
     private Timestamp time;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<Resource> resources = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "sections_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sections_id")
     @JsonIgnore
     private Section section;
 

@@ -28,6 +28,7 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\repository\StudentRepository.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\SectionServiceImpl.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateNewArticleRequest.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\StudentNotFoundException.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\StudentService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\config\SwaggerConfig.java

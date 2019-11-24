@@ -19,6 +19,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -26,7 +27,7 @@ import java.util.Set;
 
 @Component
 @Path("/list")
-@Api(value = "/list",description ="123")
+@Api(value = "/list", description = "123")
 public class HomeController extends Application {
     private static final Logger logger = LogManager.getLogger(HomeController.class);
     @Autowired
@@ -55,9 +56,9 @@ public class HomeController extends Application {
     public Set<GetArticleResponse> getArticleByPage(
             @PathParam("section") String section,
             @PathParam("pageNum") int pageNum,
-            @PathParam("pageSize")int pageSize) throws ApiException {
+            @PathParam("pageSize") int pageSize) throws ApiException {
         logger.info("Retrieving page info");
-        Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum,pageSize,section);
+        Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum, pageSize, section);
         return res;
     }
 
@@ -66,33 +67,62 @@ public class HomeController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/resources")
     @Transactional
-    public Response createResource(CreateNewResourceRequest req) {
+    public BaseResponse createResource(CreateNewResourceRequest req) {
         logger.info("Creating new resources");
         Resource resource = convertToEntityService.convertToResourceEntity(req);
         int id = resourceService.addNewResource(resource);
-        return Response.status(Response.Status.OK).build();
+        CreateResponse response = new CreateResponse();
+        if (id > 0) {
+            response.setHttpStatus(200);
+            response.setSuccess(true);
+            response.setId(id);
+        } else {
+            response.setHttpStatus(400);
+            response.setErrorMessage("Not created successfully");
+        }
+        return response;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/articles")
     @Transactional
-    public Response createArticle(CreateNewArticleRequest req) {
+    public BaseResponse createArticle(CreateNewArticleRequest req) {
         logger.info("Creating new articles");
         Article article = convertToEntityService.convertToArticleEntity(req);
         int id = articleService.addNewArticle(article);
-        return Response.status(Response.Status.OK).build();
+        CreateResponse response = new CreateResponse();
+        if (id > 0) {
+            response.setHttpStatus(200);
+            response.setSuccess(true);
+            response.setId(id);
+        } else {
+            response.setHttpStatus(400);
+            response.setErrorMessage("Not created successfully");
+        }
+        return response;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/sections")
     @Transactional
-    public Response createSection(CreateNewSectionRequest req) {
+    public BaseResponse createSection(CreateNewSectionRequest req) {
         logger.info("Creating new sections");
         Section section = convertToEntityService.convertToSectionEntity(req);
         int id = sectionService.addNewSection(section);
-        return Response.status(Response.Status.OK).build();
+        CreateResponse response = new CreateResponse();
+        if (id > 0) {
+            response.setHttpStatus(200);
+            response.setSuccess(true);
+            response.setId(id);
+        } else {
+            response.setHttpStatus(400);
+            response.setErrorMessage("Not created successfully");
+        }
+        return response;
     }
 
 

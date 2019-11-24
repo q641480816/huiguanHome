@@ -21,6 +21,7 @@ com\huiguan\web\service\ConvertToEntityService.class
 com\huiguan\web\model\Resource.class
 com\huiguan\web\service\ArticleService.class
 com\huiguan\web\model\Article.class
+com\huiguan\web\dto\CreateResponse.class
 com\huiguan\web\service\StudentService.class
 com\huiguan\web\service\StudentServiceImpl.class
 com\huiguan\web\dto\CreateNewResourceRequest.class
