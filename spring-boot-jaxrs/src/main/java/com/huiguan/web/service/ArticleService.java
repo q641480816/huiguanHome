@@ -19,6 +19,6 @@ public interface ArticleService {
 
     void deleteById(int id);
 
-    Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, String section);
+    Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId);
 
 }

@@ -52,14 +52,14 @@ public class HomeController extends Application {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/page/{section}/{pageNum}/{pageSize}")
+    @Path("/page/{sectionId}/{pageNum}/{pageSize}")
     @Transactional
     public Set<GetArticleResponse> getArticleByPage(
-            @PathParam("section") String section,
+            @PathParam("sectionId") int sectionId,
             @PathParam("pageNum") int pageNum,
             @PathParam("pageSize") int pageSize) throws ApiException {
         logger.info("Retrieving page info");
-        Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum, pageSize, section);
+        Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum, pageSize, sectionId);
         return res;
     }
 

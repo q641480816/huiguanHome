@@ -89,10 +89,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, String section) {
+    public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
         PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "id");
-        Section articleSection = sectionService.findByTitle(section);
-        Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection, req);
+
+        Optional<Section> articleSection = sectionService.findById(sectionId);
+        if (!articleSection.isPresent()){
+            return null;
+        }
+        Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection.get(), req);
         List<Article> articleList = resEntityPage.getContent();
         Set<GetArticleResponse> articleDtoList = new HashSet<>();
         for (Article article : articleList) {
