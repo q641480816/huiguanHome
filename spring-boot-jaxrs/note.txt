@@ -4,6 +4,11 @@
 
 
 
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+export CATALINA_HOME=/opt/tomcat/latest/bin
+ source ~/.bashrc
+
+
 
 
 
