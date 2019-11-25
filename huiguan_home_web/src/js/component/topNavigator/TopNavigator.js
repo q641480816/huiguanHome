@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {Paper, withStyles, Button, Menu, MenuItem, Divider} from '@material-ui/core';
 import {Apps} from '@material-ui/icons'
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 import './TopNavigator.css';
 import logo from '../../../recources/img/sgckhk_logo.jpg';
@@ -16,7 +16,10 @@ class TopNavigator extends Component {
             naviItems: [],
             menuOpen: null,
             subMenu: null,
-            subMenuAnchorEl: null
+            subMenuAnchorEl: null,
+            subParentMap: {},
+            pathname: '',
+            selectParentId: -1
         };
 
         this.styles = this.props.classes;
@@ -32,20 +35,36 @@ class TopNavigator extends Component {
         let naviItems = this.getNaviItems();
 
         this.setState({
-            naviItems: naviItems,
+            naviItems: naviItems.naviItems,
+            subParentMap: naviItems.subParentMap
         })
     }
 
+    componentDidUpdate(prevProps) {
+        // this.setState({
+        //     pathname: this.props.location.pathname,
+        // });
+    }
+
+
     getNaviItems = () => {
-        return utils.naviItems;
+        let subParentMap = {};
+
+        utils.naviItems.forEach(p => {
+            p.sub.forEach(s => {
+                subParentMap[s.navigation] = p.id;
+            })
+        });
+        return {
+            subParentMap: subParentMap,
+            naviItems: utils.naviItems
+        };
     };
 
     openMenu = (event) => {
         this.setState({
             menuOpen: event.currentTarget
         });
-
-        console.log(event);
     };
 
     openSubMenu = (event, item) => {
@@ -56,6 +75,7 @@ class TopNavigator extends Component {
     };
 
     renderSubMenu = (i) => {
+
         if (i.sub.length > 0) {
             return (
                 <div className={this.styles.subMenu} style={{
@@ -68,14 +88,17 @@ class TopNavigator extends Component {
                     })}>
                         <Paper className={this.styles.subMenuWrapper}>
                             {i.sub.map(s => {
+                                let url = s.isRenderList ? '/b/topics' + s.navigation : '/b/topics' + s.navigation + "/" + s.articleId;
                                 return (
                                     <div key={s.id}>
-                                        <Link to={'/topics' + s.navigation} className={"text textBold naviTimeWrapper"} onClick={()=> {
-                                            this.setState({
-                                                subMenu: null,
-                                                subMenuAnchorEl: null
-                                            })
-                                        }}>
+                                        <Link to={url} className={"text textBold naviTimeWrapper"}
+                                              onClick={() => {
+                                                  this.setState({
+                                                      subMenu: null,
+                                                      subMenuAnchorEl: null
+                                                  });
+                                                  window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                                              }}>
                                             <div style={{
                                                 margin: '10px 10px 10px 10px',
                                                 fontSize: '15px',
@@ -89,7 +112,6 @@ class TopNavigator extends Component {
                                 )
                             })}
                         </Paper>
-
                     </div>
                 </div>
             )
@@ -100,10 +122,18 @@ class TopNavigator extends Component {
 
     renderNaviItems = (isLarge) => {
         if (isLarge) {
+            let selectedId = 1;
+            Object.keys(this.state.subParentMap).forEach(key => {
+                if (this.props.location.pathname.indexOf(key) >= 0) {
+                    selectedId = this.state.subParentMap[key];
+                }
+            });
             return this.state.naviItems.map(i => {
+                let isSelected = i.id === selectedId;
                 return (
                     <div key={i.id}>
-                        <Link to={'/'} className={"text textBold naviTimeWrapper"}
+                        <Link to={'/'}
+                              className={isSelected ? 'text textBold naviTimeWrapperSelected' : "text textBold naviTimeWrapper"}
                               onMouseEnter={(event) => this.openSubMenu(event, i)} onMouseLeave={() => this.setState({
                             subMenu: null
                         })}>
@@ -243,6 +273,9 @@ const styles = theme => ({
     }
 });
 
-TopNavigator.propTypes = {};
+TopNavigator.propTypes = {
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+};
 
-export default withStyles(styles)(TopNavigator);
+export default withRouter(withStyles(styles)(TopNavigator));

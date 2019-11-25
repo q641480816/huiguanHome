@@ -10,6 +10,7 @@ import {withStyles} from "@material-ui/core";
 
 import utils from "../../common/util";
 import Section from "../Section/Section";
+import Article from "../article/Article";
 
 class ContentBase extends Component {
     constructor(props) {
@@ -21,7 +22,8 @@ class ContentBase extends Component {
         this.styles = this.props.classes;
 
         this.getSubPages = this.getSubPages.bind(this);
-        this.renderPages = this.renderPages.bind(this);
+        this.renderSectionPages = this.renderSectionPages.bind(this);
+        this.renderArticlePages = this.renderArticlePages.bind(this);
     }
 
     componentDidMount() {
@@ -38,26 +40,51 @@ class ContentBase extends Component {
         return pages;
     };
 
-    renderPages = () => {
+    renderSectionPages = () => {
         return this.state.sub.map(p => {
             if (p.isRenderList) {
                 return (
-                    <Route key={p.id} path={'/topics' + p.navigation}>
+                    <Route key={p.id} path={'/b/topics' + p.navigation}>
                         <Section section={p}/>
                     </Route>
                 )
+            } else {
+                return (
+                    <Route key={p.id} path={'/b/topics' + p.navigation + "/:id"}>
+                        <Article section={p}/>
+                    </Route>)
             }
         })
-    }
-    ;
+    };
+
+    renderArticlePages = () => {
+        let index = 0;
+        return this.state.sub.map(s => {
+            index++;
+            return (
+                <Route key={index} path={'/b/article' + s.navigation}>
+                    <Switch>
+                        <Route path={'/b/article' + s.navigation + "/:id"}>
+                            <Article section={s}/>
+                        </Route>
+                    </Switch>
+                </Route>
+            )
+        })
+    };
 
     render() {
         return (
-            <Route path="/topics">
-                <Switch>
-                    {this.renderPages()}
-                </Switch>
-            </Route>
+            <div>
+                <Route path="/b/topics">
+                    <Switch>
+                        {this.renderSectionPages()}
+                    </Switch>
+                </Route>
+                <Route path="/b/article">
+                    {this.renderArticlePages()}
+                </Route>
+            </div>
         );
     }
 

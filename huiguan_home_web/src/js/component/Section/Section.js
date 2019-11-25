@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {Route, useParams} from 'react-router-dom';
+import {Link, Route, useParams} from 'react-router-dom';
 import {Button, withStyles} from "@material-ui/core";
 import parse from 'html-react-parser';
 import Pagination from "material-ui-flat-pagination";
@@ -15,7 +15,7 @@ class Section extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            section: {title: '', navigation: '', isRenderList: true},
+            section: {id: 0, title: '', navigation: '', isRenderList: true},
             articles: [],
             offset: 0,
             count: 0,
@@ -25,6 +25,7 @@ class Section extends Component {
         this.styles = this.props.classes;
 
         this.getArticleList = this.getArticleList.bind(this);
+        this.listenToScroll = this.listenToScroll.bind(this);
         this.refreshArticle = this.refreshArticle.bind(this);
         this.renderArticleList = this.renderArticleList.bind(this);
     }
@@ -35,13 +36,34 @@ class Section extends Component {
             articles: this.getArticleList(this.state.offset),
             count: utils.dummyArticlesShort.length
         });
+
+        //window.addEventListener('scroll', this.listenToScroll)
     }
 
+    listenToScroll = () => {
+        console.log(window.pageYOffset);
+    };
+
     getArticleList = (offset) => {
+        let url = utils.protocol + utils.baseUrl + '/page/' + this.state.section.id + "/" + this.state.offset + "/" + this.state.limit;
+        fetch(url, {
+            method: 'get',
+            headers: {
+                'Access-Control-Allow-Origin': null,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(e => console.log(e));
+
+
         let as = [];
         for (let i = offset + 1; i < offset + this.state.limit + 1; i++) {
-            if (utils.dummyArticlesShort[i-1]) {
-                as.push(utils.dummyArticlesShort[i-1]);
+            if (utils.dummyArticlesShort[i - 1]) {
+                as.push(utils.dummyArticlesShort[i - 1]);
             }
         }
         return as;
@@ -53,7 +75,7 @@ class Section extends Component {
             articles: articles,
             offset: offset
         });
-        window.scroll({top: 0, left: 0, behavior: 'smooth' });
+        window.scroll({top: 0, left: 0, behavior: 'smooth'});
     };
 
     renderArticleList = () => {
@@ -67,21 +89,29 @@ class Section extends Component {
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'center'
+                                        alignItems: 'center',
+                                        paddingBottom: a.resource.length !== 0 ? '0px' : '50px'
                                     }}>
                                         <div className={this.styles.titleWrapper}>{a.title}</div>
+                                        <div className={this.styles.titleWrapper}
+                                             style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.time}</div>
                                         <div className={this.styles.articleContentWrapper}>
-                                            <div className={this.styles.imgWrapper}>
-                                                <img src={a.resource} className={this.styles.articleImg}/>
-                                            </div>
+                                            {a.resource.length !== 0 ?
+                                                <div className={this.styles.imgWrapper}>
+                                                    <img src={a.resource[0]} className={this.styles.articleImg}/>
+                                                </div> : <div/>
+                                            }
                                             <div className={this.styles.descriptionWrapper}>{parse(a.description)}</div>
                                         </div>
                                     </div>
-                                    <Button className={this.styles.readMoreButton}
-                                            onClick={(event) => console.log("read more")} variant="outlined"
-                                            color="inherit">
-                                        <div>阅读更多</div>
-                                    </Button>
+                                    <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
+                                          className={'linkWrapper'}>
+                                        <Button className={this.styles.readMoreButton}
+                                                onClick={(event) => console.log("")} variant="outlined"
+                                                color="inherit">
+                                            <div>阅读更多</div>
+                                        </Button>
+                                    </Link>
                                 </div>
                                 {a.id !== this.state.articles[this.state.articles.length - 1].id ?
                                     <SectionDivider showDivider={true} fullLength={true}
@@ -96,7 +126,11 @@ class Section extends Component {
 
             //return parse(this.state.articles[0].description);
         } else {
-            return <div/>;
+            return (
+                <div>
+                    no items
+                </div>
+            );
         }
     };
 
@@ -138,7 +172,8 @@ const styles = theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: 'center',
-        marginTop: '30px'
+        marginTop: '30px',
+        position: 'relative'
     },
     listWrapper: {
         display: "flex",

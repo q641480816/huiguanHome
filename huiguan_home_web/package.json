@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
+    "braft-editor": "^2.3.8",
     "html-react-parser": "^0.10.0",
     "material-ui-flat-pagination": "^4.0.0",
     "prop-types": "latest",

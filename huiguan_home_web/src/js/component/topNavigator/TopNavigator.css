@@ -46,6 +46,11 @@
     transition: 0.3s;
 }
 
+.naviTimeWrapperSelected{
+    color: #F21B54;
+    text-decoration: none;
+}
+
 .naviTimeWrapper:hover{
     color: #F21B54;
 }
