@@ -24,7 +24,7 @@ class Home extends Component {
             <div id='container' style={{display: "flex", flexDirection: "column", overflow: 'hidden'}}>
                 <TopNavigator/>
                 <div className={this.styles.bodyContainer}>
-                    <Route exact path="/">
+                    <Route exact path="/b">
                         <HomeBody/>
                     </Route>
                     <ContentBase/>

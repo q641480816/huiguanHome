@@ -1,0 +1,18 @@
+.contentBase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+p {
+    margin: 5px 5px 10px;
+}
+
+.carouselLegend {
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100px;
+    width: 100%;
+}

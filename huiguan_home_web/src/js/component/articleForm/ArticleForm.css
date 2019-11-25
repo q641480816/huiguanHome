@@ -1,0 +1,24 @@
+.question {
+    margin-bottom: 20px;
+}
+
+.question-title{
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+#title-required {
+    width: 550px
+}
+
+#description-required{
+    width: 550px
+}
+
+#editor-frame {
+    display: inline-block;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    overflow: hidden;
+}

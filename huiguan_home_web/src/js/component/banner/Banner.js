@@ -23,7 +23,6 @@ class Banner extends Component {
             title: this.props.title,
             banner: this.props.banner ? this.props.banner : this.state.banner
         });
-        console.log(this.props.title);
     }
 
 
