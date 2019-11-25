@@ -47,6 +47,16 @@ public class ArticleServiceImpl implements ArticleService {
         res = convertToEntityService.convertToArticleDto(article);
         return res;
     }
+    @Override
+    public int countBySection(int sectionId){
+        Optional<Section> existedSection =sectionService.findById(sectionId);
+        if (!existedSection.isPresent()) {
+            return 0;
+        }
+        else{
+            return articleRepository.countArticleBySection(existedSection.get());
+        }
+    }
 
     @Override
     public int addNewArticle(Article toBeAdded) {

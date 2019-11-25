@@ -21,4 +21,5 @@ public interface ArticleService {
 
     Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId);
 
+    int countBySection(int sectionId);
 }

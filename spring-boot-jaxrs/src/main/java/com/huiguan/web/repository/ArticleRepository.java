@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select r from Article r where r.section=?1")
     Page<Article> findBySectionAndId(Section section, Pageable request);
+
+    int countArticleBySection(Section section);
 }

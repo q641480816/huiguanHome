@@ -1,6 +1,5 @@
 package com.huiguan.web.dto;
 
-import com.huiguan.web.model.Resource;
 import lombok.Getter;
 import lombok.Setter;
 

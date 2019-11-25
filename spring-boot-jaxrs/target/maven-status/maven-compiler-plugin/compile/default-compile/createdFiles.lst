@@ -18,6 +18,7 @@ com\huiguan\web\model\Section.class
 com\huiguan\web\dto\CreateNewArticleRequest.class
 com\huiguan\web\repository\ArticleRepository.class
 com\huiguan\web\service\ConvertToEntityService.class
+com\huiguan\web\dto\GetPageResponse.class
 com\huiguan\web\model\Resource.class
 com\huiguan\web\service\ArticleService.class
 com\huiguan\web\model\Article.class
