@@ -68,7 +68,7 @@ class Article extends Component {
             return (
                 <div className={this.styles.contentContainer}>
                     <p className={this.styles.articleTitle}>{this.state.article.title}</p>
-                    <p style={{color: utils.colorScheme.text}}>{(new Date(this.state.article.time)).toLocaleDateString()}</p>
+                    <p style={{color: utils.colorScheme.text}}>{this.state.article.time ? this.state.article.time : this.state.article.creation_time}</p>
                     <div style={{width: '100%', display: 'flex', flexDirection: 'column', marginTop: '20px'}}>
                         <div className={this.styles.carouselContainer}>
                             <Carousel infiniteLoop={true} autoPlay={true} showThumbs={false} centerMode={true}
