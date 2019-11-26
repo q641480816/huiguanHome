@@ -29,8 +29,9 @@ class Article extends Component {
         this.setState({
             section: this.props.section ? this.props.section : this.state.section,
             articleId: this.props.match.params.id,
-            article: this.getArticle(this.props.match.params.id)
-        })
+        });
+
+        this.getArticle(this.props.match.params.id);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -38,17 +39,28 @@ class Article extends Component {
             this.setState({
                 section: this.props.section ? this.props.section : this.state.section,
                 articleId: this.props.match.params.id,
-                article: this.getArticle(this.props.match.params.id)
-            })
+            });
+
+            this.getArticle(this.props.match.params.id);
         }
     }
 
     getArticle = (id) => {
-        for (let i = 0; i < utils.dummyArticlesShort.length; i++) {
-            if ((utils.dummyArticlesShort[i].id + "") === id) {
-                return utils.dummyArticlesShort[i];
-            }
-        }
+        let url = utils.protocol + utils.baseUrl + '/articles/' + id;
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'}
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                this.setState({
+                    article: data
+                });
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+            })
+            .catch(e => console.log(e));
     };
 
     renderArticle = () => {
@@ -56,7 +68,7 @@ class Article extends Component {
             return (
                 <div className={this.styles.contentContainer}>
                     <p className={this.styles.articleTitle}>{this.state.article.title}</p>
-                    <p style={{color: utils.colorScheme.text}}>{this.state.article.time}</p>
+                    <p style={{color: utils.colorScheme.text}}>{(new Date(this.state.article.time)).toLocaleDateString()}</p>
                     <div style={{width: '100%', display: 'flex', flexDirection: 'column', marginTop: '20px'}}>
                         <div className={this.styles.carouselContainer}>
                             <Carousel infiniteLoop={true} autoPlay={true} showThumbs={false} centerMode={true}
@@ -79,7 +91,7 @@ class Article extends Component {
             return this.state.article.resources.map((i) => {
                 return (
                     <div key={i.id}>
-                        <img src={i.src} alt={"p1"}/>
+                        <img src={i.url ? i.url : i.content} alt={"p1"}/>
                         <div className={this.styles.carouselLegend}>
                             <div style={{color: utils.colorScheme.back}}>{i.title}</div>
                             <div style={{color: utils.colorScheme.tertiary}}>{i.description}</div>

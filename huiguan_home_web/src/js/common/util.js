@@ -25,6 +25,18 @@ const utils = {
         reflect: '#000000',
         text: '#5A5A5A'
     },
+    common: {
+        fileToBase64 : (file) => {
+            return new Promise(resolve => {
+                let reader = new FileReader();
+                // Read file content on file loaded event
+                reader.onload = (event) => {
+                    resolve(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    },
     contact: {
         name: 'Chin Kang Huay Kuan',
         tel: '(65)62235913 & 62231952 ',
