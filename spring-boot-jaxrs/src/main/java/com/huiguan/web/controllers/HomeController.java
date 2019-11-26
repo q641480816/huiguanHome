@@ -66,6 +66,8 @@ public class HomeController extends Application {
         response.setSectionId(sectionId);
         response.setArticleList(articles);
         response.setArticleSize(articleService.countBySection(sectionId));
+        response.setSuccess(true);
+        response.setHttpStatus(200);
         return response;
     }
 
@@ -153,7 +155,7 @@ public class HomeController extends Application {
     @Transactional
     public Response getSection(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving section info");
-        Section article = sectionService.findById(id).orElseThrow(() -> new ApiException("Resource not found"));
+        Section article = sectionService.findById(id).orElseThrow(() -> new ApiException("Section not found"));
         return Response.status(Response.Status.OK).entity(article).build();
     }
 
