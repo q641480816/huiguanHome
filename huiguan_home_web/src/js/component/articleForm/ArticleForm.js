@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {Route} from 'react-router-dom';
 import {withStyles, FormControl, InputLabel, Select, MenuItem, TextField} from "@material-ui/core";
-import BraftEditor from 'braft-editor'
+import BraftEditor from 'braft-editor';
+import ImageUploader from 'react-images-upload';
 
 import './ArticleForm.css'
 import './editor.css'
+import utils from "../../common/util";
 
 class ArticleForm extends Component {
     constructor(props) {
@@ -50,6 +52,7 @@ class ArticleForm extends Component {
 
         this.styles = this.props.classes;
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
+        this.onImageSelect = this.onImageSelect.bind(this);
     }
 
     componentDidMount() {
@@ -65,6 +68,13 @@ class ArticleForm extends Component {
             })
         }
     }
+
+    onImageSelect = (pictureFiles, pictureDataURLs) => {
+        utils.common.fileToBase64(pictureFiles[0])
+            .then((res) => console.log(res))
+            .catch(e => console.log(e));
+        console.log();
+    };
 
     renderSectionSelect = () => {
         return (
@@ -118,6 +128,16 @@ class ArticleForm extends Component {
                                    form.description = event.target.value;
                                    this.setState({form: form})
                                }}/>
+                </div>
+                <div className={'question'}>
+                    <div className={'question-title'}>图片</div>
+                    <ImageUploader
+                        withIcon={true}
+                        buttonText='Choose images'
+                        onChange={(pictureFiles, pictureDataURLs) => this.onImageSelect(pictureFiles, pictureDataURLs)}
+                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                        maxFileSize={5242880}
+                    />
                 </div>
                 <div className={'question'}>
                     <div className={'question-title'}>内容</div>

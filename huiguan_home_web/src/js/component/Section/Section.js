@@ -24,7 +24,7 @@ class Section extends Component {
 
         this.styles = this.props.classes;
 
-        this.getArticleList = this.getArticleList.bind(this);
+        this.getSectionContent = this.getSectionContent.bind(this);
         this.listenToScroll = this.listenToScroll.bind(this);
         this.refreshArticle = this.refreshArticle.bind(this);
         this.renderArticleList = this.renderArticleList.bind(this);
@@ -33,49 +33,44 @@ class Section extends Component {
     componentDidMount() {
         this.setState({
             section: this.props.section ? this.props.section : this.state.section,
-            articles: this.getArticleList(this.state.offset),
-            count: utils.dummyArticlesShort.length
         });
-
+        this.getSectionContent(this.props.section.id, this.state.offset);
         //window.addEventListener('scroll', this.listenToScroll)
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.section.id !== this.state.section.id) {
+            this.setState({
+                section: this.props.section ? this.props.section : this.state.section
+            });
+            this.getSectionContent(this.props.section.id, this.state.offset);
+        }
     }
 
     listenToScroll = () => {
         console.log(window.pageYOffset);
     };
 
-    getArticleList = (offset) => {
-        let url = utils.protocol + utils.baseUrl + '/page/' + this.state.section.id + "/" + this.state.offset + "/" + this.state.limit;
+    getSectionContent = (id, offset) => {
+        let url = utils.protocol + utils.baseUrl + '/page/' + id + "/" + this.state.offset + "/" + this.state.limit;
         fetch(url, {
             method: 'get',
-            headers: {
-                'Access-Control-Allow-Origin': null,
-                'Content-Type': 'application/json'
-            }
+            headers: {'Content-Type': 'application/json'}
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                this.setState({
+                    articles: data.articleList,
+                    offset: offset,
+                    count: data.articleSize
+                });
+                window.scroll({top: 0, left: 0, behavior: 'smooth'});
             })
             .catch(e => console.log(e));
-
-
-        let as = [];
-        for (let i = offset + 1; i < offset + this.state.limit + 1; i++) {
-            if (utils.dummyArticlesShort[i - 1]) {
-                as.push(utils.dummyArticlesShort[i - 1]);
-            }
-        }
-        return as;
     };
 
     refreshArticle = (offset) => {
-        let articles = this.getArticleList(offset);
-        this.setState({
-            articles: articles,
-            offset: offset
-        });
-        window.scroll({top: 0, left: 0, behavior: 'smooth'});
+        this.getSectionContent(this.state.section.id, offset);
     };
 
     renderArticleList = () => {
@@ -83,6 +78,7 @@ class Section extends Component {
             return (
                 <div className={this.styles.listWrapper}>
                     {this.state.articles.map(a => {
+                        a.time = (new Date(a.time)).toLocaleDateString();
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>
@@ -90,15 +86,17 @@ class Section extends Component {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-                                        paddingBottom: a.resource.length !== 0 ? '0px' : '50px'
+                                        paddingBottom: a.resources.length !== 0 ? '0px' : '50px'
                                     }}>
                                         <div className={this.styles.titleWrapper}>{a.title}</div>
                                         <div className={this.styles.titleWrapper}
                                              style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.time}</div>
                                         <div className={this.styles.articleContentWrapper}>
-                                            {a.resource.length !== 0 ?
+                                            {a.resources.length !== 0 ?
                                                 <div className={this.styles.imgWrapper}>
-                                                    <img src={a.resource[0]} className={this.styles.articleImg}/>
+                                                    <img
+                                                        src={a.resources[0].url ? a.resources[0].url : a.resources[0].content}
+                                                        className={this.styles.articleImg}/>
                                                 </div> : <div/>
                                             }
                                             <div className={this.styles.descriptionWrapper}>{parse(a.description)}</div>
