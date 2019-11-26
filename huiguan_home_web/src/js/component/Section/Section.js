@@ -78,7 +78,6 @@ class Section extends Component {
             return (
                 <div className={this.styles.listWrapper}>
                     {this.state.articles.map(a => {
-                        a.time = (new Date(a.time)).toLocaleDateString();
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>
@@ -99,7 +98,7 @@ class Section extends Component {
                                                         className={this.styles.articleImg}/>
                                                 </div> : <div/>
                                             }
-                                            <div className={this.styles.descriptionWrapper}>{parse(a.description)}</div>
+                                            <div className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
                                         </div>
                                     </div>
                                     <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
