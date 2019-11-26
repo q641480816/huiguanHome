@@ -17,7 +17,7 @@ public class CreateNewArticleRequest {
     Timestamp creationTime;
     Resource[] resources;
     @JsonProperty("time")
-    @JsonFormat(pattern = "dd/mm/yyyy")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     Timestamp time;
     String title;
     String url;

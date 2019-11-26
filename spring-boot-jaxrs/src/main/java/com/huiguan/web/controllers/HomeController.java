@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -96,6 +98,8 @@ public class HomeController extends Application {
     public BaseResponse createArticle(CreateNewArticleRequest req) {
         logger.info("Creating new articles");
         Article article = convertToEntityService.convertToArticleEntity(req);
+        if (article==null) return new CreateResponse("Converting to DTO fails");
+        article.setCreationTime(new Timestamp(System.currentTimeMillis()));
         int id = articleService.addNewArticle(article);
         CreateResponse response = new CreateResponse();
         if (id > 0) {
@@ -151,6 +155,20 @@ public class HomeController extends Application {
         logger.info("Retrieving section info");
         Section article = sectionService.findById(id).orElseThrow(() -> new ApiException("Resource not found"));
         return Response.status(Response.Status.OK).entity(article).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/latest")
+    @Transactional
+    public GetPageResponse getLatestArticles() throws ApiException {
+        logger.info("Retrieving latest 5 articles");
+        Set<GetArticleResponse> articles = articleService.findLatestArticles();
+        GetPageResponse res = new GetPageResponse();
+        res.setSuccess(true);
+        res.setHttpStatus(200);
+        res.setArticleList(articles);
+        return res;
     }
 
 }

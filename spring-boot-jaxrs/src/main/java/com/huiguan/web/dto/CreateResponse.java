@@ -15,4 +15,8 @@ public class CreateResponse extends BaseResponse {
     public CreateResponse() {
 
     }
+
+    public CreateResponse(String errorMessage) {
+        super(errorMessage);
+    }
 }

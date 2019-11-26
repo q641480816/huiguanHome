@@ -15,8 +15,8 @@ public class GetResourceResponse {
     String title;
     String description;
     int resourceType;
-    Timestamp creationTime;
-    Timestamp time;
+    String creationTime;
+    String time;
 
     public GetResourceResponse(){}
 }

@@ -8,6 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +42,8 @@ public class ConvertToEntityService {
             res.setArticleId(resource.getArticle().getId());
         }
         res.setContent(resource.getContent());
-        res.setCreationTime(resource.getCreationTime());
+        res.setCreationTime(toDate(resource.getCreationTime()));
+        res.setTime(toDate(resource.getTime()));
         res.setDescription(resource.getDescription());
         res.setId(resource.getId());
         res.setUrl(resource.getUrl());
@@ -52,7 +56,7 @@ public class ConvertToEntityService {
         if (article==null) return null;
         GetArticleResponse res = new GetArticleResponse();
         res.setContent(article.getContent());
-        res.setCreation_time(article.getCreationTime());
+        res.setCreation_time(toDate(article.getCreationTime()));
         res.setDescription(article.getDescription());
 
         if (article.getResources()!=null){
@@ -66,10 +70,17 @@ public class ConvertToEntityService {
         if (article.getSection()!=null){
             res.setSectionTitle(article.getSection().getTitle());
         }
-        res.setTime(article.getTime());
+        res.setTime(toDate(article.getTime()));
         res.setUrl(article.getUrl());
         res.setTitle(article.getTitle());
         res.setId(article.getId());
         return res;
     }
+
+    private String toDate(Timestamp timestamp) {
+        if (timestamp == null) return null;
+        Date date = new Date(timestamp.getTime());
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
+
 }

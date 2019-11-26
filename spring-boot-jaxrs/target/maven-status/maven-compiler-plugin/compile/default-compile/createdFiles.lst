@@ -1,4 +1,6 @@
 com\huiguan\web\dto\GetResourceResponse.class
+com\huiguan\web\WebConfig.class
+com\huiguan\web\service\EmailService.class
 com\huiguan\web\SpringBootJaxrsApplication.class
 com\huiguan\web\model\Student.class
 com\huiguan\web\exception\StudentNotFoundException.class
@@ -6,6 +8,7 @@ com\huiguan\web\model\User.class
 com\huiguan\web\service\ArticleServiceImpl.class
 com\huiguan\web\service\SectionServiceImpl.class
 com\huiguan\web\repository\StudentRepository.class
+com\huiguan\web\service\EmailService$1.class
 com\huiguan\web\dto\GetArticleResponse.class
 com\huiguan\web\repository\ResourceRepository.class
 com\huiguan\web\controllers\HomeController.class
@@ -13,6 +16,7 @@ com\huiguan\web\service\ResourceServiceImpl.class
 com\huiguan\web\service\SectionService.class
 com\huiguan\web\exception\StudentNotFoundExceptionMapper.class
 com\huiguan\web\exception\ApiExceptionMapper.class
+com\huiguan\web\controllers\EmailController.class
 com\huiguan\web\exception\ApiException.class
 com\huiguan\web\model\Section.class
 com\huiguan\web\dto\CreateNewArticleRequest.class
@@ -24,6 +28,7 @@ com\huiguan\web\service\ArticleService.class
 com\huiguan\web\model\Article.class
 com\huiguan\web\dto\CreateResponse.class
 com\huiguan\web\service\StudentService.class
+com\huiguan\web\filter\CorsFilter.class
 com\huiguan\web\service\StudentServiceImpl.class
 com\huiguan\web\dto\CreateNewResourceRequest.class
 com\huiguan\web\dto\CreateNewSectionRequest.class

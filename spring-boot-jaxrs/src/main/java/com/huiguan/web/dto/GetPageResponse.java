@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class GetPageResponse {
+public class GetPageResponse extends BaseResponse{
     int sectionId;
     int articleSize;
     Set<GetArticleResponse> articleList;

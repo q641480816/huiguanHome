@@ -12,8 +12,8 @@ public class GetArticleResponse {
     int id;
     String content;
     String title;
-    Timestamp time;
-    Timestamp creation_time;
+    String time;
+    String creation_time;
     String description;
     Set<GetResourceResponse> resources;
     String sectionTitle;

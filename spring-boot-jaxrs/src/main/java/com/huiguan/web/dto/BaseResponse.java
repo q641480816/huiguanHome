@@ -18,6 +18,7 @@ public class BaseResponse {
     public BaseResponse(String errorMessage) {
         this.errorMessage = errorMessage;
         this.isSuccess = false;
+        httpStatus = 400;
     }
 
     public BaseResponse() {

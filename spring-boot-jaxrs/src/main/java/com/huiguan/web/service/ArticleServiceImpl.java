@@ -3,10 +3,10 @@ package com.huiguan.web.service;
 import com.huiguan.web.dto.GetArticleResponse;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Article;
-import com.huiguan.web.model.Resource;
 import com.huiguan.web.model.Section;
 import com.huiguan.web.repository.ArticleRepository;
-import com.huiguan.web.repository.ResourceRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.domain.Pageable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +26,7 @@ import java.util.Set;
 @Transactional
 public class ArticleServiceImpl implements ArticleService {
 
+    private static final Logger logger = LogManager.getLogger(ArticleServiceImpl.class);
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -47,13 +47,13 @@ public class ArticleServiceImpl implements ArticleService {
         res = convertToEntityService.convertToArticleDto(article);
         return res;
     }
+
     @Override
-    public int countBySection(int sectionId){
-        Optional<Section> existedSection =sectionService.findById(sectionId);
+    public int countBySection(int sectionId) {
+        Optional<Section> existedSection = sectionService.findById(sectionId);
         if (!existedSection.isPresent()) {
             return 0;
-        }
-        else{
+        } else {
             return articleRepository.countArticleBySection(existedSection.get());
         }
     }
@@ -62,20 +62,18 @@ public class ArticleServiceImpl implements ArticleService {
     public int addNewArticle(Article toBeAdded) {
         if (toBeAdded.getSection() != null) {
             Section section = toBeAdded.getSection();
-            if (section.getId() > 0 ) {
-                Optional<Section> existedSection =sectionService.findById(section.getId());
+            if (section.getId() > 0) {
+                Optional<Section> existedSection = sectionService.findById(section.getId());
                 if (existedSection.isPresent()) {
                     toBeAdded.setSection(existedSection.get());
-                }
-                else{
+                } else {
                     toBeAdded.setSection(null);
                 }
             } else if (section.getTitle() != null) {
                 Section existedSection = sectionService.findByTitle(section.getTitle());
                 if (existedSection != null) {
                     toBeAdded.setSection(existedSection);
-                }
-                else{
+                } else {
                     toBeAdded.setSection(null);
                 }
             }
@@ -103,7 +101,7 @@ public class ArticleServiceImpl implements ArticleService {
         PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "id");
 
         Optional<Section> articleSection = sectionService.findById(sectionId);
-        if (!articleSection.isPresent()){
+        if (!articleSection.isPresent()) {
             return null;
         }
         Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection.get(), req);
@@ -119,4 +117,19 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteById(int id) {
         articleRepository.deleteById(id);
     }
+
+    @Override
+    public Set<GetArticleResponse> findLatestArticles() {
+        logger.info("Retrieving latest 5 articles from section 4 to section 12");
+        PageRequest req = new PageRequest(0, 5, Sort.Direction.DESC, "creationTime");
+        Page<Article> articles=articleRepository.findLatestArticles(req);
+        List<Article> articleList = articles.getContent();
+        Set<GetArticleResponse> articleDtoList = new HashSet<>();
+        for (Article article : articleList) {
+            articleDtoList.add(convertToEntityService.convertToArticleDto(article));
+        }
+
+        return articleDtoList;
+    }
+
 }

@@ -1,4 +1,6 @@
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\model\User.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\WebConfig.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\filter\CorsFilter.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateNewResourceRequest.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\StudentServiceImpl.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetArticleResponse.java
@@ -10,7 +12,9 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\repository\SectionRepository.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ResourceServiceImpl.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateNewSectionRequest.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\controllers\EmailController.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\ApiExceptionMapper.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\EmailService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\repository\ResourceRepository.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\SpringBootJaxrsApplication.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ConvertToEntityService.java
