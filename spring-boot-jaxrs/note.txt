@@ -7,10 +7,12 @@
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 export CATALINA_HOME=/opt/tomcat/latest/bin
  source ~/.bashrc
+ps -ef | grep java
 
 
-
-
+chinkang.no.reply@gmail.com
+chinkang123
+2000.1.1
 
 
 
