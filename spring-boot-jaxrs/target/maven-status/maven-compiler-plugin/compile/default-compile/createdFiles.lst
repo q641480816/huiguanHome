@@ -11,6 +11,7 @@ com\huiguan\web\repository\StudentRepository.class
 com\huiguan\web\service\EmailService$1.class
 com\huiguan\web\dto\GetArticleResponse.class
 com\huiguan\web\repository\ResourceRepository.class
+database_statement.sql
 com\huiguan\web\controllers\HomeController.class
 com\huiguan\web\service\ResourceServiceImpl.class
 com\huiguan\web\service\SectionService.class
@@ -18,6 +19,7 @@ com\huiguan\web\exception\StudentNotFoundExceptionMapper.class
 com\huiguan\web\exception\ApiExceptionMapper.class
 com\huiguan\web\controllers\EmailController.class
 com\huiguan\web\exception\ApiException.class
+log4j2.xml
 com\huiguan\web\model\Section.class
 com\huiguan\web\dto\CreateNewArticleRequest.class
 com\huiguan\web\repository\ArticleRepository.class
