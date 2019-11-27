@@ -52,13 +52,14 @@ class Section extends Component {
     };
 
     getSectionContent = (id, offset) => {
-        let url = utils.protocol + utils.baseUrl + '/page/' + id + "/" + this.state.offset + "/" + this.state.limit;
+        let url = utils.protocol + utils.baseUrl + '/page/' + id + "/" + Math.floor(offset / this.state.limit) + "/" + this.state.limit;
         fetch(url, {
             method: 'get',
             headers: {'Content-Type': 'application/json'}
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 this.setState({
                     articles: data.articleList,
                     offset: offset,
@@ -98,7 +99,8 @@ class Section extends Component {
                                                         className={this.styles.articleImg}/>
                                                 </div> : <div/>
                                             }
-                                            <div className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
+                                            <div
+                                                className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
                                         </div>
                                     </div>
                                     <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
