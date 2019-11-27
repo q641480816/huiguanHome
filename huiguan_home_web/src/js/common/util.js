@@ -26,7 +26,7 @@ const utils = {
         text: '#5A5A5A'
     },
     common: {
-        fileToBase64 : (file) => {
+        fileToBase64: (file) => {
             return new Promise(resolve => {
                 let reader = new FileReader();
                 // Read file content on file loaded event
@@ -533,7 +533,16 @@ const utils = {
             "<p>Visa Inc. (NYSE: V) is the world&rsquo;s leader in digital payments. Our mission is to connect the world through the most innovative, reliable and secure payment network - enabling individuals, businesses and economies to thrive. Our advanced global processing network, VisaNet, provides secure and reliable payments around the world, and is capable of handling more than 65,000 transaction messages a second. The company&rsquo;s relentless focus on innovation is a catalyst for the rapid growth of digital commerce on any device for everyone, everywhere. As the world moves from analog to digital, Visa is applying our brand, products, people, network and scale to reshape the future of commerce. For more information, visit www.visa.com.sg</p>\n" +
             "<p><strong>About Nium</strong></p>\n" +
             "<p>Singapore-headquartered Nium (formerly known as InstaReM), is a digital cross-border money transfer platform founded by the team that created InstaReM in 2014.The Nium platform empowers businesses to send , spend &amp; receive across borders, with a mission is to democratize money movement across the globe . Nium is regulated in the U.S., the European Union, Singapore, Canada, Hong Kong, India, Australia and Malaysia, and processes billions of dollars in a year for banks, payments institutions and retail users across the world. Nium&rsquo;s investors include Global Founders Capital, Vertex Ventures, Fullerton Financial Holdings, GSR Ventures, SBI-FMO Emerging Asia Financial Sector Fund, MDI Ventures, Beacon Venture Capital, Vertex Growth Fund and Atinum Investment.</p>"
-    }
+    },
+
 };
+
+let a = {
+    section:8,
+        title:"五位中国运动员将加入“Visa之队”，备战2020年东京奥运",
+    description:"奥运会独家支付服务提供商Visa公司（纽交所代码：V）今日宣布，五位中国运动员已入选“Visa之队”（Team Visa），备战2020年东京奥运会。他们分别是乒乓球运动员马龙、羽毛球运动员谌龙、跳水",
+    content:"<p style=\"text-align:start;\" size=\"0\" _root=\"undefined\" __ownerid=\"undefined\" __hash=\"undefined\" __altered=\"false\">奥运会独家支付服务提供商Visa公司（纽交所代码：V）今日宣布，五位中国运动员已入选“Visa之队”（Team Visa），备战2020年东京奥运会。他们分别是乒乓球运动员马龙、羽毛球运动员谌龙、跳水运动员施廷懋和陈艾森以及体操运动员肖若腾。</p><p>“Visa之队”秉承Visa的奥运赞助传统，为运动员提供重要的曝光机会以及宝贵的资源和支持，有力帮助他们发挥最大运动潜能。自2000年以来，“Visa之队”在装备、资源等方面累计赞助了400余位奥运会和残奥会运动员，助力这些运动员实现赛场内外的梦想。这支由多元化、国际化运动员们组成的“Visa 之队”充分体现了Visa“接纳、创新、合作”的核心价值观。</p><p>自1986年起，Visa一直是奥运会全球唯一的官方支付科技合作伙伴。三十多年以来，Visa通过奥运会这个全球舞台，不断推出创新的支付解决方案，改善观众的支付体验。最新入选“Visa之队”的五位运动员从事着不同的体育项目，这代表着“Visa之队”的赞助范围大大拓宽，同时也有助于提升全中国对奥运会的关注度，特别是吸引中国年轻一代多多关注即将到来的2020年东京奥运会。</p><p>Visa大中华区总裁于雪莉女士表示：“我们非常荣幸地迎来精英运动员马龙、谌龙、施廷懋、陈艾森和肖若腾成为‘Visa之队’的最新成员，祝愿每一位‘Visa之队’的运动员马到成功。我们深信，他们取得的成就也将有助于提高即将到来的2020年东京奥运会的公众关注度。Visa与奥运会的官方合作伙伴关系已延续至2032年，我们将在未来10多年的时间，继续努力提升所有奥运场馆的观众体验。”</p><p>随着与国际奥委会的合作伙伴关系延长，Visa将进一步借助奥运会这一国际舞台，持续为客户、合作伙伴以及奥运会的观众与游客们提供卓越的支付体验，以期达成诸如全面扩展Visa的接受度与使用度等战略目标。</p><p></p><p>最新加入“Visa之队”的运动员是：</p><ul><li><strong>马龙</strong>——奥运会和世乒赛男子单打冠军，现排名世界第五。他累计获得28个国际乒联世界巡回赛（ITTF World-Tour）单打冠军，是首位集奥运会、世锦赛、世界杯、亚运会、亚锦赛、亚洲杯、巡回赛总决赛、全运会单打冠军于一身的超级全满贯男子选手。</li><li><strong>谌龙</strong>——中国最负盛名的羽毛球运动员之一，现排名世界第五，奥运会男子单打冠军、他在2014年和2015年世锦赛中摘得金牌。</li><li><strong>施廷懋</strong>——来自重庆的世界级女子跳水运动员。2016年里约热内卢奥运会上，她斩获了3米跳板金牌，又在双人3米跳板项目中再夺一金。此外，她也凭借出色的表现，在世界游泳锦标赛和亚运会上收获了多块奖牌。</li><li><strong>陈艾森</strong>——被誉为中国最有天赋的跳水运动员之一，在2016年里约热内卢奥运会男子10米跳台和双人项目中夺得双料冠军。除了奥运奖牌，他还获得了2017年世锦赛和2018年国际泳联跳水世界杯男子10米跳台冠军。</li><li><strong>肖若腾</strong>——享誉全国的体操运动员，在2017年亚洲体操锦标赛上获得男子个人全能冠军，并在2017年蒙特利尔世界体操锦标赛上摘得男子全能金牌。他帮助中国体操队在2017年世界锦标赛、2017年亚洲锦标赛和2018年亚运会上成功夺金。</li></ul><p style=\"text-align:start;text-indent:2em;\"> </p><p><strong>关于Visa公司</strong></p><p>Visa公司（纽交所代码：V）是全球领先的数字支付公司。我们的使命是通过最创新、可靠和安全的支付网络连接世界，促使个人、企业和经济活动蓬勃发展。我们拥有全球最先进的支付处理网络VisaNet，确保世界各地的支付交易安全可靠。VisaNet每秒可处理超过65000笔交易。Visa对创新的坚持不懈是万物互联时代商业发展的催化剂，亦是每个人及每个市场实现无现金未来梦想的重要推动力。当世界由模拟向数字时代演变之际，Visa正运用我们的品牌、产品、人才、网络和规模，重新塑造商业的未来。欲了解更多信息，请访问About Visa、visa.com/blog和@VisaNews。</p>",
+    time:"28-11-2019"
+}
 
 export default utils;

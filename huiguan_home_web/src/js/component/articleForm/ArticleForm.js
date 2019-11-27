@@ -1,7 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {Route} from 'react-router-dom';
-import {withStyles, FormControl, InputLabel, Select, MenuItem, TextField} from "@material-ui/core";
+import {
+    withStyles,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    Grid, Button
+} from "@material-ui/core";
+import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import BraftEditor from 'braft-editor';
 import ImageUploader from 'react-images-upload';
 
@@ -17,11 +26,14 @@ class ArticleForm extends Component {
                 section: '',
                 title: '',
                 description: '',
-                content: ''
+                content: '',
+                time: (new Date()),
+                url: '',
+                resources: []
             },
             sections: [],
             titleLengthLimit: 30,
-            descriptionLengthLimit: 100,
+            descriptionLengthLimit: 150,
             editorControls: [
                 'font-size', 'line-height', 'letter-spacing', 'separator',
                 'text-color', 'bold', 'italic', 'underline', 'strike-through', 'separator',
@@ -51,8 +63,11 @@ class ArticleForm extends Component {
         };
 
         this.styles = this.props.classes;
-        this.renderSectionSelect = this.renderSectionSelect.bind(this);
+
+        this.publish = this.publish.bind(this);
         this.onImageSelect = this.onImageSelect.bind(this);
+        this.renderSectionSelect = this.renderSectionSelect.bind(this);
+        this.renderImagePreview = this.renderImagePreview.bind(this);
     }
 
     componentDidMount() {
@@ -69,11 +84,49 @@ class ArticleForm extends Component {
         }
     }
 
-    onImageSelect = (pictureFiles, pictureDataURLs) => {
-        utils.common.fileToBase64(pictureFiles[0])
-            .then((res) => console.log(res))
+    publish = () => {
+        let url = utils.protocol + utils.baseUrl + '/articles/';
+        let form = this.state.form;
+
+        let d = (new Date(form.time));
+        form.time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+
+        let section = form.section;
+        form.section = {id: section};
+
+        fetch(url, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form)
+        }).then(response => response.json())
+            .then(data => {
+                console.log("successfully published");
+                console.log(data);
+                alert(data)
+            })
             .catch(e => console.log(e));
-        console.log();
+    };
+
+    onImageSelect = (pictureFiles, pictureDataURLs) => {
+        utils.common.fileToBase64(pictureFiles[pictureFiles.length - 1])
+            .then((res) => {
+                //onsole.log(res);
+                let form = this.state.form;
+                form.resources.push({
+                    //url: res,
+                    content: res,
+                    // url: 'https://static.sportzbusiness.com/uploads/2018/10/tokyo-2020-1.jpg',
+                    // content: 'https://static.sportzbusiness.com/uploads/2018/10/tokyo-2020-1.jpg',
+                    title: 'temp title',
+                    description: 'temp description'
+                });
+                this.setState({
+                    form: form
+                })
+            })
+            .catch(e => console.log(e));
     };
 
     renderSectionSelect = () => {
@@ -96,6 +149,20 @@ class ArticleForm extends Component {
                     })}
                 </Select>
             </FormControl>
+        )
+    };
+
+    renderImagePreview = () => {
+        let index = 0;
+        return (
+            <div style={{display: "flex", flexDirection: "row"}}>
+                {this.state.form.resources.map(i => {
+                    index++;
+                    return (
+                        <img key={index} src={i.url ? i.url : i.content} alt={"p1"} style={{height: '100px'}}/>
+                    )
+                })}
+            </div>
         )
     };
 
@@ -130,6 +197,37 @@ class ArticleForm extends Component {
                                }}/>
                 </div>
                 <div className={'question'}>
+                    <div className={'question-title'}>选择日期</div>
+                    <div style={{width: '200px'}}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid container justify="space-around">
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    variant="inline"
+                                    format="yyyy-MM-dd"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    label="Date picker inline"
+                                    value={this.state.form.time}
+                                    onChange={(date) => {
+                                        // let d = (new Date(date));
+                                        // console.log(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());
+                                        let form = this.state.form;
+                                        // form.time = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                                        form.time = date;
+                                        this.setState({
+                                            form: form
+                                        })
+                                    }}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </Grid>
+                        </MuiPickersUtilsProvider>
+                    </div>
+                </div>
+                <div className={'question'}>
                     <div className={'question-title'}>图片</div>
                     <ImageUploader
                         withIcon={true}
@@ -138,6 +236,7 @@ class ArticleForm extends Component {
                         imgExtension={['.jpg', '.gif', '.png', '.gif']}
                         maxFileSize={5242880}
                     />
+                    {this.renderImagePreview()}
                 </div>
                 <div className={'question'}>
                     <div className={'question-title'}>内容</div>
@@ -158,6 +257,9 @@ class ArticleForm extends Component {
                         />
                     </div>
                 </div>
+                <Button onClick={(event) => this.publish()} variant="outlined" color="inherit">
+                    <div style={{paddingLeft: '7.5px'}}>上传文章</div>
+                </Button>
             </div>
         );
     }
