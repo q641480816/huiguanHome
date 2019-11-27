@@ -15,7 +15,7 @@ public interface ArticleService {
 
     int addNewArticle(Article toBeAdded);
 
-    Article edit(int id, Article article);
+    int edit(int id, Article article);
 
     void deleteById(int id);
 

@@ -58,10 +58,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-    @Override
-    public int addNewArticle(Article toBeAdded) {
-        if (toBeAdded.getSection() != null) {
-            Section section = toBeAdded.getSection();
+
+    private void updateArticleSection(Article toBeAdded,Section section){
+        if (section!= null) {
             if (section.getId() > 0) {
                 Optional<Section> existedSection = sectionService.findById(section.getId());
                 if (existedSection.isPresent()) {
@@ -78,21 +77,41 @@ public class ArticleServiceImpl implements ArticleService {
                 }
             }
         }
+    }
+    @Override
+    public int addNewArticle(Article toBeAdded) {
+        updateArticleSection(toBeAdded,toBeAdded.getSection());
         articleRepository.save(toBeAdded);
         return toBeAdded.getId();
     }
 
     @Override
-    public Article edit(int id, Article article) {
+    public int edit(int id, Article article) {
+        if (!articleRepository.findById(id).isPresent()) return -1;
+
         Article toBeEdited = articleRepository.findById(id).get();
+        updateArticleSection(toBeEdited,article.getSection());
         toBeEdited.setCreationTime(article.getCreationTime());
-        toBeEdited.setResources(toBeEdited.getResources());
-        toBeEdited.setContent(article.getContent());
-        toBeEdited.setTitle(article.getTitle());
-        toBeEdited.setUrl(article.getUrl());
-        toBeEdited.setDescription(article.getDescription());
+        if (article.getResources()!=null) {
+            toBeEdited.setResources(article.getResources());
+        }
+        if(article.getContent()!=null) {
+            toBeEdited.setContent(article.getContent());
+        }
+        if(article.getTitle()!=null) {
+            toBeEdited.setTitle(article.getTitle());
+        }
+        if (article.getUrl()!=null) {
+            toBeEdited.setUrl(article.getUrl());
+        }
+        if (article.getDescription()!=null) {
+            toBeEdited.setDescription(article.getDescription());
+        }
+        if(article.getTime()!=null){
+            toBeEdited.setTime(article.getTime());
+        }
         articleRepository.save(toBeEdited);
-        return toBeEdited;
+        return toBeEdited.getId();
 
     }
 

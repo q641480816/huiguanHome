@@ -26,6 +26,7 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetPageResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ArticleService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\model\Resource.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\UpdateResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\controllers\HomeController.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ResourceService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\model\Section.java

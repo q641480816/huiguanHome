@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -45,6 +46,7 @@ public class HomeController extends Application {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/resources/{id}")
+    @ApiOperation("Get a operation")
     @Transactional
     public GetResourceResponse getResource(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving resource info");
@@ -55,6 +57,7 @@ public class HomeController extends Application {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/page/{sectionId}/{pageNum}/{pageSize}")
+    @ApiOperation("Get a page")
     @Transactional
     public GetPageResponse getArticleByPage(
             @PathParam("sectionId") int sectionId,
@@ -75,6 +78,7 @@ public class HomeController extends Application {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/resources")
+    @ApiOperation("Create a promotion")
     @Transactional
     public BaseResponse createResource(CreateNewResourceRequest req) {
         logger.info("Creating new resources");
@@ -92,10 +96,36 @@ public class HomeController extends Application {
         return response;
     }
 
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("articles/{id}")
+    @ApiOperation("Update a promotion")
+    @Transactional
+    public BaseResponse updateArticle(@PathParam("id") int id,CreateNewArticleRequest req){
+        logger.info("Updating an article");
+        Article article = convertToEntityService.convertToArticleEntity(req);
+        if (article==null) return new CreateResponse("Converting to DTO fails");
+        article.setCreationTime(new Timestamp(System.currentTimeMillis()));
+        int articleId = articleService.edit(id, article);
+        UpdateResponse response = new UpdateResponse();
+        if (articleId == id && id > 0){
+            response.setHttpStatus(200);
+            response.setSuccess(true);
+            response.setId(id);
+        }else{
+            response.setHttpStatus(400);
+            response.setErrorMessage("Not created successfully");
+        }
+        return response;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/articles")
+    @ApiOperation("Create a promotion")
     @Transactional
     public BaseResponse createArticle(CreateNewArticleRequest req) {
         logger.info("Creating new articles");
@@ -119,6 +149,7 @@ public class HomeController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/sections")
+    @ApiOperation("Create a section")
     @Transactional
     public BaseResponse createSection(CreateNewSectionRequest req) {
         logger.info("Creating new sections");
@@ -141,7 +172,7 @@ public class HomeController extends Application {
     @ApiResponse(code =200, message = "success")
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/articles/{id}")
-    @ApiOperation(value = "Finds an article with Id")
+    @ApiOperation("Get an article")
     @Transactional
     public GetArticleResponse getArticle(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving article info");
@@ -153,6 +184,7 @@ public class HomeController extends Application {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/sections/{id}")
     @Transactional
+    @ApiOperation("Get a section")
     public Response getSection(@PathParam("id") int id) throws ApiException {
         logger.info("Retrieving section info");
         Section article = sectionService.findById(id).orElseThrow(() -> new ApiException("Section not found"));
@@ -163,6 +195,7 @@ public class HomeController extends Application {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/latest")
     @Transactional
+    @ApiOperation("Get latest articles")
     public GetPageResponse getLatestArticles() throws ApiException {
         logger.info("Retrieving latest 5 articles");
         Set<GetArticleResponse> articles = articleService.findLatestArticles();

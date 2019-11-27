@@ -13,7 +13,7 @@ public class CreateResponse extends BaseResponse {
 
 
     public CreateResponse() {
-
+        this.setSuccess(false);
     }
 
     public CreateResponse(String errorMessage) {
