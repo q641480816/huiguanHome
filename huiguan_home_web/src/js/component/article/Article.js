@@ -8,6 +8,7 @@ import utils from "../../common/util";
 import Banner from "../banner/Banner";
 import {Carousel} from "react-responsive-carousel";
 import parse from "html-react-parser";
+import Loading from "../loading/Loading";
 
 class Article extends Component {
     constructor(props) {
@@ -80,8 +81,26 @@ class Article extends Component {
                          style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
                         {parse(this.state.article.content)}
                     </div>
+                    {this.state.article.url !== null && this.state.article.url.length > 0 ?
+                        <div className={this.styles.contentWrapper}
+                             style={{display: 'flex', flexDirection: 'row', fontStyle: 'italic'}}>
+                            <div style={{fontWeight: 'bold', color: utils.colorScheme.secondary}}>
+                                外部链接：
+                            </div>
+                            <a href={this.state.article.url} target={'_blank'}
+                               style={{textDecoration: 'none', color: utils.colorScheme.text}}>
+                                {this.state.article.url}
+                            </a>
+                        </div> : <div/>
+                    }
                 </div>
             );
+        } else {
+            return (
+                <div style={{position: 'relative', width: '100%', height: '300px'}}>
+                    <Loading isMax={false} initialState={true} loadingMessage={'文章加载中'}/>
+                </div>
+            )
         }
     };
 

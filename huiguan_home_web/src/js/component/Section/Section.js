@@ -10,6 +10,7 @@ import utils from "../../common/util";
 
 import './Section.css';
 import SectionDivider from "../sectionDivider/SectionDivider";
+import Loading from "../loading/Loading";
 
 class Section extends Component {
     constructor(props) {
@@ -122,14 +123,12 @@ class Section extends Component {
                     })}
                 </div>
             );
-
-            //return parse(this.state.articles[0].description);
         } else {
             return (
-                <div>
-                    no items
+                <div style={{position: 'relative', width: '100%', height: '300px'}}>
+                    <Loading isMax={false} initialState={true} loadingMessage={'文章列表加载中'}/>
                 </div>
-            );
+            )
         }
     };
 

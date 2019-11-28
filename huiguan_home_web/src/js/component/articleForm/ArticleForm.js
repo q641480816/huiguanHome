@@ -26,7 +26,7 @@ class ArticleForm extends Component {
                 section: '',
                 title: '',
                 description: '',
-                content: '',
+                content: BraftEditor.createEditorState('<p/>'),
                 time: (new Date()),
                 url: '',
                 resources: []
@@ -34,13 +34,13 @@ class ArticleForm extends Component {
             sections: [],
             titleLengthLimit: 30,
             descriptionLengthLimit: 150,
+            isSection: false,
             editorControls: [
                 'font-size', 'line-height', 'letter-spacing', 'separator',
                 'text-color', 'bold', 'italic', 'underline', 'strike-through', 'separator',
                 'superscript', 'subscript', 'remove-styles', 'emoji', 'separator', 'text-indent', 'text-align', 'separator',
                 'headings', 'list-ul', 'list-ol', 'blockquote', 'separator',
-                'link', 'separator', 'hr', 'separator',
-                'clear'
+                'link', 'separator', 'hr', 'separator', 'code', 'separator', 'clear'
                 //, 'separator', 'media'
             ],
             mediaControl: {
@@ -64,49 +64,64 @@ class ArticleForm extends Component {
 
         this.styles = this.props.classes;
 
-        this.publish = this.publish.bind(this);
+        this.getForm = this.getForm.bind(this);
         this.onImageSelect = this.onImageSelect.bind(this);
+        this.clearForm = this.clearForm.bind(this);
+        this.prepareForm = this.prepareForm.bind(this);
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
         this.renderImagePreview = this.renderImagePreview.bind(this);
     }
 
     componentDidMount() {
         this.setState({
-            sections: this.props.sections ? this.props.sections : this.state.sections
+            sections: this.props.sections ? this.props.sections : this.state.sections,
+            isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
+            form: this.props.article ? this.prepareForm(this.props.article) : {
+                section: '',
+                title: '',
+                description: '',
+                content: BraftEditor.createEditorState('<p/>'),
+                time: (new Date()),
+                url: '',
+                resources: []
+            }
         });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.sections !== this.props.sections) {
             this.setState({
-                sections: this.props.sections
+                sections: this.props.sections,
+                isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
+                form: this.props.article ? this.prepareForm(this.props.article) : {
+                    section: '',
+                    title: '',
+                    description: '',
+                    content: BraftEditor.createEditorState('<p/>'),
+                    time: (new Date()),
+                    url: '',
+                    resources: []
+                }
             })
         }
     }
 
-    publish = () => {
-        let url = utils.protocol + utils.baseUrl + '/articles/';
-        let form = this.state.form;
+    prepareForm = (article) => {
+        return {
+            section: article.section,
+            title: article.title,
+            description: article.description,
+            content: BraftEditor.createEditorState(article.content),
+            time: (new Date(article.time)),
+            url: article.url ? article.url : '',
+            resources: article.resources
+        }
+    };
 
-        let d = (new Date(form.time));
-        form.time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-
-        let section = form.section;
-        form.section = {id: section};
-
-        fetch(url, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(form)
-        }).then(response => response.json())
-            .then(data => {
-                console.log("successfully published");
-                console.log(data);
-                alert(data)
-            })
-            .catch(e => console.log(e));
+    getForm = () => {
+        let form = Object.assign({}, this.state.form);
+        form.content = form.content.toHTML();
+        return form;
     };
 
     onImageSelect = (pictureFiles, pictureDataURLs) => {
@@ -127,6 +142,20 @@ class ArticleForm extends Component {
                 })
             })
             .catch(e => console.log(e));
+    };
+
+    clearForm = () => {
+        this.setState({
+            form: {
+                section: '',
+                title: '',
+                description: '',
+                content: '',
+                time: (new Date()),
+                url: '',
+                resources: []
+            },
+        })
     };
 
     renderSectionSelect = () => {
@@ -169,10 +198,12 @@ class ArticleForm extends Component {
     render() {
         return (
             <div className={this.styles.bodyContainer}>
-                <div className={'question'}>
-                    <div className={'question-title'}>类别选择</div>
-                    {this.renderSectionSelect()}
-                </div>
+                {!this.state.isSection ?
+                    <div className={'question'}>
+                        <div className={'question-title'}>类别选择</div>
+                        {this.renderSectionSelect()}
+                    </div> : <div/>
+                }
                 <div className={'question'}>
                     <div className={'question-title'}>标题</div>
                     <TextField inputProps={{maxLength: this.state.titleLengthLimit}} required id="title-required"
@@ -183,19 +214,21 @@ class ArticleForm extends Component {
                                    this.setState({form: form})
                                }}/>
                 </div>
-                <div className={'question'}>
-                    <div className={'question-title'}>纲要</div>
-                    <TextField inputProps={{maxLength: this.state.descriptionLengthLimit}} required
-                               id="description-required"
-                               label={"纲要(最大长度=" + this.state.descriptionLengthLimit + ")"}
-                               value={this.state.form.description}
-                               multiline
-                               onChange={(event) => {
-                                   let form = this.state.form;
-                                   form.description = event.target.value;
-                                   this.setState({form: form})
-                               }}/>
-                </div>
+                {!this.state.isSection ?
+                    <div className={'question'}>
+                        <div className={'question-title'}>纲要</div>
+                        <TextField inputProps={{maxLength: this.state.descriptionLengthLimit}}
+                                   id="description-required"
+                                   label={"纲要(最大长度=" + this.state.descriptionLengthLimit + ")"}
+                                   value={this.state.form.description}
+                                   multiline
+                                   onChange={(event) => {
+                                       let form = this.state.form;
+                                       form.description = event.target.value;
+                                       this.setState({form: form})
+                                   }}/>
+                    </div> : <div/>
+                }
                 <div className={'question'}>
                     <div className={'question-title'}>选择日期</div>
                     <div style={{width: '200px'}}>
@@ -228,6 +261,16 @@ class ArticleForm extends Component {
                     </div>
                 </div>
                 <div className={'question'}>
+                    <div className={'question-url'}>外部链接</div>
+                    <TextField inputProps={{maxLength: 100}} id="url-required"
+                               label={"外部链接(最大长度=" + 100 + ")"} value={this.state.form.url}
+                               onChange={(event) => {
+                                   let form = this.state.form;
+                                   form.url = event.target.value;
+                                   this.setState({form: form})
+                               }}/>
+                </div>
+                <div className={'question'}>
                     <div className={'question-title'}>图片</div>
                     <ImageUploader
                         withIcon={true}
@@ -246,10 +289,9 @@ class ArticleForm extends Component {
                             controls={this.state.editorControls}
                             media={this.state.mediaControl}
                             onChange={(editorState) => {
-                                let content = editorState.toHTML();
-                                if (content !== this.state.form.content) {
+                                if (editorState.toHTML() !== this.state.form.content.toHTML()) {
                                     let form = this.state.form;
-                                    form.content = content;
+                                    form.content = editorState;
                                     this.setState({form: form})
                                 }
                             }}
@@ -257,9 +299,6 @@ class ArticleForm extends Component {
                         />
                     </div>
                 </div>
-                <Button onClick={(event) => this.publish()} variant="outlined" color="inherit">
-                    <div style={{paddingLeft: '7.5px'}}>上传文章</div>
-                </Button>
             </div>
         );
     }
@@ -273,7 +312,9 @@ const styles = theme => ({
 });
 
 ArticleForm.propTypes = {
-    sections: PropTypes.array.isRequired
+    sections: PropTypes.array,
+    isSection: PropTypes.bool,
+    article: PropTypes.object
 };
 
 export default withStyles(styles)(ArticleForm);

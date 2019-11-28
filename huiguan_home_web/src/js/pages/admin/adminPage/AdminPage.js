@@ -70,7 +70,7 @@ class AdminPage extends Component {
                     {this.state.isLoggedIn ? this.renderOptions() : this.renderLogin()}
                 </Route>
                 <Add sections={this.state.sections}/>
-                <Edit/>
+                <Edit sections={this.state.sections}/>
             </div>
         );
     }
