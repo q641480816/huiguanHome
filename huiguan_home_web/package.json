@@ -13,6 +13,7 @@
     "material-ui-flat-pagination": "^4.0.0",
     "prop-types": "latest",
     "react": "^16.11.0",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.11.0",
     "react-flip-move": "^3.0.4",
     "react-images-upload": "^1.2.7",

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Paper, withStyles, Button, Menu, MenuItem, Divider} from '@material-ui/core';
 import {Apps} from '@material-ui/icons'
 import {Link, withRouter} from "react-router-dom";
+// import {isBrowser, isMobile} from "react-device-detect";
 
 import './TopNavigator.css';
 import logo from '../../../recources/img/sgckhk_logo.jpg';
@@ -75,7 +76,6 @@ class TopNavigator extends Component {
     };
 
     renderSubMenu = (i) => {
-
         if (i.sub.length > 0) {
             return (
                 <div className={this.styles.subMenu} style={{
@@ -130,19 +130,37 @@ class TopNavigator extends Component {
             });
             return this.state.naviItems.map(i => {
                 let isSelected = i.id === selectedId;
-                return (
-                    <div key={i.id}>
-                        <Link to={'/'}
-                              className={isSelected ? 'text textBold naviTimeWrapperSelected' : "text textBold naviTimeWrapper"}
-                              onMouseEnter={(event) => this.openSubMenu(event, i)} onMouseLeave={() => this.setState({
-                            subMenu: null
-                        })}>
-                            <div className={this.styles.naviItem}>
-                                <div>{i.title}</div>
+                if (i.navigation === '/#') {
+                    return (
+                        <div key={i.id}>
+                            <Link to={'/'}
+                                  className={isSelected ? 'text textBold naviTimeWrapperSelected' : "text textBold naviTimeWrapper"}
+                                  onMouseEnter={(event) => this.openSubMenu(event, i)}
+                                  onMouseLeave={() => this.setState({
+                                      subMenu: null
+                                  })}>
+                                <div className={this.styles.naviItem}>
+                                    <div>{i.title}</div>
+                                </div>
+                            </Link>
+                            {this.renderSubMenu(i)}
+                        </div>)
+                } else {
+                    return (
+                        <div key={i.id}>
+                            <div
+                                className={isSelected ? 'text textBold naviTimeWrapperSelected' : "text textBold naviTimeWrapper"}
+                                onClick={(event) => this.openSubMenu(event, i)}
+                                onMouseEnter={(event) => this.openSubMenu(event, i)} onMouseLeave={() => this.setState({
+                                subMenu: null
+                            })}>
+                                <div className={this.styles.naviItem}>
+                                    <div>{i.title}</div>
+                                </div>
                             </div>
-                        </Link>
-                        {this.renderSubMenu(i)}
-                    </div>)
+                            {this.renderSubMenu(i)}
+                        </div>)
+                }
             })
         } else {
             return this.state.naviItems.map(i => {
