@@ -30,13 +30,13 @@ public class Resource {
     private Timestamp time;
 
     @Column(name="description")
+    @Type(type = "text")
     private String description;
 
     @Column(name="title")
     private String title;
 
-    @Column(name="content")
-    @Type(type = "text")
+    @Column(name="content",columnDefinition ="MEDIUMTEXT")
     private String content;
 
     @Column(name = "url")

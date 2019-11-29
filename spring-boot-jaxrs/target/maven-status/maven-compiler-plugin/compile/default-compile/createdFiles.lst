@@ -19,6 +19,8 @@ com\huiguan\web\exception\ApiExceptionMapper.class
 com\huiguan\web\controllers\EmailController.class
 com\huiguan\web\exception\ApiException.class
 com\huiguan\web\model\Section.class
+com\huiguan\web\dto\GetShortArticleResponse.class
+com\huiguan\web\dto\GetShortPageResponse.class
 com\huiguan\web\dto\CreateNewArticleRequest.class
 com\huiguan\web\repository\ArticleRepository.class
 com\huiguan\web\service\ConvertToEntityService.class
@@ -35,6 +37,7 @@ com\huiguan\web\dto\CreateNewResourceRequest.class
 com\huiguan\web\dto\CreateNewSectionRequest.class
 com\huiguan\web\config\ModelMapperConfig.class
 com\huiguan\web\repository\UserRepository.class
+com\huiguan\web\dto\BaseArticleResponse.class
 com\huiguan\web\dto\BaseResponse.class
 com\huiguan\web\service\ResourceService.class
 com\huiguan\web\repository\SectionRepository.class

@@ -20,12 +20,11 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name="content")
-    @Type(type = "text")
+    @Column(name="content",columnDefinition ="MEDIUMTEXT")
     private String content;
 
     @Column(name="description")
+    @Type(type = "text")
     private String description;
 
     @Column(name="url")

@@ -1,6 +1,7 @@
 package com.huiguan.web.service;
 
 import com.huiguan.web.dto.GetArticleResponse;
+import com.huiguan.web.dto.GetShortArticleResponse;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Article;
 import com.huiguan.web.model.Section;
@@ -117,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
-        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "id");
+        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "creationTime");
 
         Optional<Section> articleSection = sectionService.findById(sectionId);
         if (!articleSection.isPresent()) {
@@ -138,10 +139,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Set<GetArticleResponse> findLatestArticles() {
+    public Set<GetArticleResponse> findLatestArticles(int start, int end) {
         logger.info("Retrieving latest 5 articles from section 4 to section 12");
         PageRequest req = new PageRequest(0, 5, Sort.Direction.DESC, "creationTime");
-        Page<Article> articles=articleRepository.findLatestArticles(req);
+        Page<Article> articles=articleRepository.findLatestArticles(start,end,req);
         List<Article> articleList = articles.getContent();
         Set<GetArticleResponse> articleDtoList = new HashSet<>();
         for (Article article : articleList) {
@@ -149,6 +150,28 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return articleDtoList;
+    }
+
+
+
+    @Override
+    public Set<GetShortArticleResponse> findLatestShortArticles(int start, int end) {
+        Set<GetArticleResponse> articles = findLatestArticles(start, end);
+        Set<GetShortArticleResponse> res = new HashSet<>();
+        for (GetArticleResponse article: articles){
+            res.add(convertToEntityService.convertToShortArticleDto(article));
+        }
+        return res;
+    }
+
+    @Override
+    public Set<GetShortArticleResponse> findShortArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
+        Set<GetArticleResponse> articles = findArticlePageSortBySectionAndId(pageNum,pageSize,sectionId);
+        Set<GetShortArticleResponse> res = new HashSet<>();
+        for (GetArticleResponse article: articles){
+            res.add(convertToEntityService.convertToShortArticleDto(article));
+        }
+        return res;
     }
 
 }

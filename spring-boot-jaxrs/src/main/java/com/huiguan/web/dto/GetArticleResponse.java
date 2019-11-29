@@ -8,16 +8,8 @@ import java.util.Set;
 
 @Setter
 @Getter
-public class GetArticleResponse {
-    int id;
+public class GetArticleResponse extends BaseArticleResponse{
     String content;
-    String title;
-    String time;
-    String creation_time;
-    String description;
     Set<GetResourceResponse> resources;
-    String sectionTitle;
-    String url;
-
     public GetArticleResponse(){}
 }

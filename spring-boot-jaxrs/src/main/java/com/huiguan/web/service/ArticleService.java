@@ -1,6 +1,7 @@
 package com.huiguan.web.service;
 
 import com.huiguan.web.dto.GetArticleResponse;
+import com.huiguan.web.dto.GetShortArticleResponse;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Article;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +22,11 @@ public interface ArticleService {
 
     Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId);
 
+    Set<GetShortArticleResponse> findShortArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId);
+
     int countBySection(int sectionId);
 
-    Set<GetArticleResponse> findLatestArticles();
+    Set<GetArticleResponse> findLatestArticles(int start, int end);
+
+    Set<GetShortArticleResponse> findLatestShortArticles(int start,int end);
 }

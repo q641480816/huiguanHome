@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -26,7 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -73,6 +71,27 @@ public class HomeController extends Application {
         response.setHttpStatus(200);
         return response;
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/short/page/{sectionId}/{pageNum}/{pageSize}")
+    @ApiOperation("Get a page")
+    @Transactional
+    public GetShortPageResponse getShortArticleByPage(
+            @PathParam("sectionId") int sectionId,
+            @PathParam("pageNum") int pageNum,
+            @PathParam("pageSize") int pageSize) throws ApiException {
+        logger.info("Retrieving page info");
+        GetShortPageResponse response = new GetShortPageResponse();
+        Set<GetShortArticleResponse> articles = articleService.findShortArticlePageSortBySectionAndId(pageNum, pageSize, sectionId);
+        response.setSectionId(sectionId);
+        response.setArticleList(articles);
+        response.setArticleSize(articleService.countBySection(sectionId));
+        response.setSuccess(true);
+        response.setHttpStatus(200);
+        return response;
+    }
+
 
 
     @POST
@@ -198,8 +217,54 @@ public class HomeController extends Application {
     @ApiOperation("Get latest articles")
     public GetPageResponse getLatestArticles() throws ApiException {
         logger.info("Retrieving latest 5 articles");
-        Set<GetArticleResponse> articles = articleService.findLatestArticles();
+        Set<GetArticleResponse> articles = articleService.findLatestArticles(4,12);
         GetPageResponse res = new GetPageResponse();
+        res.setSuccess(true);
+        res.setHttpStatus(200);
+        res.setArticleList(articles);
+        return res;
+    }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/latest/{start}/{end}")
+    @Transactional
+    @ApiOperation("Get latest articles")
+    public GetPageResponse getLatestArticlesByRange(@PathParam("start") int start,  @PathParam("end") int end) throws ApiException {
+        logger.info("Retrieving latest 5 articles");
+        Set<GetArticleResponse> articles = articleService.findLatestArticles(start, end);
+        GetPageResponse res = new GetPageResponse();
+        res.setSuccess(true);
+        res.setHttpStatus(200);
+        res.setArticleList(articles);
+        return res;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/short/latest/{start}/{end}")
+    @Transactional
+    @ApiOperation("Get latest articles")
+    public GetShortPageResponse getLatestShortArticles(@PathParam("start") int start,  @PathParam("end") int end) throws ApiException {
+        logger.info("Retrieving latest 5 articles");
+        Set<GetShortArticleResponse> articles = articleService.findLatestShortArticles(start,end);
+        GetShortPageResponse res = new GetShortPageResponse();
+        res.setSuccess(true);
+        res.setHttpStatus(200);
+        res.setArticleList(articles);
+        return res;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/short/latest")
+    @Transactional
+    @ApiOperation("Get latest articles")
+    public GetShortPageResponse getLatestShortArticlesByRange() throws ApiException {
+        logger.info("Retrieving latest 5 articles");
+        Set<GetShortArticleResponse> articles = articleService.findLatestShortArticles(4,12);
+        GetShortPageResponse res = new GetShortPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);
         res.setArticleList(articles);

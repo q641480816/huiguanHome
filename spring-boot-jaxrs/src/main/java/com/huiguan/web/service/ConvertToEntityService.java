@@ -52,11 +52,31 @@ public class ConvertToEntityService {
         return res;
     }
 
+    public GetShortArticleResponse convertToShortArticleDto(GetArticleResponse article){
+        if (article==null) return null;
+        GetShortArticleResponse res = new GetShortArticleResponse();
+        res.setCreationTime(article.getCreationTime());
+        res.setDescription(article.getDescription());
+        Set<GetResourceResponse> resources = article.getResources();
+        if (resources.size()>0){
+            res.setResource(resources.iterator().next());
+        }
+
+        if (article.getSectionId()>=0){
+            res.setSectionId(article.getSectionId());
+        }
+        res.setTime(article.getTime());
+        res.setUrl(article.getUrl());
+        res.setTitle(article.getTitle());
+        res.setId(article.getId());
+        return res;
+    }
+
     public GetArticleResponse convertToArticleDto(Article article){
         if (article==null) return null;
         GetArticleResponse res = new GetArticleResponse();
         res.setContent(article.getContent());
-        res.setCreation_time(toDate(article.getCreationTime()));
+        res.setCreationTime(toDate(article.getCreationTime()));
         res.setDescription(article.getDescription());
 
         if (article.getResources()!=null){
@@ -68,7 +88,7 @@ public class ConvertToEntityService {
         }
 
         if (article.getSection()!=null){
-            res.setSectionTitle(article.getSection().getTitle());
+            res.setSectionId(article.getSection().getId());
         }
         res.setTime(toDate(article.getTime()));
         res.setUrl(article.getUrl());
