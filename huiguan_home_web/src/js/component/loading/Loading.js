@@ -28,7 +28,11 @@ class Loading extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-
+        if (this.state.loadingMessage !== this.props.loadingMessage){
+            this.setState({
+                loadingMessage: this.props.loadingMessage
+            })
+        }
     }
 
     toggleLoading = (show) => {
@@ -95,7 +99,8 @@ const styles = theme => ({
 Loading.propTypes = {
     isMax: PropTypes.bool.isRequired,
     loadingMessage: PropTypes.string,
-    initialState: PropTypes.bool
+    initialState: PropTypes.bool,
+    show: PropTypes.bool
 };
 
 export default withStyles(styles)(Loading);

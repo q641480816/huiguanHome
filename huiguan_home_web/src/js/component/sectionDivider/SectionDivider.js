@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import {withStyles} from "@material-ui/core";
 
 import './SectionDivider.css';
+import utils from "../../common/util";
 
 class SectionDivider extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class SectionDivider extends Component {
             short: '',
             showDivider: true,
             fullLength: false,
-            color: 'grey'
+            color: 'grey',
+            textColor: utils.colorScheme.text
         };
 
         this.styles = this.props.classes;
@@ -21,18 +23,15 @@ class SectionDivider extends Component {
         this.renderDivider = this.renderDivider.bind(this);
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.setState({
             title: this.props.title,
             short: this.props.short ? this.props.short : '',
             showDivider: this.props.showDivider,
             fullLength: this.props.fullLength ? this.props.fullLength : this.state.fullLength,
-            color: this.props.color ? this.props.color : this.state.color
+            color: this.props.color ? this.props.color : this.state.color,
+            textColor: this.props.textColor ? this.props.textColor : this.state.textColor
         })
-    }
-
-    componentDidMount() {
-
     }
 
     renderDivider = () => {
@@ -57,7 +56,7 @@ class SectionDivider extends Component {
                 alignItems: 'center'
             }}>
                 {this.renderDivider()}
-                <div style={{marginTop: '30px'}} className={this.styles.title}>
+                <div style={{marginTop: '30px', color: this.state.textColor}} className={this.styles.title}>
                     {this.state.title}
                 </div>
                 <div style={{marginTop: '5px'}} className={this.styles.short}>
@@ -72,7 +71,6 @@ class SectionDivider extends Component {
 const styles = theme => ({
     title: {
         textTransform: 'uppercase',
-        color: '#585555',
         fontWeight: 700,
         [theme.breakpoints.down('xs')]: {
             fontSize: '27.5px',
@@ -99,7 +97,8 @@ SectionDivider.propTypes = {
     short: PropTypes.string,
     showDivider: PropTypes.bool.isRequired,
     fullLength: PropTypes.bool,
-    color: PropTypes.string
+    color: PropTypes.string,
+    textColor: PropTypes.string
 };
 
 export default withStyles(styles)(SectionDivider);

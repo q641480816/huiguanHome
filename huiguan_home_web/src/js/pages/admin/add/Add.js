@@ -18,6 +18,7 @@ import './Add.css';
 import utils from "../../../common/util";
 import ArticleForm from "../../../component/articleForm/ArticleForm";
 import Loading from "../../../component/loading/Loading";
+import BraftEditor from "braft-editor";
 
 class Add extends Component {
     constructor(props) {
@@ -64,7 +65,7 @@ class Add extends Component {
         let form = this.form.current.getForm();
         let pass = true;
 
-        if (form.section === '' || form.title === '') {
+        if (form.title === '') {
             pass = false;
             this.setState({
                 dialog: true,
@@ -76,9 +77,9 @@ class Add extends Component {
             this.toggleLoading(true);
             let d = (new Date(form.time));
             form.time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-
-            let section = form.section;
-            form.section = {id: section};
+            form.section = form.sectionId;
+            delete form.sectionId;
+            console.log(form);
 
             fetch(url, {
                 method: 'post',
@@ -118,7 +119,15 @@ class Add extends Component {
                             </Typography>
                         </Toolbar>
                     </AppBar>
-                    <ArticleForm sections={this.state.sections} ref={this.form}/>
+                    <ArticleForm sections={this.state.sections} ref={this.form} article={{
+                        sectionId: {id: 1, title: '会馆简介'},
+                        title: '',
+                        description: '',
+                        content: BraftEditor.createEditorState('<p/>'),
+                        time: (new Date()),
+                        url: '',
+                        resources: []
+                    }}/>
                     <div style={{
                         width: '100%', display: 'flex', flexDirection: 'column',
                         alignItems: 'center',

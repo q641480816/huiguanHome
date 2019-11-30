@@ -11,6 +11,8 @@ import {withStyles} from "@material-ui/core";
 import utils from "../../common/util";
 import Section from "../Section/Section";
 import Article from "../article/Article";
+import ContactUs from "../../pages/contactUs/ContactUs";
+import {brown} from "@material-ui/core/colors";
 
 class ContentBase extends Component {
     constructor(props) {
@@ -46,6 +48,23 @@ class ContentBase extends Component {
                 return (
                     <Route key={p.id} path={'/b/topics' + p.navigation}>
                         <Section section={p}/>
+                    </Route>
+                )
+            } else if(p.isSpecial) {
+                let dom = null;
+                switch (p.id) {
+                    case 16:
+                        dom = (<ContactUs/>);
+                        break;
+                    case 17:
+                        dom = (<div/>);
+                        break;
+                    default:
+                        dom = (<div/>);
+                }
+                return (
+                    <Route key={p.id} path={'/b/topics' + p.navigation}>
+                        {dom}
                     </Route>
                 )
             } else {

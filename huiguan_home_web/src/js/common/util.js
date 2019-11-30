@@ -42,15 +42,42 @@ const utils = {
         tel: '(65)62235913 & 62231952 ',
         fax: '(65)62278730',
         email: 'chinkang@singnet.com.sg',
-        address: '29 Bukit Pasoh Road #04-01 Singapore 089843'
+        address: {
+            title: '29 Bukit Pasoh Road #04-01 Singapore 089843',
+            url: 'https://www.google.com/maps/place/Chin+Kang+Huay+Kuan/@1.279336,103.8384165,17z/data=!3m1!4b1!4m5!3m4!1s0x31da196d8d403705:0x959ce1707e4a0a76!8m2!3d1.279336!4d103.8406052'
+        }
     },
     naviItems: [
         {id: 1, title: '主页', navigation: '/#', sub: [], isRenderList: true},
         {
             id: 2, title: '会馆概况', navigation: '/about', sub: [
-                {id: 1, title: '会馆简介', navigation: '/introduction', sub: [], isRenderList: false, articleId: 1, isSpecial: false},
-                {id: 2, title: '会馆章程', navigation: '/rules', sub: [], isRenderList: false, articleId: 2, isSpecial: false},
-                {id: 3, title: '组织结构', navigation: '/structure', sub: [], isRenderList: false, articleId: 3, isSpecial: false}
+                {
+                    id: 1,
+                    title: '会馆简介',
+                    navigation: '/introduction',
+                    sub: [],
+                    isRenderList: false,
+                    articleId: 1,
+                    isSpecial: false
+                },
+                {
+                    id: 2,
+                    title: '会馆章程',
+                    navigation: '/rules',
+                    sub: [],
+                    isRenderList: false,
+                    articleId: 2,
+                    isSpecial: false
+                },
+                {
+                    id: 3,
+                    title: '组织结构',
+                    navigation: '/structure',
+                    sub: [],
+                    isRenderList: false,
+                    articleId: 3,
+                    isSpecial: false
+                }
             ]
         },
         {
@@ -84,6 +111,15 @@ const utils = {
             ]
         }
     ],
+    getSection: (id) => {
+        let ss = {};
+        utils.naviItems.forEach(p => {
+            p.sub.forEach(s => {
+                ss[s.id] = s;
+            })
+        });
+        return ss[id];
+    },
     events: [
         {name: 'Event 1', id: 3, location: 'Lor Rong Ah Soo 20C'},
         {
@@ -110,23 +146,6 @@ const utils = {
             name: 'Privé Clarke Quay',
             address: 'Blk 3C River Valley Road, Clarke Quay, #01-09A, Singapore 179019',
             direction: 'https://www.google.com/maps/place/Priv%C3%A9+Clarke+Quay/@1.290359,103.8434303,17z/data=!3m1!4b1!4m5!3m4!1s0x31da19a03d3d2cb1:0x934e803b56241cf4!8m2!3d1.290359!4d103.845619'
-        }
-    ],
-    homeCarousel: [
-        {
-            id: 1,
-            src: p1,
-            legend: 'Legend 1'
-        },
-        {
-            id: 2,
-            src: p2,
-            legend: 'Legend 2'
-        },
-        {
-            id: 3,
-            src: p3,
-            legend: 'Legend 3'
         }
     ],
     gallery: [

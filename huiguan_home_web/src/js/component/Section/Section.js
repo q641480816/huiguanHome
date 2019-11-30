@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {Link, Route, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Button, withStyles} from "@material-ui/core";
 import parse from 'html-react-parser';
 import Pagination from "material-ui-flat-pagination";
@@ -20,15 +20,19 @@ class Section extends Component {
             articles: [],
             offset: 0,
             count: 0,
-            limit: 4
+            limit: 4,
+            isLoading: false
         };
 
         this.styles = this.props.classes;
 
         this.getSectionContent = this.getSectionContent.bind(this);
         this.listenToScroll = this.listenToScroll.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
         this.refreshArticle = this.refreshArticle.bind(this);
         this.renderArticleList = this.renderArticleList.bind(this);
+
+        this.loading = React.createRef();
     }
 
     componentDidMount() {
@@ -53,6 +57,8 @@ class Section extends Component {
     };
 
     getSectionContent = (id, offset) => {
+        this.toggleLoading(true);
+
         let url = utils.protocol + utils.baseUrl + '/page/' + id + "/" + Math.floor(offset / this.state.limit) + "/" + this.state.limit;
         fetch(url, {
             method: 'get',
@@ -67,12 +73,20 @@ class Section extends Component {
                     count: data.articleSize
                 });
                 window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                this.toggleLoading(false);
             })
             .catch(e => console.log(e));
     };
 
     refreshArticle = (offset) => {
         this.getSectionContent(this.state.section.id, offset);
+    };
+
+    toggleLoading = (isLoading) => {
+        this.setState({
+            isLoading: isLoading
+        });
+        this.loading.current.toggleLoading(isLoading);
     };
 
     renderArticleList = () => {
@@ -125,8 +139,17 @@ class Section extends Component {
             );
         } else {
             return (
-                <div style={{position: 'relative', width: '100%', height: '300px'}}>
-                    <Loading isMax={false} initialState={true} loadingMessage={'文章列表加载中'}/>
+                <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '300px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+                    {!this.state.isLoading ?
+                        <div style={{fontSize: '27px', fontWeight: 'bold', color: utils.colorScheme.text}}>暂无文章</div> :
+                        <div/>}
                 </div>
             )
         }
@@ -149,6 +172,7 @@ class Section extends Component {
                         </div>
                     }
                 </div>
+                <Loading isMax={false} initialState={false} loadingMessage={'文章列表加载中'} ref={this.loading}/>
             </div>
         );
     }
