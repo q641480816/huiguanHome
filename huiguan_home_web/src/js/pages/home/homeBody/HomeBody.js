@@ -9,6 +9,9 @@ import utils from "../../../common/util";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './HomeBody.css';
 import Gallery from "./gallery/Gallery";
+import HomeCarousel from "./homeCarousel/HomeCarousel";
+import HomeFeed from "./homeFeed/HomeFeed";
+import HistoryCarousel from "./historyCarousel/HistoryCarousel";
 
 class HomeBody extends Component {
     constructor(props) {
@@ -18,49 +21,34 @@ class HomeBody extends Component {
         };
 
         this.styles = this.props.classes;
-
-        this.getHomeCarousel = this.getHomeCarousel.bind(this);
-        this.renderHomeCarousel = this.renderHomeCarousel.bind(this);
     }
 
     componentDidMount() {
-        let homeCarousel = this.getHomeCarousel();
 
-        this.setState({
-            homeCarousel: homeCarousel
-        })
     }
-
-    getHomeCarousel = () => {
-        return utils.homeCarousel;
-    };
-
-    renderHomeCarousel = () => {
-        return this.state.homeCarousel.map((i) => {
-            return (
-                <div key={i.id}>
-                    <img src={i.src} alt={"p1"}/>
-                    <p className={this.styles.homeCarouselLegend}>{i.legend}</p>
-                </div>
-            )
-        })
-    };
 
     render() {
         return (
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <Carousel infiniteLoop={true} autoPlay={true} showThumbs={false}>
-                    {this.renderHomeCarousel()}
-                </Carousel>
                 <div>
-                    <SectionDivider title={"News/Events"} showDivider={false}
-                                    short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
+                    <HomeCarousel/>
                 </div>
                 <div>
-                    <SectionDivider title={"Announcements"} showDivider={true}
-                                    short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
+                    {/*<SectionDivider title={""} showDivider={false}*/}
+                    {/*                textColor={utils.colorScheme.text}*/}
+                    {/*                short={''}/>*/}
+                    <div style={{marginTop: '30px'}}/>
+                    <HomeFeed/>
                 </div>
-                <Gallery/>
+                <div>
+                    <SectionDivider title={"情缘晋江"} showDivider={true} textColor={utils.colorScheme.secondary}
+                                    color={utils.colorScheme.secondary} short={''}/>
+                </div>
+                {/*<Gallery/>*/}
+                <div>
+                    <div style={{marginTop: '30px'}}/>
+                    <HistoryCarousel/>
+                </div>
             </div>
         );
     }

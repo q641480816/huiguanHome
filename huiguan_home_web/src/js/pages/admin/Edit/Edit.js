@@ -35,7 +35,6 @@ class Edit extends Component {
             searchText: '',
             isLoading: false,
             sections: [],
-            fullSectionsMap: {},
             fullSections: [],
             section: {id: 1, title: '会馆简介', article: null},
             dialog: false,
@@ -49,7 +48,6 @@ class Edit extends Component {
         this.styles = this.props.classes;
 
         this.prepareSection = this.prepareSection.bind(this);
-        this.prepareFullSection = this.prepareFullSection.bind(this);
         this.update = this.update.bind(this);
         this.getArticle = this.getArticle.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
@@ -63,9 +61,16 @@ class Edit extends Component {
     componentDidMount() {
         this.setState({
             sections: this.prepareSection(),
-            fullSectionsMap: this.prepareFullSection(),
-            fullSections: this.props.sections
+            fullSections: this.props.section ? this.props.section : this.state.section
         })
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.sections !== this.props.sections) {
+            this.setState({
+                fullSections: this.props.sections
+            })
+        }
     }
 
     update = () => {
@@ -86,8 +91,17 @@ class Edit extends Component {
             let keys = Object.keys(form);
             for (let i = 0; i < keys.length; i++) {
                 if (form[keys[i]] !== this.state.article[keys[i]]) {
-                    body[keys[i]] = form[keys[i]];
+                    if(keys[i] === 'sectionId'){
+                        body['section'] = form[keys[i]]
+                    }else {
+                        body[keys[i]] = form[keys[i]];
+                    }
                 }
+            }
+
+            //add resources
+            for(let i = 0; i < form.resources.length; i++){
+                delete form.resources[i].articleId;
             }
             body.resources = form.resources;
 
@@ -115,7 +129,6 @@ class Edit extends Component {
                         dialogMsg: '文章更新失败，请重新选择有效ID'
                     })
                 });
-
         }
     };
 
@@ -133,7 +146,6 @@ class Edit extends Component {
                 .then(response => response.json())
                 .then(data => {
                     this.toggleLoading('', false);
-                    data.section = this.state.fullSectionsMap[data.sectionTitle].id;
                     this.setState({article: data, isEditing: true});
                     window.scroll({top: 0, left: 0, behavior: 'smooth'});
                 })
@@ -154,16 +166,6 @@ class Edit extends Component {
                 if (!s.isRenderList && !s.isSpecial) {
                     sections.push({id: s.articleId, article: null, title: s.title});
                 }
-            })
-        });
-        return sections;
-    };
-
-    prepareFullSection = () => {
-        let sections = {};
-        utils.naviItems.forEach(i => {
-            i.sub.forEach(s => {
-                sections[s.title] = s;
             })
         });
         return sections;
@@ -279,7 +281,7 @@ class Edit extends Component {
                         </div>
                     </div> :
                     <div/>}
-                <Loading loadingMessage={"文章上传中"} isMax={true} initialState={false} ref={this.loading}/>
+                <Loading loadingMessage={this.state.loadingMessage} isMax={true} initialState={false} ref={this.loading}/>
                 <Dialog onClose={() => console.log("close")} aria-labelledby="simple-dialog-title"
                         open={this.state.dialog}>
                     <DialogTitle id="simple-dialog-title">错误</DialogTitle>

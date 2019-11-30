@@ -7,7 +7,7 @@ import {
     Select,
     MenuItem,
     TextField,
-    Grid, Button
+    Grid, Paper, Button
 } from "@material-ui/core";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -23,7 +23,7 @@ class ArticleForm extends Component {
         super(props);
         this.state = {
             form: {
-                section: '',
+                sectionId: {id: 1, title: '会馆简介'},
                 title: '',
                 description: '',
                 content: BraftEditor.createEditorState('<p/>'),
@@ -33,7 +33,9 @@ class ArticleForm extends Component {
             },
             sections: [],
             titleLengthLimit: 30,
+            imgTitleLengthLimit: 10,
             descriptionLengthLimit: 150,
+            imgDescriptionLengthLimit: 30,
             isSection: false,
             editorControls: [
                 'font-size', 'line-height', 'letter-spacing', 'separator',
@@ -76,8 +78,8 @@ class ArticleForm extends Component {
         this.setState({
             sections: this.props.sections ? this.props.sections : this.state.sections,
             isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
-            form: this.props.article ? this.prepareForm(this.props.article) : {
-                section: '',
+            form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : {
+                sectionId: {id: 1, title: '会馆简介'},
                 title: '',
                 description: '',
                 content: BraftEditor.createEditorState('<p/>'),
@@ -89,12 +91,12 @@ class ArticleForm extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.sections !== this.props.sections) {
+        if (prevProps.sections.length !== this.props.sections.length) {
             this.setState({
                 sections: this.props.sections,
                 isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
-                form: this.props.article ? this.prepareForm(this.props.article) : {
-                    section: '',
+                form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : {
+                    sectionId: {id: 1, title: '会馆简介'},
                     title: '',
                     description: '',
                     content: BraftEditor.createEditorState('<p/>'),
@@ -106,9 +108,19 @@ class ArticleForm extends Component {
         }
     }
 
-    prepareForm = (article) => {
+    prepareForm = (sections, article) => {
+        let section = {};
+        for (let i = 0; i < sections.length; i++) {
+            if ((sections[i].id + "") === (article.sectionId + "")) {
+                section = {
+                    id: sections[i].id,
+                    title: sections[i].title
+                }
+            }
+        }
+
         return {
-            section: article.section,
+            sectionId: section,
             title: article.title,
             description: article.description,
             content: BraftEditor.createEditorState(article.content),
@@ -121,19 +133,16 @@ class ArticleForm extends Component {
     getForm = () => {
         let form = Object.assign({}, this.state.form);
         form.content = form.content.toHTML();
+        form.sectionId = {id: form.sectionId.id};
         return form;
     };
 
     onImageSelect = (pictureFiles, pictureDataURLs) => {
         utils.common.fileToBase64(pictureFiles[pictureFiles.length - 1])
             .then((res) => {
-                //onsole.log(res);
                 let form = this.state.form;
                 form.resources.push({
-                    //url: res,
                     content: res,
-                    // url: 'https://static.sportzbusiness.com/uploads/2018/10/tokyo-2020-1.jpg',
-                    // content: 'https://static.sportzbusiness.com/uploads/2018/10/tokyo-2020-1.jpg',
                     title: 'temp title',
                     description: 'temp description'
                 });
@@ -165,16 +174,16 @@ class ArticleForm extends Component {
                 <Select
                     labelId="section-select-label"
                     id="section-select"
-                    value={this.state.form.section}
+                    value={this.state.form.sectionId}
                     style={{width: '200px'}}
                     onChange={(event) => {
                         let form = this.state.form;
-                        form.section = event.target.value;
+                        form.sectionId = event.target.value;
                         this.setState({form: form})
                     }}
                 >
                     {this.state.sections.map(s => {
-                        return (<MenuItem key={s.id} value={s.id}>{s.title}</MenuItem>)
+                        return (<MenuItem key={s.id} value={s}>{s.title}</MenuItem>)
                     })}
                 </Select>
             </FormControl>
@@ -184,13 +193,80 @@ class ArticleForm extends Component {
     renderImagePreview = () => {
         let index = 0;
         return (
-            <div style={{display: "flex", flexDirection: "row"}}>
-                {this.state.form.resources.map(i => {
-                    index++;
-                    return (
-                        <img key={index} src={i.url ? i.url : i.content} alt={"p1"} style={{height: '100px'}}/>
-                    )
-                })}
+            <div style={{
+                display: "flex",
+                flexDirection: "row",
+                width: '100%',
+                justifyContent: 'center',
+                marginTop: '20px'
+            }}>
+                <div style={{display: "flex", flexDirection: "row", width: '95%',}}>
+                    {this.state.form.resources.map(i => {
+                        index++;
+                        return (
+                            <div style={{marginRight: '10px'}} key={index}>
+                                <Paper style={{paddingBottom: '15px'}}>
+                                    <img style={{height: '255px'}} src={i.url ? i.url : i.content}
+                                         alt={"p1"}/>
+                                    <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
+                                        <div className={'question-title'}>标题</div>
+                                        <TextField inputProps={{maxLength: this.state.imgTitleLengthLimit}} required
+                                                   style={{width: '90%'}}
+                                                   label={"标题(最大长度=" + this.state.imgTitleLengthLimit + ")"}
+                                                   value={i.title}
+                                                   onChange={(event) => {
+                                                       let form = this.state.form;
+                                                       for (let j = 0; j < form.resources.length; j++) {
+                                                           let img = form.resources[j];
+                                                           if (img.id === i.id) {
+                                                               img.title = event.target.value;
+                                                               form.resources[j] = img;
+                                                               break;
+                                                           }
+                                                       }
+                                                       this.setState({form: form})
+                                                   }}/>
+                                    </div>
+                                    <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
+                                        <div className={'question-description'}>简介</div>
+                                        <TextField inputProps={{maxLength: this.state.imgDescriptionLengthLimit}}
+                                                   required
+                                                   style={{width: '90%'}}
+                                                   label={"标题(最大长度=" + this.state.imgDescriptionLengthLimit + ")"}
+                                                   value={i.description}
+                                                   multiline
+                                                   onChange={(event) => {
+                                                       let form = this.state.form;
+                                                       for (let j = 0; j < form.resources.length; j++) {
+                                                           let img = form.resources[j];
+                                                           if (img.id === i.id) {
+                                                               img.description = event.target.value;
+                                                               form.resources[j] = img;
+                                                               break;
+                                                           }
+                                                       }
+                                                       this.setState({form: form})
+                                                   }}/>
+                                    </div>
+                                    <Button variant="outlined" style={{marginLeft: '10px', marginTop: '10px'}}
+                                            onClick={(event) => {
+                                                let newResources = [];
+                                                this.state.form.resources.forEach((l) => {
+                                                    if (l.id !== i.id) {
+                                                        newResources.push(l);
+                                                    }
+                                                });
+                                                let form = this.state.form;
+                                                form.resources = newResources;
+                                                this.setState({form: form});
+                                            }} color="primary">
+                                        移除图片
+                                    </Button>
+                                </Paper>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         )
     };
@@ -243,10 +319,7 @@ class ArticleForm extends Component {
                                     label="Date picker inline"
                                     value={this.state.form.time}
                                     onChange={(date) => {
-                                        // let d = (new Date(date));
-                                        // console.log(d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear());
                                         let form = this.state.form;
-                                        // form.time = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                                         form.time = date;
                                         this.setState({
                                             form: form

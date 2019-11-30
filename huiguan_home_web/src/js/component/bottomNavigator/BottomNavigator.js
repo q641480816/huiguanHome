@@ -91,46 +91,46 @@ class BottomNavigator extends Component {
 
                 <div className={this.styles.bottomContainer}>
                     <div className={this.styles.columnContainer}>
-                        <h2 className={"bottomTitle text textBold"}>EVENTS</h2>
-                        {this.renderEvent()}
+                        <h2 className={"bottomTitle text textBold"}>地址</h2>
+                        <div className={"text textBold"}>{this.state.contact.name}</div>
+                        <div className={this.styles.contactItemContainer}>
+                            <div className={"iconBox"}>
+                                <Button className={"iconButton"}
+                                        onClick={() => this.openLinkInNewTab(this.state.contact.address.url)}><Room
+                                    style={{fontSize: 40}}/></Button>
+                            </div>
+                            <div className={"text"}
+                                 style={{marginLeft: '10px'}}>{this.state.contact.address.title}</div>
+                        </div>
                     </div>
                     <Divider className={this.styles.divider}/>
 
                     <div className={this.styles.columnContainer}>
-                        <h2 className={"bottomTitle text textBold"}>PROPERTIES</h2>
-                        {this.renderProperties()}
+                        <h2 className={"bottomTitle text textBold"}>联系方式</h2>
+                        <div className={"text textBold"}>{this.state.contact.name}</div>
+                        <div className={this.styles.contactItemContainer}>
+                            <div className={"iconBox"}>
+                                <Button className={"iconButton"}><ContactPhone style={{fontSize: 40}}/></Button>
+                            </div>
+                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                                <div className={"text"}
+                                     style={{marginLeft: '10px'}}>Tel: {this.state.contact.tel}</div>
+                                <div className={"text"}
+                                     style={{marginLeft: '10px'}}>Fex: {this.state.contact.fax}</div>
+                            </div>
+                        </div>
                     </div>
                     <Divider className={this.styles.divider}/>
 
                     <div className={[this.styles.columnContainer]}>
-                        <h2 className={"bottomTitle text textBold"}>STAY IN TOUCH</h2>
-                        <div style={{margin: '10px 0 10px 0'}}>
-                            <div className={"text textBold"}>{this.state.contact.name}</div>
-                            <div className={this.styles.contactItemContainer}>
-                                <div className={"iconBox"}>
-                                    <Button className={"iconButton"}><Room style={{fontSize: 40}}/></Button>
-                                </div>
-                                <div className={"text"}
-                                     style={{marginLeft: '10px'}}>{this.state.contact.address}</div>
+                        <h2 className={"bottomTitle text textBold"}>电子邮件</h2>
+                        <div className={"text textBold"}>{this.state.contact.name}</div>
+                        <div className={this.styles.contactItemContainer}>
+                            <div className={"iconBox"}>
+                                <Button className={"iconButton"}><Email style={{fontSize: 40}}/></Button>
                             </div>
-                            <div className={this.styles.contactItemContainer}>
-                                <div className={"iconBox"}>
-                                    <Button className={"iconButton"}><ContactPhone style={{fontSize: 40}}/></Button>
-                                </div>
-                                <div style={{display: 'flex', flexDirection: 'column'}}>
-                                    <div className={"text"}
-                                         style={{marginLeft: '10px'}}>Tel: {this.state.contact.tel}</div>
-                                    <div className={"text"}
-                                         style={{marginLeft: '10px'}}>Fex: {this.state.contact.fax}</div>
-                                </div>
-                            </div>
-                            <div className={this.styles.contactItemContainer}>
-                                <div className={"iconBox"}>
-                                    <Button className={"iconButton"}><Email style={{fontSize: 40}}/></Button>
-                                </div>
-                                <div className={"text"}
-                                     style={{marginLeft: '10px'}}>{this.state.contact.email}</div>
-                            </div>
+                            <div className={"text"}
+                                 style={{marginLeft: '10px'}}>{this.state.contact.email}</div>
                         </div>
                     </div>
                 </div>
