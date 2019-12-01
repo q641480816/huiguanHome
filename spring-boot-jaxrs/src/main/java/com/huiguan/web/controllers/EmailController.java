@@ -1,6 +1,7 @@
 package com.huiguan.web.controllers;
 
 import com.huiguan.web.dto.BaseResponse;
+import com.huiguan.web.dto.CreateEmailTemplate;
 import com.huiguan.web.dto.GetResourceResponse;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.service.EmailService;
@@ -23,15 +24,28 @@ public class EmailController extends Application {
     EmailService emailService;
 
 
-    @GET
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("/")
+//    @Transactional
+//    public BaseResponse getResource() throws ApiException {
+//        System.out.println("--------------------");
+//        emailService.start();
+//        BaseResponse response = new BaseResponse(200,true);
+//        return response;
+//    }
+
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/")
     @Transactional
-    public BaseResponse getResource() throws ApiException {
+    public BaseResponse sendEmail(CreateEmailTemplate req) throws ApiException {
         System.out.println("--------------------");
-        emailService.start();
+        emailService.send(req);
         BaseResponse response = new BaseResponse(200,true);
         return response;
     }
+
 }

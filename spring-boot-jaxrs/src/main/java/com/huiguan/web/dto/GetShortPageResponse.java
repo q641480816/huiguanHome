@@ -11,4 +11,10 @@ public class GetShortPageResponse extends BaseResponse{
     int sectionId;
     int articleSize;
     Set<GetShortArticleResponse> articleList;
+
+    public GetShortPageResponse(){}
+
+    public GetShortPageResponse(String errorMessage){
+        super (errorMessage);
+    }
 }

@@ -174,4 +174,16 @@ public class ArticleServiceImpl implements ArticleService {
         return res;
     }
 
+    @Override
+    public  Set<GetShortArticleResponse> findByTitle(String title, int pageNum, int pageSize){
+        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "creationTime");
+        Page<Article> articles = articleRepository.findArticlePageByTitle(title,req);
+        List<Article> articleList = articles.getContent();
+        Set<GetShortArticleResponse> res = new HashSet<>();
+        for (Article article: articleList){
+            res.add(convertToEntityService.convertToShortArticleDto(article));
+        }
+        return res;
+    }
+
 }

@@ -9,6 +9,7 @@ import com.huiguan.web.service.ArticleService;
 import com.huiguan.web.service.ConvertToEntityService;
 import com.huiguan.web.service.ResourceService;
 import com.huiguan.web.service.SectionService;
+import com.sun.tools.rngom.parse.host.Base;
 import io.swagger.annotations.ApiResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -256,14 +257,18 @@ public class HomeController extends Application {
         return res;
     }
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/short/latest")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/search")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetShortPageResponse getLatestShortArticlesByRange() throws ApiException {
+    public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request) throws ApiException {
         logger.info("Retrieving latest 5 articles");
-        Set<GetShortArticleResponse> articles = articleService.findLatestShortArticles(4,12);
+        if (request.getKeyword()==null || request.getKeyword().equals("")){
+            return new GetShortPageResponse("Search key word is empty");
+        }
+        Set<GetShortArticleResponse> articles = articleService.findByTitle(request.getKeyword(),0,50);
         GetShortPageResponse res = new GetShortPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);

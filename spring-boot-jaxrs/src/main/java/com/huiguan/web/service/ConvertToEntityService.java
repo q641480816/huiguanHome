@@ -52,6 +52,19 @@ public class ConvertToEntityService {
         return res;
     }
 
+    public GetShortArticleResponse convertToShortArticleDto(Article article) {
+        if (article==null) return null;
+        GetShortArticleResponse res = new GetShortArticleResponse();
+        res.setCreationTime(toDate(article.getCreationTime()));
+        res.setDescription(article.getDescription());
+        res.setDescription(article.getDescription());
+        res.setTime(toDate(article.getTime()));
+        res.setUrl(article.getUrl());
+        res.setTitle(article.getTitle());
+        res.setId(article.getId());
+        return res;
+    }
+
     public GetShortArticleResponse convertToShortArticleDto(GetArticleResponse article){
         if (article==null) return null;
         GetShortArticleResponse res = new GetShortArticleResponse();

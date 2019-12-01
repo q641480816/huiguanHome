@@ -29,4 +29,6 @@ public interface ArticleService {
     Set<GetArticleResponse> findLatestArticles(int start, int end);
 
     Set<GetShortArticleResponse> findLatestShortArticles(int start,int end);
+
+    Set<GetShortArticleResponse> findByTitle(String title, int pageNum, int pageSize);
 }

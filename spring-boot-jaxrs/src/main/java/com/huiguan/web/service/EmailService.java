@@ -1,6 +1,7 @@
 package com.huiguan.web.service;
 
 
+import com.huiguan.web.dto.CreateEmailTemplate;
 import com.sun.mail.smtp.SMTPTransport;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +69,8 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send(CreateEmailTemplate req) {
     }
 }
