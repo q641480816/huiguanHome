@@ -114,9 +114,14 @@ const styles = theme => ({
         }
     },
     parentTitle: {
-        fontSize: '35px',
         color: utils.colorScheme.secondary,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '17.5px',
+        },
+        [theme.breakpoints.up('sm')]: {
+            fontSize: '35px',
+        }
     },
     articleTitle: {
         fontSize: '17px',

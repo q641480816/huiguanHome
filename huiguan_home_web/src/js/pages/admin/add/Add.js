@@ -119,39 +119,44 @@ class Add extends Component {
                             </Typography>
                         </Toolbar>
                     </AppBar>
-                    <ArticleForm sections={this.state.sections} ref={this.form} article={{
-                        sectionId: {id: 1, title: '会馆简介'},
-                        title: '',
-                        description: '',
-                        content: BraftEditor.createEditorState('<p/>'),
-                        time: (new Date()),
-                        url: '',
-                        resources: []
-                    }}/>
-                    <div style={{
-                        width: '100%', display: 'flex', flexDirection: 'column',
-                        alignItems: 'center',
-                        marginBottom: '30px'
-                    }}>
-                        <Button onClick={(event) => this.publish()} variant="outlined" color="inherit">
-                            <div style={{paddingLeft: '7.5px'}}>上传文章</div>
-                        </Button>
+                    <div className={this.styles.bodyContainer}>
+                        <ArticleForm sections={this.state.sections} ref={this.form} article={{
+                            sectionId: {id: 1, title: '会馆简介'},
+                            title: '',
+                            description: '',
+                            content: BraftEditor.createEditorState('<p/>'),
+                            time: (new Date()),
+                            url: '',
+                            resources: []
+                        }}/>
+                        <div style={{
+                            width: '100%', display: 'flex', flexDirection: 'column',
+                            alignItems: 'center',
+                            marginBottom: '30px'
+                        }}>
+                            <Button onClick={(event) => this.publish()} variant="outlined" color="inherit">
+                                <div style={{paddingLeft: '7.5px'}}>上传文章</div>
+                            </Button>
+                        </div>
+                        <Loading loadingMessage={"文章上传中"} isMax={true} initialState={false} ref={this.loading}/>
+                        <Dialog onClose={() => console.log("close")} aria-labelledby="simple-dialog-title"
+                                open={this.state.dialog}>
+                            <DialogTitle id="simple-dialog-title">上传失败</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    发表失败，请确认内容格式正确
+                                </DialogContentText>
+                                <DialogActions>
+                                    <Button onClick={(event) => this.setState({dialog: false})} color="primary">
+                                        确认
+                                    </Button>
+                                </DialogActions>
+                            </DialogContent>
+                        </Dialog>
                     </div>
-                    <Loading loadingMessage={"文章上传中"} isMax={true} initialState={false} ref={this.loading}/>
-                    <Dialog onClose={() => console.log("close")} aria-labelledby="simple-dialog-title"
-                            open={this.state.dialog}>
-                        <DialogTitle id="simple-dialog-title">上传失败</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                发表失败，请确认内容格式正确
-                            </DialogContentText>
-                            <DialogActions>
-                                <Button onClick={(event) => this.setState({dialog: false})} color="primary">
-                                    确认
-                                </Button>
-                            </DialogActions>
-                        </DialogContent>
-                    </Dialog>
+                    <div className={this.styles.warning}>
+                        此页面不支持手机浏览
+                    </div>
                 </div>
             </Route>
         );
@@ -160,7 +165,22 @@ class Add extends Component {
 }
 
 const styles = theme => ({
-    bodyContainer: {}
+    bodyContainer: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.up('sm')]: {
+            display: 'block'
+        }
+    },
+    warning: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.up('sm')]: {
+            display: 'none'
+        }
+    }
 });
 
 Add.propTypes = {

@@ -91,16 +91,16 @@ class Edit extends Component {
             let keys = Object.keys(form);
             for (let i = 0; i < keys.length; i++) {
                 if (form[keys[i]] !== this.state.article[keys[i]]) {
-                    if(keys[i] === 'sectionId'){
+                    if (keys[i] === 'sectionId') {
                         body['section'] = form[keys[i]]
-                    }else {
+                    } else {
                         body[keys[i]] = form[keys[i]];
                     }
                 }
             }
 
             //add resources
-            for(let i = 0; i < form.resources.length; i++){
+            for (let i = 0; i < form.resources.length; i++) {
                 delete form.resources[i].articleId;
             }
             body.resources = form.resources;
@@ -263,39 +263,46 @@ class Edit extends Component {
                         </Toolbar>
                     </AppBar>
                 </div>
-                <div style={{marginTop: '15px', marginLeft: '15px'}}>
-                    {this.renderSwitch()}
+                <div className={this.styles.bodyContainer}>
+                    <div style={{marginTop: '15px', marginLeft: '15px'}}>
+                        {this.renderSwitch()}
+                    </div>
+                    {this.state.isEditing ?
+                        <div>
+                            <ArticleForm sections={this.state.fullSections} ref={this.form}
+                                         isSection={!this.state.isSearch}
+                                         article={this.state.article}/>
+                            <div style={{
+                                width: '100%', display: 'flex', flexDirection: 'column',
+                                alignItems: 'center',
+                                marginBottom: '30px'
+                            }}>
+                                <Button onClick={(event) => this.update()} variant="outlined" color="inherit">
+                                    <div style={{paddingLeft: '7.5px'}}>更新文章</div>
+                                </Button>
+                            </div>
+                        </div> :
+                        <div/>}
+                    <Loading loadingMessage={this.state.loadingMessage} isMax={true} initialState={false}
+                             ref={this.loading}/>
+                    <Dialog onClose={() => console.log("close")} aria-labelledby="simple-dialog-title"
+                            open={this.state.dialog}>
+                        <DialogTitle id="simple-dialog-title">错误</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {this.state.dialogMsg}
+                            </DialogContentText>
+                            <DialogActions>
+                                <Button onClick={(event) => this.setState({dialog: false})} color="primary">
+                                    确认
+                                </Button>
+                            </DialogActions>
+                        </DialogContent>
+                    </Dialog>
                 </div>
-                {this.state.isEditing ?
-                    <div>
-                        <ArticleForm sections={this.state.fullSections} ref={this.form} isSection={!this.state.isSearch}
-                                     article={this.state.article}/>
-                        <div style={{
-                            width: '100%', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center',
-                            marginBottom: '30px'
-                        }}>
-                            <Button onClick={(event) => this.update()} variant="outlined" color="inherit">
-                                <div style={{paddingLeft: '7.5px'}}>更新文章</div>
-                            </Button>
-                        </div>
-                    </div> :
-                    <div/>}
-                <Loading loadingMessage={this.state.loadingMessage} isMax={true} initialState={false} ref={this.loading}/>
-                <Dialog onClose={() => console.log("close")} aria-labelledby="simple-dialog-title"
-                        open={this.state.dialog}>
-                    <DialogTitle id="simple-dialog-title">错误</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {this.state.dialogMsg}
-                        </DialogContentText>
-                        <DialogActions>
-                            <Button onClick={(event) => this.setState({dialog: false})} color="primary">
-                                确认
-                            </Button>
-                        </DialogActions>
-                    </DialogContent>
-                </Dialog>
+                <div className={this.styles.warning}>
+                    此页面不支持手机浏览
+                </div>
             </Route>
         );
     }
@@ -303,7 +310,14 @@ class Edit extends Component {
 }
 
 const styles = theme => ({
-    bodyContainer: {},
+    bodyContainer: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.up('sm')]: {
+            display: 'block'
+        }
+    },
     selectContainer: {
         display: 'flex',
         flexDirection: 'row'
@@ -312,6 +326,14 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    warning: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.up('sm')]: {
+            display: 'none'
+        }
     }
 });
 
