@@ -76,6 +76,10 @@ public class EmailService {
     }
 
     public BaseResponse send(CreateEmailTemplate req) {
+        String emailSubject = "";
+        if (req.getNameEnglish()!=null&&!req.getNameEnglish().isEmpty()) emailSubject = "New registration form for: " +
+                req.getNameEnglish();
+        else emailSubject = "New registration form";
         logger.info("Creating the text content");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gson.toJson(req);
@@ -107,9 +111,9 @@ public class EmailService {
             message.setFrom(new InternetAddress("from@gmail.com"));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("howard.zhang.1995@gmail.com,e0008233@u.nus.edu")
+                    InternetAddress.parse("howard.zhang.1995@gmail.com,q641480816@gmail.com")
             );
-            message.setSubject("Testing Gmail TLS");
+            message.setSubject(emailSubject);
 
             // creates message part
             MimeBodyPart messageBodyPart = new MimeBodyPart();

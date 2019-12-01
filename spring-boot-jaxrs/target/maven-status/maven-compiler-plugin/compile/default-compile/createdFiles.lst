@@ -10,6 +10,7 @@ com\huiguan\web\service\EmailService$1.class
 com\huiguan\web\dto\Beneficiary.class
 com\huiguan\web\dto\GetArticleResponse.class
 com\huiguan\web\repository\ResourceRepository.class
+com\huiguan\web\service\EmailService$2.class
 com\huiguan\web\service\ResourceServiceImpl.class
 com\huiguan\web\exception\StudentNotFoundExceptionMapper.class
 com\huiguan\web\exception\ApiExceptionMapper.class
