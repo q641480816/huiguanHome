@@ -25,7 +25,7 @@ public class CreateEmailTemplate {
     String otherClubs;
     Beneficiary[] beneficiaries;
     String introducedBy;
-    String image;
+    transient String image;
     // creationTime is auto generated.
     String creationTime;
 }

@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 @Component
 @Path("/email")
 public class EmailController extends Application {
-    private static final Logger logger = LogManager.getLogger(HomeController.class);
+    private static final Logger logger = LogManager.getLogger(EmailController.class);
 
     @Autowired
     EmailService emailService;
@@ -42,9 +42,9 @@ public class EmailController extends Application {
     @Path("/")
     @Transactional
     public BaseResponse sendEmail(CreateEmailTemplate req) throws ApiException {
-        System.out.println("--------------------");
-        emailService.send(req);
-        BaseResponse response = new BaseResponse(200,true);
+        logger.info("Sending the email");
+        BaseResponse response = emailService.send(req);
+
         return response;
     }
 

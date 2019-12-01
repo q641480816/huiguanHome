@@ -16,11 +16,13 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\ApiExceptionMapper.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetShortArticleResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\EmailService.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateEmailTemplate.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\repository\ResourceRepository.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\SpringBootJaxrsApplication.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ConvertToEntityService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetResourceResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\ApiException.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\Beneficiary.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\BaseArticleResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\Main.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ArticleServiceImpl.java
@@ -40,6 +42,7 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\StudentNotFoundException.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\StudentService.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\SearchRequest.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\config\SwaggerConfig.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\repository\ArticleRepository.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\config\ModelMapperConfig.java
