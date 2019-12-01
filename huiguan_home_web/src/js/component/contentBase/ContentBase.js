@@ -57,7 +57,7 @@ class ContentBase extends Component {
                         dom = (<ContactUs/>);
                         break;
                     case 17:
-                        dom = (<div/>);
+                        dom = (<div>Join us placeholder</div>);
                         break;
                     default:
                         dom = (<div/>);
