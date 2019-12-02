@@ -23,6 +23,9 @@ public class Article {
     @Column(name="content",columnDefinition ="MEDIUMTEXT")
     private String content;
 
+    @Column(name="is_top")
+    private Boolean isTop;
+
     @Column(name="description")
     @Type(type = "text")
     private String description;

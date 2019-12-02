@@ -268,7 +268,9 @@ public class HomeController extends Application {
         if (request.getKeyword()==null || request.getKeyword().equals("")){
             return new GetShortPageResponse("Search key word is empty");
         }
-        Set<GetShortArticleResponse> articles = articleService.findByTitle(request.getKeyword(),0,50);
+        int PageSize = 50;
+        if (request.getPageSize()>0) PageSize =request.getPageSize();
+        Set<GetShortArticleResponse> articles = articleService.findByTitle(request.getKeyword(),0,PageSize);
         GetShortPageResponse res = new GetShortPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);

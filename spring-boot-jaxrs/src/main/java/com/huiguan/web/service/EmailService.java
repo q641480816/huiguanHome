@@ -128,7 +128,7 @@ public class EmailService {
             if (!imageBase64.equals("")){
                 String type=imageParts[0].split("/")[1].split(";")[0];
                 MimeBodyPart filePart = new PreencodedMimeBodyPart("base64");
-                filePart.setFileName("screenshot." + type);
+                filePart.setFileName("photo." + type);
                 filePart.setText(imageBase64);
                 multipart.addBodyPart(filePart);
             }

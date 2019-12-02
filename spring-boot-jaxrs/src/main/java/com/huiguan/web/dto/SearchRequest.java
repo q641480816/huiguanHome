@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class SearchRequest {
     String keyword;
+    int pageNum;
+    int pageSize;
 }

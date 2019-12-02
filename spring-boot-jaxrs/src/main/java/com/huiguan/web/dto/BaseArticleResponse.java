@@ -14,5 +14,6 @@ public class BaseArticleResponse {
     String description;
     int sectionId;
     String url;
+    Boolean isTop;
     public BaseArticleResponse(){}
 }

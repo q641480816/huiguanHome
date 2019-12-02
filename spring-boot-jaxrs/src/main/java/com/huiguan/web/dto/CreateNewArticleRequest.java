@@ -20,6 +20,7 @@ public class CreateNewArticleRequest {
     @JsonFormat(pattern = "yyyy-mm-dd")
     Timestamp time;
     String title;
+    Boolean isTop;
     String url;
     String description;
     Section section;

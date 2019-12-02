@@ -12,15 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Primary
 @Service
@@ -102,6 +100,9 @@ public class ArticleServiceImpl implements ArticleService {
         if(article.getTitle()!=null) {
             toBeEdited.setTitle(article.getTitle());
         }
+        if(article.getIsTop()!=null) {
+            toBeEdited.setIsTop(article.getIsTop());
+        }
         if (article.getUrl()!=null) {
             toBeEdited.setUrl(article.getUrl());
         }
@@ -118,7 +119,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
-        PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "creationTime");
+        Pageable req = PageRequest.of(pageNum, pageSize, Sort.by("isTop").descending().and(Sort.by("creationTime")));
 
         Optional<Section> articleSection = sectionService.findById(sectionId);
         if (!articleSection.isPresent()) {
@@ -126,7 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection.get(), req);
         List<Article> articleList = resEntityPage.getContent();
-        Set<GetArticleResponse> articleDtoList = new HashSet<>();
+        Set<GetArticleResponse> articleDtoList = new LinkedHashSet<>();
         for (Article article : articleList) {
             articleDtoList.add(convertToEntityService.convertToArticleDto(article));
         }
@@ -144,7 +145,7 @@ public class ArticleServiceImpl implements ArticleService {
         PageRequest req = new PageRequest(0, 5, Sort.Direction.DESC, "creationTime");
         Page<Article> articles=articleRepository.findLatestArticles(start,end,req);
         List<Article> articleList = articles.getContent();
-        Set<GetArticleResponse> articleDtoList = new HashSet<>();
+        Set<GetArticleResponse> articleDtoList = new LinkedHashSet<>();
         for (Article article : articleList) {
             articleDtoList.add(convertToEntityService.convertToArticleDto(article));
         }
@@ -157,7 +158,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Set<GetShortArticleResponse> findLatestShortArticles(int start, int end) {
         Set<GetArticleResponse> articles = findLatestArticles(start, end);
-        Set<GetShortArticleResponse> res = new HashSet<>();
+        Set<GetShortArticleResponse> res = new LinkedHashSet<>();
         for (GetArticleResponse article: articles){
             res.add(convertToEntityService.convertToShortArticleDto(article));
         }
@@ -167,7 +168,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Set<GetShortArticleResponse> findShortArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
         Set<GetArticleResponse> articles = findArticlePageSortBySectionAndId(pageNum,pageSize,sectionId);
-        Set<GetShortArticleResponse> res = new HashSet<>();
+        Set<GetShortArticleResponse> res = new LinkedHashSet<>();
         for (GetArticleResponse article: articles){
             res.add(convertToEntityService.convertToShortArticleDto(article));
         }
@@ -179,7 +180,7 @@ public class ArticleServiceImpl implements ArticleService {
         PageRequest req = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, "creationTime");
         Page<Article> articles = articleRepository.findArticlePageByTitle(title,req);
         List<Article> articleList = articles.getContent();
-        Set<GetShortArticleResponse> res = new HashSet<>();
+        Set<GetShortArticleResponse> res = new LinkedHashSet<>();
         for (Article article: articleList){
             res.add(convertToEntityService.convertToShortArticleDto(article));
         }

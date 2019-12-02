@@ -62,6 +62,7 @@ public class ConvertToEntityService {
         res.setUrl(article.getUrl());
         res.setTitle(article.getTitle());
         res.setId(article.getId());
+        res.setIsTop(article.getIsTop());
         return res;
     }
 
@@ -82,6 +83,7 @@ public class ConvertToEntityService {
         res.setUrl(article.getUrl());
         res.setTitle(article.getTitle());
         res.setId(article.getId());
+        res.setIsTop(article.getIsTop());
         return res;
     }
 
@@ -107,6 +109,7 @@ public class ConvertToEntityService {
         res.setUrl(article.getUrl());
         res.setTitle(article.getTitle());
         res.setId(article.getId());
+        res.setIsTop(article.getIsTop());
         return res;
     }
 
