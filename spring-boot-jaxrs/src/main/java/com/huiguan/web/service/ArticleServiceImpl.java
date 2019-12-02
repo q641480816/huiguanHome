@@ -125,7 +125,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (!articleSection.isPresent()) {
             return null;
         }
-        Page<Article> resEntityPage = articleRepository.findBySectionAndId(articleSection.get(), req);
+        Page<Article> resEntityPage = articleRepository.findBySectionAndId(sectionId, req);
         List<Article> articleList = resEntityPage.getContent();
         Set<GetArticleResponse> articleDtoList = new LinkedHashSet<>();
         for (Article article : articleList) {
@@ -135,7 +135,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws ApiException {
+        Article article = articleRepository.findById(id).orElseThrow(() -> new ApiException("Article not found"));
+        article.setSection(null);
         articleRepository.deleteById(id);
     }
 

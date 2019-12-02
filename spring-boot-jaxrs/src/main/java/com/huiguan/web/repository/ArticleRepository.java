@@ -9,14 +9,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Repository
+@Transactional
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
-    @Query("select r from Article r where r.section=?1")
-    Page<Article> findBySectionAndId(Section section, Pageable request);
+    @Query("select r from Article r where r.section.id=?1")
+    Page<Article> findBySectionAndId(int sectionId, Pageable request);
 
     @Query("select r from Article r where r.section.id >= ?1 AND r.section.id <= ?2")
     Page<Article> findLatestArticles(int start, int end, Pageable request);

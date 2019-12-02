@@ -11,6 +11,7 @@ import com.huiguan.web.service.ResourceService;
 import com.huiguan.web.service.SectionService;
 import com.sun.tools.rngom.parse.host.Base;
 import io.swagger.annotations.ApiResponse;
+import lombok.experimental.Delegate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,12 +271,22 @@ public class HomeController extends Application {
         }
         int PageSize = 50;
         if (request.getPageSize()>0) PageSize =request.getPageSize();
-        Set<GetShortArticleResponse> articles = articleService.findByTitle(request.getKeyword(),0,PageSize);
+        Set<GetShortArticleResponse> articles = articleService.findByTitle(request.getKeyword(),request.getPageNum(),PageSize);
         GetShortPageResponse res = new GetShortPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);
         res.setArticleList(articles);
         return res;
+    }
+
+    @DELETE
+    @Path("/articles/{id}")
+    public Response deleteArticleById(@PathParam("id") int id) throws ApiException {
+        logger.info("Deleting article");
+
+        articleService.deleteById(id);
+
+        return Response.status(Response.Status.OK).build();
     }
 
 }

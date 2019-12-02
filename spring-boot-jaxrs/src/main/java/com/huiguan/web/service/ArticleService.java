@@ -18,7 +18,7 @@ public interface ArticleService {
 
     int edit(int id, Article article);
 
-    void deleteById(int id);
+    void deleteById(int id) throws ApiException;
 
     Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId);
 
