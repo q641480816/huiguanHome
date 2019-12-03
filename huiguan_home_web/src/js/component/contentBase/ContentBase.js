@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
 import {
     Route,
-    Switch,
-    useParams,
-    useRouteMatch
+    Switch
 } from 'react-router-dom';
 import {withStyles} from "@material-ui/core";
 
@@ -12,7 +9,8 @@ import utils from "../../common/util";
 import Section from "../Section/Section";
 import Article from "../article/Article";
 import ContactUs from "../../pages/contactUs/ContactUs";
-import {brown} from "@material-ui/core/colors";
+import Search from "../../pages/search/Search";
+import JoinUs from "../../pages/joinUs/JoinUs";
 
 class ContentBase extends Component {
     constructor(props) {
@@ -57,7 +55,7 @@ class ContentBase extends Component {
                         dom = (<ContactUs/>);
                         break;
                     case 17:
-                        dom = (<div>Join us placeholder</div>);
+                        dom = (<JoinUs/>);
                         break;
                     default:
                         dom = (<div/>);
@@ -102,6 +100,9 @@ class ContentBase extends Component {
                 </Route>
                 <Route path="/b/article">
                     {this.renderArticlePages()}
+                </Route>
+                <Route path={"/b/search"}>
+                    <Search/>
                 </Route>
             </div>
         );

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {Route} from 'react-router-dom';
-import {Button, withStyles} from "@material-ui/core";
+import {Link} from 'react-router-dom';
+import {withStyles} from "@material-ui/core";
 
 import './Gallery.css';
-import SectionDivider from "../../../../component/sectionDivider/SectionDivider";
 import utils from "../../../../common/util";
 
 class Gallery extends Component {
@@ -21,21 +20,40 @@ class Gallery extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            galleryItems: this.getGallery()
-        })
+        this.getGallery();
     }
 
     getGallery = () => {
-        let imagesOrg = utils.gallery;
-        let images = [];
-        for (let i = 0; i < imagesOrg.length; i++) {
-            if (i % 4 === 0) {
-                images.push([]);
-            }
-            images[Math.floor(i / 4)].push(imagesOrg[i]);
-        }
-        return images;
+        let url = utils.protocol + utils.baseUrl + '/short/latest/13/15';
+
+        fetch(url, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'}
+        })
+            .then(response => response.json())
+            .then(data => {
+                let imagesOrg = [];
+                data.articleList.forEach(a => {
+                    if (a.resource !== null && a.resource !== '') {
+                        let res = a.resource;
+                        res.sectionNav = (utils.getSection(a.sectionId)).navigation;
+                        imagesOrg.push(res);
+                    }
+                });
+                let images = [];
+                for (let i = 0; i < imagesOrg.length; i++) {
+                    if (i % 3 === 0) {
+                        images.push([]);
+                    }
+                    images[Math.floor(i / 3)].push(imagesOrg[i]);
+                    if (i === 5) break;
+                }
+                console.log(images);
+                this.setState({galleryItems: images});
+            })
+            .catch(e => {
+                console.log(e);
+            });
     };
 
     renderGallery = () => {
@@ -47,15 +65,18 @@ class Gallery extends Component {
                 <div key={index} style={{display: 'flex', marginTop: '15px'}} className={this.styles.galleryContainer}>
                     {images.map(i => {
                         let img_view = (
-                            <div key={i.id} className={index_img >= 2 ? this.styles.imgWrapperMobile : this.styles.imgWrapper}>
-                                <img className={'imgItem'} alt={i.title} src={i.src}/>
-                                <div className={'igmItemCover'}>
-                                    <div className={'imgTitle'}>{i.title}</div>
-                                    <div className={'imgDes'}>{i.description}</div>
+                            <Link key={i.id} to={'/b/topics' + i.sectionNav}>
+                                <div key={i.id}
+                                     className={index_img >= 2 ? this.styles.imgWrapperMobile : this.styles.imgWrapper}>
+                                    <img className={'imgItem'} alt={i.title} src={i.url ? i.url : i.content}/>
+                                    <div className={'igmItemCover'}>
+                                        <div className={'imgTitle'}>{i.title}</div>
+                                        <div className={'imgDes'}>{i.description}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                        index_img ++;
+                            </Link>
+                        );
+                        index_img++;
                         return img_view;
                     })}
                 </div>
@@ -69,17 +90,14 @@ class Gallery extends Component {
     render() {
         return (
             <div className={'base'}>
-                <SectionDivider title={"Gallery"} showDivider={true}
-                                short={'We connect consumers, businesses, banks and governments in more than 200 countries and territories worldwide.'}/>
-
                 <div>
                     {this.renderGallery()}
                 </div>
 
-                <Button onClick={()=>{console.log("read more")}} variant="outlined" color="inherit"
-                        style={{display: 'flex', flexDirection: 'row', marginTop: '15px'}}>
-                    <div>Read more</div>
-                </Button>
+                {/*<Button onClick={()=>{console.log("read more")}} variant="outlined" color="inherit"*/}
+                {/*        style={{display: 'flex', flexDirection: 'row', marginTop: '15px'}}>*/}
+                {/*    <div>Read more</div>*/}
+                {/*</Button>*/}
             </div>
         );
     }
@@ -101,8 +119,7 @@ const styles = theme => ({
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        margin: '10px 10px 10px 10px',
-        backgroundColor: '#09d3ac',
+        margin: '15px 15px 15px 15px',
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
@@ -110,18 +127,18 @@ const styles = theme => ({
         border: 'solid lightslategray',
         [theme.breakpoints.down('xs')]: {
             width: '70vw',
-            height: '70vw'
+            height: 'calc(70vw/16*9)'
         },
         [theme.breakpoints.up('sm')]: {
-            width: '15vw',
-            height: '15vw'
+            width: '23vw',
+            height: 'calc(23vw/16*9)'
         }
     },
     imgWrapperMobile: {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        margin: '10px 10px 10px 10px',
+        margin: '15px 15px 15px 15px',
         backgroundColor: '#09d3ac',
         justifyContent: 'center',
         alignItems: 'center',
@@ -130,13 +147,11 @@ const styles = theme => ({
         border: 'solid lightslategray',
         [theme.breakpoints.down('xs')]: {
             width: '70vw',
-            height: '70vw',
-            display: 'none',
+            height: 'calc(70vw/16*9)'
         },
         [theme.breakpoints.up('sm')]: {
-            width: '15vw',
-            height: '15vw',
-            display: 'flex',
+            width: '23vw',
+            height: 'calc(23vw/16*9)'
         }
     }
 });

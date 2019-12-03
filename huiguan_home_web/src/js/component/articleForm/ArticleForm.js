@@ -7,7 +7,7 @@ import {
     Select,
     MenuItem,
     TextField,
-    Grid, Paper, Button
+    Grid, Paper, Button, Checkbox, FormControlLabel
 } from "@material-ui/core";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -29,7 +29,8 @@ class ArticleForm extends Component {
                 content: BraftEditor.createEditorState('<p/>'),
                 time: (new Date()),
                 url: '',
-                resources: []
+                resources: [],
+                isTop: false
             },
             sections: [],
             titleLengthLimit: 30,
@@ -85,7 +86,8 @@ class ArticleForm extends Component {
                 content: BraftEditor.createEditorState('<p/>'),
                 time: (new Date()),
                 url: '',
-                resources: []
+                resources: [],
+                isTop: false
             }
         });
     }
@@ -102,7 +104,8 @@ class ArticleForm extends Component {
                     content: BraftEditor.createEditorState('<p/>'),
                     time: (new Date()),
                     url: '',
-                    resources: []
+                    resources: [],
+                    isTop: false
                 }
             })
         }
@@ -126,7 +129,8 @@ class ArticleForm extends Component {
             content: BraftEditor.createEditorState(article.content),
             time: (new Date(article.time)),
             url: article.url ? article.url : '',
-            resources: article.resources
+            resources: article.resources,
+            isTop: article.isTop
         }
     };
 
@@ -275,10 +279,24 @@ class ArticleForm extends Component {
         return (
             <div className={this.styles.bodyContainer}>
                 {!this.state.isSection ?
-                    <div className={'question'}>
-                        <div className={'question-title'}>类别选择</div>
-                        {this.renderSectionSelect()}
-                    </div> : <div/>
+                    <div>
+                        <div className={'question'}>
+                            <div className={'question-title'}>类别选择</div>
+                            {this.renderSectionSelect()}
+                        </div>
+                        <div className={'question'}>
+                            <div className={'question-title'}>置顶</div>
+                            <FormControlLabel
+                                control={<Checkbox
+                                    checked={this.state.form.isTop} onChange={(event) => {
+                                    let form = this.state.form;
+                                    form.isTop = !form.isTop;
+                                    this.setState({form: form})
+                                }} value="false"
+                                />} label="文章置顶"/>
+                        </div>
+                    </div>
+                    : <div/>
                 }
                 <div className={'question'}>
                     <div className={'question-title'}>标题</div>

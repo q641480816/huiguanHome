@@ -9,8 +9,11 @@ import p4g from '../../recources/temp/4_g.jpg';
 import p5g from '../../recources/temp/5_g.png';
 
 const utils = {
+    username: 'admin',
+    token: 'admin_jinjiang',
     protocol: 'http://',
     baseUrl: 'www.callmedady.com:8080/huiguan/list',
+    emailUrl: 'www.callmedady.com:8080/huiguan/email',
     uiConfig: {
         topNavigator: {
             heightMd: '135px',
@@ -35,6 +38,9 @@ const utils = {
                 };
                 reader.readAsDataURL(file);
             });
+        },
+        getRatioHeight:(width) => {
+            return width/2;
         }
     },
     contact: {
@@ -48,7 +54,7 @@ const utils = {
         }
     },
     naviItems: [
-        {id: 1, title: '主页', navigation: '/#', sub: [], isRenderList: true},
+        {id: 1, title: '主页', navigation: '/b', sub: [], isRenderList: true},
         {
             id: 2, title: '会馆概况', navigation: '/about', sub: [
                 {
@@ -109,6 +115,9 @@ const utils = {
                 {id: 16, title: '联系方式', navigation: '/contact', sub: [], isRenderList: false, isSpecial: true},
                 {id: 17, title: '加入我们', navigation: '/join', sub: [], isRenderList: false, isSpecial: true},
             ]
+        },
+        {
+            id: 7, title: '搜索文章', navigation: '/b/search', sub: []
         }
     ],
     getSection: (id) => {
@@ -120,34 +129,6 @@ const utils = {
         });
         return ss[id];
     },
-    events: [
-        {name: 'Event 1', id: 3, location: 'Lor Rong Ah Soo 20C'},
-        {
-            name: 'NATIONAL PRIMARY SCHOOLS CHINESE STORY-TELLING COMPETITION 2019',
-            id: 1,
-            location: 'Lor Rong Ah Soo 20C'
-        },
-        {
-            name: '17TH SHHK LITERARY AWARDS CUM THF ARTS & CULTURAL AWARD PRIZE PRESENTATION CEREMONY',
-            id: 2,
-            location: 'Lor Rong Ah Soo 20C'
-        },
-        {name: 'JOURNEYS OF HERITAGE & FAITH 2019', id: 4, location: 'Lor Rong Ah Soo 20C'}
-    ],
-    properties: [
-        {
-            id: 1,
-            name: 'Chin Kang Huay Kuan',
-            address: '29 Bukit Pasoh Road #04-01 Singapore 089843',
-            direction: 'https://www.google.com/maps/place/Chin+Kang+Huay+Kuan/@1.279336,103.8384165,17z/data=!3m1!4b1!4m5!3m4!1s0x31da196d8d403705:0x959ce1707e4a0a76!8m2!3d1.279336!4d103.8406052'
-        },
-        {
-            id: 2,
-            name: 'Privé Clarke Quay',
-            address: 'Blk 3C River Valley Road, Clarke Quay, #01-09A, Singapore 179019',
-            direction: 'https://www.google.com/maps/place/Priv%C3%A9+Clarke+Quay/@1.290359,103.8434303,17z/data=!3m1!4b1!4m5!3m4!1s0x31da19a03d3d2cb1:0x934e803b56241cf4!8m2!3d1.290359!4d103.845619'
-        }
-    ],
     gallery: [
         {
             id: 1,

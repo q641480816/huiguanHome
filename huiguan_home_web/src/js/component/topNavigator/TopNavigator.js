@@ -1,6 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {Paper, withStyles, Button, Menu, MenuItem, Divider} from '@material-ui/core';
+import {
+    Paper,
+    withStyles,
+    Button,
+    Menu,
+    MenuItem,
+    Divider,
+    Dialog,
+    DialogTitle,
+    List,
+    ListItem,
+    ListItemText
+} from '@material-ui/core';
 import {Apps} from '@material-ui/icons'
 import {Link, withRouter} from "react-router-dom";
 // import {isBrowser, isMobile} from "react-device-detect";
@@ -20,13 +32,15 @@ class TopNavigator extends Component {
             subMenuAnchorEl: null,
             subParentMap: {},
             pathname: '',
-            selectParentId: -1
+            selectParentId: -1,
+            selectedSubMenuMobile: -1
         };
 
         this.styles = this.props.classes;
 
         this.getNaviItems = this.getNaviItems.bind(this);
         this.renderNaviItems = this.renderNaviItems.bind(this);
+        this.renderSubDialogMobile = this.renderSubDialogMobile.bind(this);
         this.renderSubMenu = this.renderSubMenu.bind(this);
         this.openMenu = this.openMenu.bind(this);
         this.openSubMenu = this.openSubMenu.bind(this);
@@ -130,15 +144,18 @@ class TopNavigator extends Component {
             });
             return this.state.naviItems.map(i => {
                 let isSelected = i.id === selectedId;
-                if (i.navigation === '/#') {
+                if (i.sub.length === 0) {
                     return (
                         <div key={i.id}>
-                            <Link to={'/'}
+                            <Link to={i.navigation}
                                   className={isSelected ? 'text textBold naviTimeWrapperSelected' : "text textBold naviTimeWrapper"}
                                   onMouseEnter={(event) => this.openSubMenu(event, i)}
                                   onMouseLeave={() => this.setState({
                                       subMenu: null
-                                  })}>
+                                  })}
+                                  onClick={() => {
+                                      window.scroll({top: 0, left: 0, behavior: 'smooth'})
+                                  }}>
                                 <div className={this.styles.naviItem}>
                                     <div>{i.title}</div>
                                 </div>
@@ -165,13 +182,42 @@ class TopNavigator extends Component {
         } else {
             return this.state.naviItems.map(i => {
                 return <MenuItem key={i.id} onClick={() => {
-                    console.log(i.title);
-                    this.setState({
-                        menuOpen: null
-                    })
+                    if (i.sub.length === 0) {
+                        this.props.history.push(i.navigation);
+                        this.setState({
+                            menuOpen: null
+                        })
+                    } else {
+                        this.setState({
+                            menuOpen: null,
+                            selectedSubMenuMobile: i.id
+                        })
+                    }
                 }}>{i.title}</MenuItem>
             })
         }
+    };
+
+    renderSubDialogMobile = () => {
+        return this.state.naviItems.map(i => {
+            return (
+                <Dialog key={i.id} aria-labelledby="simple-dialog-title"
+                        open={this.state.selectedSubMenuMobile === i.id}>
+                    <DialogTitle id="simple-dialog-title">{i.title}</DialogTitle>
+                    <List>
+                        {i.sub.map(s => (
+                            <ListItem button onClick={() => {
+                                let url = s.isRenderList ? '/b/topics' + s.navigation : '/b/topics' + s.navigation + "/" + s.articleId;
+                                this.setState({selectedSubMenuMobile: -1});
+                                this.props.history.push(url)
+                            }} key={s.id}>
+                                <ListItemText primary={s.title}/>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Dialog>
+            )
+        })
     };
 
     render() {
@@ -189,7 +235,7 @@ class TopNavigator extends Component {
                             <Button onClick={(event) => this.openMenu(event)} variant="outlined" color="inherit"
                                     style={{display: 'flex', flexDirection: 'row'}}>
                                 <Apps/>
-                                <div style={{paddingLeft: '7.5px'}}>Find out more</div>
+                                <div style={{paddingLeft: '7.5px'}}>分类表</div>
                             </Button>
                             <Menu
                                 id="simple-menu"
@@ -210,6 +256,7 @@ class TopNavigator extends Component {
                         <img src={logo} alt="" className="responsive-logo"/>
                     </div>
                 </div>
+                {this.renderSubDialogMobile()}
             </div>
         );
     }
@@ -233,7 +280,6 @@ const styles = theme => ({
         position: 'fixed',
         top: '0',
         left: '0',
-        height: '20vh',
         width: '20vw',
         minWidth: '85px',
         [theme.breakpoints.down('xs')]: {
