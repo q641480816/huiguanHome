@@ -209,7 +209,8 @@ class TopNavigator extends Component {
                             <ListItem button onClick={() => {
                                 let url = s.isRenderList ? '/b/topics' + s.navigation : '/b/topics' + s.navigation + "/" + s.articleId;
                                 this.setState({selectedSubMenuMobile: -1});
-                                this.props.history.push(url)
+                                this.props.history.push(url);
+                                window.scroll({top: 0, left: 0, behavior: 'smooth'});
                             }} key={s.id}>
                                 <ListItemText primary={s.title}/>
                             </ListItem>

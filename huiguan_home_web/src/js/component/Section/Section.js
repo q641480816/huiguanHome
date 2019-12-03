@@ -66,7 +66,6 @@ class Section extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 this.setState({
                     articles: data.articleList,
                     offset: offset,
@@ -101,7 +100,8 @@ class Section extends Component {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-                                        paddingBottom: a.resources.length !== 0 ? '0px' : '50px'
+                                        paddingBottom: a.resources.length !== 0 ? '0px' : '50px',
+                                        width: '100%'
                                     }}>
                                         <div className={this.styles.titleWrapper}>
                                             {a.title}
