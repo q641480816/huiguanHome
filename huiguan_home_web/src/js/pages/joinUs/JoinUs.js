@@ -26,7 +26,7 @@ class JoinUs extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedSide: 1,
+            selectedSide: -1,
             formNormal: {
                 nameChinese: '',
                 nameEnglish: '',
