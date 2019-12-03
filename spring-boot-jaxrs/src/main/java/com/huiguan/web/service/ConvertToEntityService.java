@@ -55,6 +55,13 @@ public class ConvertToEntityService {
     public GetShortArticleResponse convertToShortArticleDto(Article article) {
         if (article==null) return null;
         GetShortArticleResponse res = new GetShortArticleResponse();
+        if (article.getSection()!=null){
+            res.setSectionId(article.getSection().getId());
+        }
+        Set<Resource> resources = article.getResources();
+        if (resources!=null && resources.size()>0){
+            res.setResource(convertToResourceDto(resources.iterator().next()));
+        }
         res.setCreationTime(toDate(article.getCreationTime()));
         res.setDescription(article.getDescription());
         res.setDescription(article.getDescription());
