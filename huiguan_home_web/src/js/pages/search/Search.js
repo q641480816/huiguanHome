@@ -1,85 +1,72 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {Link} from 'react-router-dom';
-import {Button, withStyles} from "@material-ui/core";
-import parse from 'html-react-parser';
-import Pagination from "material-ui-flat-pagination";
-
-import Banner from "../banner/Banner";
+import {PropTypes} from "prop-types";
+import {withStyles, InputBase, Paper, IconButton, Button} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 import utils from "../../common/util";
+import parse from "html-react-parser";
+import {Link} from "react-router-dom";
+import SectionDivider from "../../component/sectionDivider/SectionDivider";
+import {Apps} from "@material-ui/icons";
+import Loading from "../../component/loading/Loading";
 
-import './Section.css';
-import SectionDivider from "../sectionDivider/SectionDivider";
-import Loading from "../loading/Loading";
-
-class Section extends Component {
+class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            section: {id: 0, title: '', navigation: '', isRenderList: true},
+            keyword: '',
             articles: [],
-            offset: 0,
-            count: 0,
-            limit: 4,
+            pageNum: 0,
+            pageSize: 5,
+            isFirst: true,
+            isLast: false,
             isLoading: false
         };
 
         this.styles = this.props.classes;
 
-        this.getSectionContent = this.getSectionContent.bind(this);
-        this.listenToScroll = this.listenToScroll.bind(this);
-        this.toggleLoading = this.toggleLoading.bind(this);
-        this.refreshArticle = this.refreshArticle.bind(this);
+        this.searchArticle = this.searchArticle.bind(this);
         this.renderArticleList = this.renderArticleList.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
 
         this.loading = React.createRef();
     }
 
     componentDidMount() {
+
+    }
+
+    searchArticle = (isMore) => {
         this.setState({
-            section: this.props.section ? this.props.section : this.state.section,
+            isFirst: false
         });
-        this.getSectionContent(this.props.section.id, this.state.offset);
-        //window.addEventListener('scroll', this.listenToScroll)
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.section.id !== this.state.section.id) {
-            this.setState({
-                section: this.props.section ? this.props.section : this.state.section
-            });
-            this.getSectionContent(this.props.section.id, this.state.offset);
-        }
-    }
-
-    listenToScroll = () => {
-        console.log(window.pageYOffset);
-    };
-
-    getSectionContent = (id, offset) => {
         this.toggleLoading(true);
-
-        let url = utils.protocol + utils.baseUrl + '/page/' + id + "/" + Math.floor(offset / this.state.limit) + "/" + this.state.limit;
+        let url = utils.protocol + utils.baseUrl + '/search';
+        let body = {
+            keyword: this.state.keyword,
+            pageNum: isMore ? this.state.pageNum + 1 : 0,
+            pageSize: this.state.pageSize
+        };
         fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'}
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(body)
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                this.setState({
-                    articles: data.articleList,
-                    offset: offset,
-                    count: data.articleSize
-                });
-                window.scroll({top: 0, left: 0, behavior: 'smooth'});
                 this.toggleLoading(false);
+                let articles = this.state.articles;
+                if (!isMore) {
+                    articles = [];
+                }
+                articles = articles.concat(data.articleList);
+                this.setState({
+                    articles: articles,
+                    pageNum: isMore ? this.state.pageNum + 1 : 0,
+                    isLast: !isMore ? false : data.articleList.length === 0
+                })
+                //window.scroll({top: 0, left: 0, behavior: 'smooth'});
             })
             .catch(e => console.log(e));
-    };
-
-    refreshArticle = (offset) => {
-        this.getSectionContent(this.state.section.id, offset);
     };
 
     toggleLoading = (isLoading) => {
@@ -92,8 +79,9 @@ class Section extends Component {
     renderArticleList = () => {
         if (this.state.articles.length > 0) {
             return (
-                <div className={this.styles.listWrapper}>
+                <div className={this.styles.listWrapper} style={{marginTop: '40px'}}>
                     {this.state.articles.map(a => {
+                        console.log(a.sectionId)
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>
@@ -101,27 +89,30 @@ class Section extends Component {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-                                        paddingBottom: a.resources.length !== 0 ? '0px' : '50px'
+                                        paddingBottom: a.resource !== null ? '0px' : '50px'
                                     }}>
-                                        <div className={this.styles.titleWrapper}>
+                                        <div className={this.styles.titleWrapper}
+                                             style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                                             {a.title}
-                                            {a.isTop ?
-                                                <div className={this.styles.isTopWrapper}>置顶</div> : <div/>}
                                         </div>
-                                        <div className={this.styles.timeWrapper}>{a.time}</div>
+                                        <div className={this.styles.titleWrapper}
+                                             style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.time}</div>
                                         <div className={this.styles.articleContentWrapper}>
-                                            {a.resources.length !== 0 ?
+                                            {a.resource ?
                                                 <div className={this.styles.imgWrapper}>
                                                     <img
-                                                        src={a.resources[0].url ? a.resources[0].url : a.resources[0].content}
+                                                        src={a.resource.url ? a.resource.url : a.resource.content}
                                                         className={this.styles.articleImg}/>
                                                 </div> : <div/>
                                             }
                                             <div
-                                                className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
+                                                className={this.styles.descriptionWrapper}
+                                                style={a.resource === null ? {marginLeft: 0} : {marginLeft: '20px'}}>
+                                                {a.description ? parse(a.description) : 'No Content'}
+                                            </div>
                                         </div>
                                     </div>
-                                    <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
+                                    <Link to={'/b/article' + (utils.getSection(a.sectionId)).navigation + "/" + a.id} target="_blank"
                                           className={'linkWrapper'}>
                                         <Button className={this.styles.readMoreButton}
                                                 onClick={(event) => console.log("")} variant="outlined"
@@ -134,7 +125,6 @@ class Section extends Component {
                                     <SectionDivider showDivider={true} fullLength={true}
                                                     color={utils.colorScheme.secondary} title={""}/> :
                                     <div style={{marginBottom: '10px'}}/>}
-
                             </div>
                         )
                     })}
@@ -151,7 +141,12 @@ class Section extends Component {
                     alignItems: 'center',
                 }}>
                     {!this.state.isLoading ?
-                        <div style={{fontSize: '27px', fontWeight: 'bold', color: utils.colorScheme.text}}>暂无文章</div> :
+                        <div style={{
+                            fontSize: '27px',
+                            fontWeight: 'bold',
+                            marginTop: '30px',
+                            color: utils.colorScheme.text
+                        }}>{this.state.isFirst ? '请输入关键字搜索' : '无相关文章'}</div> :
                         <div/>}
                 </div>
             )
@@ -160,22 +155,36 @@ class Section extends Component {
 
     render() {
         return (
-            <div>
-                <Banner title={this.state.section.title}/>
-                <div className={this.styles.contentContainer}>
-                    {this.renderArticleList()}
-                    {this.state.count <= this.state.limit ? <div/> :
-                        <div style={{marginTop: '50px'}}>
-                            <Pagination
-                                limit={this.state.limit}
-                                offset={this.state.offset}
-                                total={this.state.count}
-                                onClick={(e, offset) => this.refreshArticle(offset)}
-                            />
-                        </div>
-                    }
-                </div>
-                <Loading isMax={false} initialState={false} loadingMessage={'文章列表加载中'} ref={this.loading}/>
+            <div className={this.styles.bodyContainer}>
+                <Paper component="form" className={this.styles.searchBox}>
+                    <InputBase
+                        className={this.styles.input}
+                        placeholder="关键字搜索"
+                        inputProps={{'aria-label': "关键字搜索"}}
+                        onChange={(event) => {
+                            this.setState({keyword: event.target.value})
+                        }}
+                    />
+                    <IconButton onClick={() => this.searchArticle(false)} className={this.styles.iconButton}
+                                aria-label="search">
+                        <SearchIcon/>
+                    </IconButton>
+                </Paper>
+                {this.renderArticleList()}
+                {this.state.articles.length > 0 ?
+                    !this.state.isLast ? <Button onClick={(event) => this.searchArticle(true)} variant="outlined" color="inherit"
+                            style={{display: 'flex', flexDirection: 'row'}}>
+                        <Apps/>
+                        <div style={{paddingLeft: '7.5px'}}>加载更多</div>
+                    </Button> : <div style={{
+                        fontSize: '27px',
+                        fontWeight: 'bold',
+                        marginTop: '30px',
+                        color: utils.colorScheme.text
+                    }}>{'无更多文章'}</div> :
+                    <div/>
+                }
+                <Loading isMax={false} initialState={false} loadingMessage={'文章搜索中'} ref={this.loading}/>
             </div>
         );
     }
@@ -183,6 +192,12 @@ class Section extends Component {
 }
 
 const styles = theme => ({
+    bodyContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: '20px'
+    },
     itemContainer: {
         [theme.breakpoints.down('xs')]: {
             display: "flex",
@@ -193,12 +208,24 @@ const styles = theme => ({
             position: 'relative',
         },
     },
-    contentContainer: {
-        display: "flex",
-        flexDirection: "column",
+    searchBox: {
+        padding: '2px 4px',
+        display: 'flex',
         alignItems: 'center',
-        marginTop: '30px',
-        position: 'relative'
+        minWidth: '250px',
+        [theme.breakpoints.down('xs')]: {
+            width: '80%',
+        },
+        [theme.breakpoints.up('sm')]: {
+            width: '60%',
+        }
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    iconButton: {
+        padding: 10,
     },
     listWrapper: {
         display: "flex",
@@ -230,27 +257,10 @@ const styles = theme => ({
         }
     },
     titleWrapper: {
+        fontSize: '27px',
         fontWeight: 'bold',
         marginBottom: '20px',
         color: utils.colorScheme.secondary,
-        transition: '0.3s',
-        "&:hover": {
-            color: utils.colorScheme.primary
-        },
-        [theme.breakpoints.down('xs')]: {
-            width: '90%', display: 'flex', flexDirection: 'column',
-            fontSize: '22.5px',
-        },
-        [theme.breakpoints.up('sm')]: {
-            width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center',
-            fontSize: '27px',
-        }
-    },
-    timeWrapper: {
-        fontSize: '15px',
-        fontWeight: 'bold',
-        marginBottom: '20px',
-        color: utils.colorScheme.text,
         transition: '0.3s',
         "&:hover": {
             color: utils.colorScheme.primary
@@ -285,7 +295,6 @@ const styles = theme => ({
             width: '90%',
         },
         [theme.breakpoints.up('sm')]: {
-            marginLeft: '20px',
             width: '100%',
         },
     },
@@ -308,26 +317,8 @@ const styles = theme => ({
             bottom: 0,
         }
     },
-    isTopWrapper: {
-        fontSize: '12px',
-        backgroundColor: utils.colorScheme.secondary,
-        color: utils.colorScheme.tertiary,
-        fontWeight: 'normal',
-        padding: '3px 7px 3px 7px',
-        borderRadius: '15px',
-        width: '30px',
-        textAlign: 'center',
-        [theme.breakpoints.down('xs')]: {
-            marginTop: '7.5px'
-        },
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: '10px',
-        },
-    }
 });
 
-Section.propTypes = {
-    section: PropTypes.object.isRequired,
-};
+Search.propTypes = {};
 
-export default withStyles(styles)(Section);
+export default withStyles(styles)(Search);

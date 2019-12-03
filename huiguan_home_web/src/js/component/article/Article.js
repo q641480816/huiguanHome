@@ -67,32 +67,39 @@ class Article extends Component {
         if (this.state.article) {
             return (
                 <div className={this.styles.contentContainer}>
-                    <p className={this.styles.articleTitle}>{this.state.article.title}</p>
+                    <div className={this.styles.articleTitle}>{this.state.article.title}</div>
                     <p style={{color: utils.colorScheme.text}}>{this.state.article.time ? this.state.article.time : this.state.article.creation_time}</p>
-                    <div style={{width: '100%', display: 'flex', flexDirection: 'column', marginTop: '20px'}}>
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '20px',
+                        alignItems: 'center'
+                    }}>
                         <div className={this.styles.carouselContainer}>
-                            <Carousel infiniteLoop={true} autoPlay={true} showThumbs={false} centerMode={true}
-                                      showIndicators={false}>
+                            <Carousel infiniteLoop={true} autoPlay={true} showThumbs={false} showIndicators={false}>
                                 {this.renderCarousel()}
                             </Carousel>
                         </div>
                     </div>
-                    <div className={this.styles.contentWrapper}
-                         style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
-                        {parse(this.state.article.content)}
-                    </div>
-                    {this.state.article.url !== null && this.state.article.url.length > 0 ?
+                    <div>
                         <div className={this.styles.contentWrapper}
-                             style={{display: 'flex', flexDirection: 'row', fontStyle: 'italic'}}>
-                            <div style={{fontWeight: 'bold', color: utils.colorScheme.secondary}}>
-                                外部链接：
-                            </div>
-                            <a href={this.state.article.url} target={'_blank'}
-                               style={{textDecoration: 'none', color: utils.colorScheme.text}}>
-                                {this.state.article.url}
-                            </a>
-                        </div> : <div/>
-                    }
+                             style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
+                            {parse(this.state.article.content)}
+                        </div>
+                        {this.state.article.url !== null && this.state.article.url.length > 0 ?
+                            <div className={this.styles.contentWrapper}
+                                 style={{display: 'flex', flexDirection: 'row', fontStyle: 'italic'}}>
+                                <div style={{fontWeight: 'bold', color: utils.colorScheme.secondary}}>
+                                    外部链接：
+                                </div>
+                                <a href={this.state.article.url} target={'_blank'}
+                                   style={{textDecoration: 'none', color: utils.colorScheme.text}}>
+                                    {this.state.article.url}
+                                </a>
+                            </div> : <div/>
+                        }
+                    </div>
                 </div>
             );
         } else {
@@ -108,8 +115,10 @@ class Article extends Component {
         if (this.state.article.resources && this.state.article.resources.length > 0) {
             return this.state.article.resources.map((i) => {
                 return (
-                    <div key={i.id}>
-                        <img src={i.url ? i.url : i.content} alt={"p1"}/>
+                    <div key={i.id} className={this.styles.imgContainer}>
+                        <div style={{width: '100%', height: '100%', overflow: 'hidden'}}>
+                            <img src={i.url ? i.url : i.content} alt={"p1"}/>
+                        </div>
                         <div className={this.styles.carouselLegend}>
                             <div style={{color: utils.colorScheme.back}}>{i.title}</div>
                             <div style={{color: utils.colorScheme.tertiary}}>{i.description}</div>
@@ -139,10 +148,11 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         paddingTop: '30px',
-        [theme.breakpoints.down('xs')]: {
+        alignItems: 'center',
+        [theme.breakpoints.down('sm')]: {
             width: '90%',
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '80%',
         },
     },
@@ -152,11 +162,21 @@ const styles = theme => ({
         fontSize: '35px'
     },
     carouselContainer: {
-        [theme.breakpoints.down('xs')]: {
-            width: '90%',
+        [theme.breakpoints.down('sm')]: {
+            width: '87vw',
         },
         [theme.breakpoints.up('md')]: {
-            width: '65%',
+            width: '64vw',
+        },
+    },
+    imgContainer: {
+        [theme.breakpoints.down('sm')]: {
+            width: '87vw',
+            height: 'calc(87vw/16*9)'
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '64vw',
+            height: 'calc(64vw/16*9)'
         },
     },
     contentWrapper: {

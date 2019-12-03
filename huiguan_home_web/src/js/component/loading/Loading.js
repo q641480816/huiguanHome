@@ -81,7 +81,8 @@ const styles = theme => ({
         backgroundColor: 'rgba(0,0,0,.5)',
         position: 'absolute',
         left: 0,
-        top: 0
+        top: 0,
+        zIndex: 10000
     },
     container: {
         height: '100%',
@@ -92,7 +93,8 @@ const styles = theme => ({
         alignItems: 'center',
         position: 'absolute',
         left: 0,
-        top: 0
+        top: 0,
+        zIndex: 10000
     }
 });
 

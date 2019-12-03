@@ -34,9 +34,6 @@ class HomeBody extends Component {
                     <HomeCarousel/>
                 </div>
                 <div>
-                    {/*<SectionDivider title={""} showDivider={false}*/}
-                    {/*                textColor={utils.colorScheme.text}*/}
-                    {/*                short={''}/>*/}
                     <div style={{marginTop: '30px'}}/>
                     <HomeFeed/>
                 </div>
@@ -44,10 +41,9 @@ class HomeBody extends Component {
                     <SectionDivider title={"情缘晋江"} showDivider={true} textColor={utils.colorScheme.secondary}
                                     color={utils.colorScheme.secondary} short={''}/>
                 </div>
-                {/*<Gallery/>*/}
                 <div>
                     <div style={{marginTop: '30px'}}/>
-                    <HistoryCarousel/>
+                    <Gallery/>
                 </div>
             </div>
         );
