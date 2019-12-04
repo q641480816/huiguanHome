@@ -99,7 +99,7 @@ public class HomeController extends Application {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/resources")
-    @ApiOperation("Create a promotion")
+    @ApiOperation("Create a resource")
     @Transactional
     public BaseResponse createResource(CreateNewResourceRequest req) {
         logger.info("Creating new resources");
@@ -146,7 +146,7 @@ public class HomeController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/articles")
-    @ApiOperation("Create a promotion")
+    @ApiOperation("Create a Article")
     @Transactional
     public BaseResponse createArticle(CreateNewArticleRequest req) {
         logger.info("Creating new articles");

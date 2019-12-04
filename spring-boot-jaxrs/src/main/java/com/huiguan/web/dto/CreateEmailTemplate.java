@@ -3,6 +3,8 @@ package com.huiguan.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 public class CreateEmailTemplate {
@@ -27,5 +29,5 @@ public class CreateEmailTemplate {
     String introducedBy;
     transient String image;
     // creationTime is auto generated.
-    String creationTime;
+    Timestamp creationTime;
 }
