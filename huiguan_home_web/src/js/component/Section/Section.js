@@ -108,7 +108,7 @@ class Section extends Component {
                                                   style={{textDecoration: 'none'}}
                                                   target="_blank"
                                                   className={'linkWrapper'}>
-                                                <div className={this.styles.titleWrapper}>{a.title}</div>
+                                                <div className={this.styles.title}>{a.title}</div>
                                             </Link>
                                             {a.isTop ?
                                                 <div className={this.styles.isTopWrapper}>置顶</div> : <div/>}
@@ -251,12 +251,20 @@ const styles = theme => ({
             fontSize: '27px',
         }
     },
+    title: {
+        color: utils.colorScheme.secondary,
+        transition: '0.3s',
+        "&:hover": {
+            color: utils.colorScheme.primary
+        }
+    },
     timeWrapper: {
         fontSize: '15px',
         fontWeight: 'bold',
         marginBottom: '20px',
         color: utils.colorScheme.text,
         transition: '0.3s',
+        cursor: 'default',
         "&:hover": {
             color: utils.colorScheme.primary
         },
@@ -322,6 +330,7 @@ const styles = theme => ({
         borderRadius: '15px',
         width: '30px',
         textAlign: 'center',
+        cursor: 'default',
         [theme.breakpoints.down('xs')]: {
             marginTop: '7.5px'
         },
