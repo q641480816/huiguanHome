@@ -11,9 +11,12 @@ import {
     DialogTitle,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
+    Tooltip,
+    IconButton
 } from '@material-ui/core';
 import {Apps} from '@material-ui/icons'
+import SearchIcon from '@material-ui/icons/Search';
 import {Link, withRouter} from "react-router-dom";
 // import {isBrowser, isMobile} from "react-device-detect";
 
@@ -102,17 +105,22 @@ class TopNavigator extends Component {
                     })}>
                         <Paper className={this.styles.subMenuWrapper}>
                             {i.sub.map(s => {
-                                let url = s.isRenderList ? '/b/topics' + s.navigation : '/b/topics' + s.navigation + "/" + s.articleId;
+                                let url = s.isRenderList || s.isSpecial ? '/b/topics' + s.navigation : '/b/topics' + s.navigation + "/" + s.articleId;
                                 return (
                                     <div key={s.id}>
-                                        <Link to={url} className={"text textBold naviTimeWrapper"}
-                                              onClick={() => {
-                                                  this.setState({
-                                                      subMenu: null,
-                                                      subMenuAnchorEl: null
-                                                  });
-                                                  window.scroll({top: 0, left: 0, behavior: 'smooth'});
-                                              }}>
+                                        <div className={"text textBold naviTimeWrapper"}
+                                             onClick={() => {
+                                                 this.setState({
+                                                     subMenu: null,
+                                                     subMenuAnchorEl: null
+                                                 }, () => {
+                                                     this.props.history.push(url);
+                                                     if (s.id === 17 && utils.cancelJoinUs !== null) {
+                                                         utils.cancelJoinUs();
+                                                     }
+                                                 });
+                                                 window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                                             }}>
                                             <div style={{
                                                 margin: '10px 10px 10px 10px',
                                                 fontSize: '15px',
@@ -120,7 +128,7 @@ class TopNavigator extends Component {
                                             }}>
                                                 <div>{s.title}</div>
                                             </div>
-                                        </Link>
+                                        </div>
                                         {s.id !== i.sub[i.sub.length - 1].id ? <Divider/> : <div/>}
                                     </div>
                                 )
@@ -257,6 +265,15 @@ class TopNavigator extends Component {
                         <img src={logo} alt="" className="responsive-logo"/>
                     </div>
                 </div>
+                <div className={this.styles.searchBase}>
+                    <Tooltip title="搜索文章">
+                        <IconButton aria-label="delete" onClick={() => {
+                            this.props.history.push("/b/search")
+                        }}>
+                            <SearchIcon color={"secondary"} style={{fontSize: 40}}/>
+                        </IconButton>
+                    </Tooltip>
+                </div>
                 {this.renderSubDialogMobile()}
             </div>
         );
@@ -335,6 +352,24 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         paddingTop: '1px',
         paddingBottom: '1px'
+    },
+    searchBase: {
+        position: 'absolute',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        right: '30px',
+        color: utils.colorScheme.secondary,
+        [theme.breakpoints.down('xs')]: {
+            width: '80px'
+        },
+        [theme.breakpoints.up('sm')]: {
+            width: '150px',
+        }
+
     }
 });
 

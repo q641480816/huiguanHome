@@ -82,14 +82,13 @@ class Article extends Component {
                             </Carousel>
                         </div>
                     </div>
-                    <div>
+                    <div style={{width: '100%'}}>
                         <div className={this.styles.contentWrapper}
                              style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
                             {parse(this.state.article.content)}
                         </div>
                         {this.state.article.url !== null && this.state.article.url.length > 0 ?
-                            <div className={this.styles.contentWrapper}
-                                 style={{display: 'flex', flexDirection: 'row', fontStyle: 'italic'}}>
+                            <div className={this.styles.urlWrapper}>
                                 <div style={{fontWeight: 'bold', color: utils.colorScheme.secondary}}>
                                     外部链接：
                                 </div>
@@ -183,6 +182,20 @@ const styles = theme => ({
         marginTop: '20px',
         color: utils.colorScheme.text,
         fontSize: '18px'
+    },
+    urlWrapper: {
+        marginTop: '20px',
+        color: utils.colorScheme.text,
+        fontSize: '18px',
+         fontStyle: 'italic',
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        [theme.breakpoints.up('sm')]: {
+            display: 'flex',
+            flexDirection: 'row',
+        },
     },
     carouselLegend: {
         backgroundColor: 'rgba(0,0,0,.5)',

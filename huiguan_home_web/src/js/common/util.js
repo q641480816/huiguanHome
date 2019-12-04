@@ -116,9 +116,9 @@ const utils = {
                 {id: 17, title: '加入我们', navigation: '/join', sub: [], isRenderList: false, isSpecial: true},
             ]
         },
-        {
-            id: 7, title: '搜索文章', navigation: '/b/search', sub: []
-        }
+        // {
+        //     id: 7, title: '搜索文章', navigation: '/b/search', sub: []
+        // }
     ],
     getSection: (id) => {
         let ss = {};
@@ -160,7 +160,8 @@ const utils = {
             title: 'Legend 5',
             description: 'xeqewxqn qwe'
         },
-    ]
+    ],
+    cancelJoinUs: null
 };
 
 export default utils;

@@ -14,6 +14,7 @@ import utils from "../../common/util";
 import {
     isMobile
 } from "react-device-detect";
+import {Route, withRouter} from 'react-router-dom';
 
 import './JoinUs.css';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
@@ -21,12 +22,14 @@ import DateFnsUtils from "@date-io/date-fns";
 import {Apps} from "@material-ui/icons";
 import ImageUploader from "react-images-upload";
 import Loading from "../../component/loading/Loading";
+import PropTypes from "prop-types";
 
 class JoinUs extends Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedSide: -1,
+            currentHerf: '',
             formNormal: {
                 nameChinese: '',
                 nameEnglish: '',
@@ -99,6 +102,16 @@ class JoinUs extends Component {
     }
 
     componentDidMount() {
+        utils.cancelJoinUs = this.cancel;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.props.location);
+        console.log(this.props.history);
+    }
+
+    componentWillUnmount() {
+        utils.cancelJoinUs = null;
     }
 
     submit = () => {
@@ -108,8 +121,6 @@ class JoinUs extends Component {
 
         let date = new Date(form.dateOfBirth);
         form.dateOfBirth = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-
-        console.log(form);
 
         fetch(url, {
             method: 'post',
@@ -174,7 +185,7 @@ class JoinUs extends Component {
             })
             .catch(e => {
                 this.toggleLoading("", false);
-                alert('提交失败');
+                alert('提交失败:' + e.toString());
             });
 
     };
@@ -647,12 +658,18 @@ class JoinUs extends Component {
                         <div className={this.styles.preContainer}>
                             <div className={this.styles.buttonContainer} style={{marginTop: '40px'}}>
                                 <div className={this.styles.lamButton} onClick={() => {
-                                    this.setState({selectedSide: 1})
+                                    this.setState({selectedSide: 1, currentHerf: '/b/topics/join/form'},
+                                        () => {
+                                            this.props.history.push('/b/topics/join/form')
+                                        })
                                 }}>入会申请入口
                                 </div>
                                 <div style={{width: '100px'}}/>
                                 <div className={this.styles.lamButton} onClick={() => {
-                                    this.setState({selectedSide: 2})
+                                    this.setState({selectedSide: 2, currentHerf: '/b/topics/join/form'},
+                                        () => {
+                                            this.props.history.push('/b/topics/join/form')
+                                        })
                                 }}>青年团申请入口
                                 </div>
                             </div>
@@ -803,6 +820,9 @@ const styles = theme => ({
     }
 });
 
-JoinUs.propTypes = {};
+JoinUs.propTypes = {
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+};
 
-export default withStyles(styles)(JoinUs);
+export default withRouter(withStyles(styles)(JoinUs));
