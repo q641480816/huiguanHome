@@ -104,7 +104,12 @@ class Section extends Component {
                                         width: '100%'
                                     }}>
                                         <div className={this.styles.titleWrapper}>
-                                            {a.title}
+                                            <Link to={'/b/article' + this.state.section.navigation + "/" + a.id}
+                                                  style={{textDecoration: 'none'}}
+                                                  target="_blank"
+                                                  className={'linkWrapper'}>
+                                                <div className={this.styles.titleWrapper}>{a.title}</div>
+                                            </Link>
                                             {a.isTop ?
                                                 <div className={this.styles.isTopWrapper}>置顶</div> : <div/>}
                                         </div>

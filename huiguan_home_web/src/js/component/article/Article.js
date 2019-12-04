@@ -158,7 +158,12 @@ const styles = theme => ({
     articleTitle: {
         fontWeight: 'bold',
         color: utils.colorScheme.secondary,
-        fontSize: '35px'
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '25px',
+        },
+        [theme.breakpoints.up('md')]: {
+            fontSize: '35px',
+        },
     },
     carouselContainer: {
         [theme.breakpoints.down('sm')]: {
@@ -181,7 +186,12 @@ const styles = theme => ({
     contentWrapper: {
         marginTop: '20px',
         color: utils.colorScheme.text,
-        fontSize: '18px'
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '16px',
+        },
+        [theme.breakpoints.up('md')]: {
+            fontSize: '18px',
+        },
     },
     urlWrapper: {
         marginTop: '20px',

@@ -23,7 +23,7 @@ class ArticleForm extends Component {
         super(props);
         this.state = {
             form: {
-                sectionId: {id: 1, title: '会馆简介'},
+                sectionId: 4,
                 title: '',
                 description: '',
                 content: BraftEditor.createEditorState('<p/>'),
@@ -79,16 +79,7 @@ class ArticleForm extends Component {
         this.setState({
             sections: this.props.sections ? this.props.sections : this.state.sections,
             isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
-            form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : {
-                sectionId: {id: 1, title: '会馆简介'},
-                title: '',
-                description: '',
-                content: BraftEditor.createEditorState('<p/>'),
-                time: (new Date()),
-                url: '',
-                resources: [],
-                isTop: false
-            }
+            form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : this.state.form
         });
     }
 
@@ -97,16 +88,7 @@ class ArticleForm extends Component {
             this.setState({
                 sections: this.props.sections,
                 isSection: this.props.isSection ? this.props.isSection : this.state.isSection,
-                form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : {
-                    sectionId: {id: 1, title: '会馆简介'},
-                    title: '',
-                    description: '',
-                    content: BraftEditor.createEditorState('<p/>'),
-                    time: (new Date()),
-                    url: '',
-                    resources: [],
-                    isTop: false
-                }
+                form: this.props.article ? this.prepareForm(this.props.sections, this.props.article) : this.state.form
             })
         }
     }
@@ -123,7 +105,7 @@ class ArticleForm extends Component {
         }
 
         return {
-            sectionId: section,
+            sectionId: section.id,
             title: article.title,
             description: article.description,
             content: BraftEditor.createEditorState(article.content),
@@ -137,7 +119,7 @@ class ArticleForm extends Component {
     getForm = () => {
         let form = Object.assign({}, this.state.form);
         form.content = form.content.toHTML();
-        form.sectionId = {id: form.sectionId.id};
+        form.sectionId = {id: form.sectionId};
         return form;
     };
 
@@ -163,7 +145,7 @@ class ArticleForm extends Component {
                 section: '',
                 title: '',
                 description: '',
-                content: '',
+                content: BraftEditor.createEditorState('<p/>'),
                 time: (new Date()),
                 url: '',
                 resources: []
@@ -187,7 +169,7 @@ class ArticleForm extends Component {
                     }}
                 >
                     {this.state.sections.map(s => {
-                        return (<MenuItem key={s.id} value={s}>{s.title}</MenuItem>)
+                        return (<MenuItem key={s.id} value={s.id}>{s.title}</MenuItem>)
                     })}
                 </Select>
             </FormControl>

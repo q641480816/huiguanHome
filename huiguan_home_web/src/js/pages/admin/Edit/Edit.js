@@ -109,7 +109,7 @@ class Edit extends Component {
             this.toggleLoading('文章更新中', true);
             fetch(url, {
                 method: 'put',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', 'token': utils.token},
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())

@@ -39,7 +39,7 @@ class AdminPage extends Component {
         utils.naviItems.forEach(p => {
             p.sub.forEach(s => {
                 if (s.isRenderList) {
-                    sections.push(s)
+                    sections.push({id: s.id, title: s.title})
                 }
             })
         });
