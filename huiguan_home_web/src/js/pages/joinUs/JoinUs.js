@@ -642,15 +642,12 @@ class JoinUs extends Component {
     };
 
     render() {
-        if (isMobile) {
-            return (
-                <div className={this.styles.baseContainer}>
+        return (
+            <div className={this.styles.baseContainer}>
+                <div className={this.styles.baseMobileContainer}>
                     <div className={this.styles.titleWrapper}>此页面不支持手机浏览</div>
                 </div>
-            )
-        } else {
-            return (
-                <div className={this.styles.baseContainer}>
+                <div className={this.styles.baseContentContainer}>
                     {/*<div className={this.styles.titleWrapper}>会馆入会原则</div>*/}
                     {/*<div className={this.styles.titleWrapper} style={{marginTop: 0}}>Membership Rules</div>*/}
                     <div className={this.styles.titleWrapper}>欢迎加入晋江会馆</div>
@@ -676,7 +673,8 @@ class JoinUs extends Component {
                         </div> : <div/>}
                     {this.state.selectedSide !== -1 ?
                         <div className={this.styles.baseContainer}>
-                            <div className={this.styles.mask} style={!this.state.isLoading ? {display: 'none'} : {}}>
+                            <div className={this.styles.mask}
+                                 style={!this.state.isLoading ? {display: 'none'} : {}}>
                                 <Loading loadingMessage={"提交中"} isMax={true} initialState={false}
                                          ref={this.loading}/>
                             </div>
@@ -756,10 +754,9 @@ class JoinUs extends Component {
                         </div> : <div/>
                     }
                 </div>
-            );
-        }
+            </div>
+        );
     }
-
 }
 
 const styles = theme => ({
@@ -767,6 +764,26 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    baseMobileContainer: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        [theme.breakpoints.up('md')]: {
+            display: 'none'
+        }
+    },
+    baseContentContainer: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        }
     },
     titleWrapper: {
         color: utils.colorScheme.text,

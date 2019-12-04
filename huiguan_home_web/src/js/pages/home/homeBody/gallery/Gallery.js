@@ -48,7 +48,6 @@ class Gallery extends Component {
                     images[Math.floor(i / 3)].push(imagesOrg[i]);
                     if (i === 5) break;
                 }
-                console.log(images);
                 this.setState({galleryItems: images});
             })
             .catch(e => {

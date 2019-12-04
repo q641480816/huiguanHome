@@ -48,7 +48,7 @@ class Search extends Component {
         };
         fetch(url, {
             method: 'post',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 'token': utils.token},
             body: JSON.stringify(body)
         })
             .then(response => response.json())
@@ -81,7 +81,6 @@ class Search extends Component {
             return (
                 <div className={this.styles.listWrapper} style={{marginTop: '40px'}}>
                     {this.state.articles.map(a => {
-                        console.log(a.sectionId)
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>

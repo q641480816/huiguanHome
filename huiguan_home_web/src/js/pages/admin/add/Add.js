@@ -79,12 +79,12 @@ class Add extends Component {
             form.time = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
             form.section = form.sectionId;
             delete form.sectionId;
-            console.log(form);
 
             fetch(url, {
                 method: 'post',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'token': utils.token
                 },
                 body: JSON.stringify(form)
             }).then(response => response.json())
@@ -112,7 +112,7 @@ class Add extends Component {
                     <AppBar position="static">
                         <Toolbar variant="dense">
                             <Link to={'/admin'} style={{textDecoration: 'none', color: 'inherit'}}>
-                                <ArrowBackIosIcon color="white" fontSize="large"/>
+                                <ArrowBackIosIcon color="inherit" fontSize="large"/>
                             </Link>
                             <Typography variant="h6" color="inherit">
                                 添加文章
@@ -120,15 +120,7 @@ class Add extends Component {
                         </Toolbar>
                     </AppBar>
                     <div className={this.styles.bodyContainer}>
-                        <ArticleForm sections={this.state.sections} ref={this.form} article={{
-                            sectionId: {id: 1, title: '会馆简介'},
-                            title: '',
-                            description: '',
-                            content: BraftEditor.createEditorState('<p/>'),
-                            time: (new Date()),
-                            url: '',
-                            resources: []
-                        }}/>
+                        <ArticleForm sections={this.state.sections} ref={this.form}/>
                         <div style={{
                             width: '100%', display: 'flex', flexDirection: 'column',
                             alignItems: 'center',
