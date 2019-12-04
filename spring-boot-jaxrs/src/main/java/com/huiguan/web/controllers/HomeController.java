@@ -9,9 +9,7 @@ import com.huiguan.web.service.ArticleService;
 import com.huiguan.web.service.ConvertToEntityService;
 import com.huiguan.web.service.ResourceService;
 import com.huiguan.web.service.SectionService;
-import com.sun.tools.rngom.parse.host.Base;
 import io.swagger.annotations.ApiResponse;
-import lombok.experimental.Delegate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +99,8 @@ public class HomeController extends Application {
     @Path("/resources")
     @ApiOperation("Create a resource")
     @Transactional
-    public BaseResponse createResource(CreateNewResourceRequest req) {
+    public BaseResponse createResource(CreateNewResourceRequest req,@HeaderParam("token") String token) {
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
         logger.info("Creating new resources");
         Resource resource = convertToEntityService.convertToResourceEntity(req);
         int id = resourceService.addNewResource(resource);
@@ -124,7 +123,8 @@ public class HomeController extends Application {
     @Path("articles/{id}")
     @ApiOperation("Update a promotion")
     @Transactional
-    public BaseResponse updateArticle(@PathParam("id") int id,CreateNewArticleRequest req){
+    public BaseResponse updateArticle(@PathParam("id") int id,CreateNewArticleRequest req,@HeaderParam("token") String token){
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
         logger.info("Updating an article");
         Article article = convertToEntityService.convertToArticleEntity(req);
         if (article==null) return new CreateResponse("Converting to DTO fails");
@@ -148,7 +148,8 @@ public class HomeController extends Application {
     @Path("/articles")
     @ApiOperation("Create a Article")
     @Transactional
-    public BaseResponse createArticle(CreateNewArticleRequest req) {
+    public BaseResponse createArticle(CreateNewArticleRequest req,@HeaderParam("token") String token) {
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
         logger.info("Creating new articles");
         Article article = convertToEntityService.convertToArticleEntity(req);
         if (article==null) return new CreateResponse("Converting to DTO fails");
@@ -172,7 +173,8 @@ public class HomeController extends Application {
     @Path("/sections")
     @ApiOperation("Create a section")
     @Transactional
-    public BaseResponse createSection(CreateNewSectionRequest req) {
+    public BaseResponse createSection(CreateNewSectionRequest req,@HeaderParam("token") String token) {
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
         logger.info("Creating new sections");
         Section section = convertToEntityService.convertToSectionEntity(req);
         int id = sectionService.addNewSection(section);
@@ -264,7 +266,8 @@ public class HomeController extends Application {
     @Path("/search")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request) throws ApiException {
+    public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request,@HeaderParam("token") String token) throws ApiException {
+        if (token==null||token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new GetShortPageResponse("Not authorised");
         logger.info("Retrieving latest 5 articles");
         if (request.getKeyword()==null || request.getKeyword().equals("")){
             return new GetShortPageResponse("Search key word is empty");
@@ -281,7 +284,8 @@ public class HomeController extends Application {
 
     @DELETE
     @Path("/articles/{id}")
-    public Response deleteArticleById(@PathParam("id") int id) throws ApiException {
+    public Response deleteArticleById(@PathParam("id") int id,@HeaderParam("token") String token) throws ApiException {
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return Response.status(Response.Status.FORBIDDEN).build();
         logger.info("Deleting article");
 
         articleService.deleteById(id);

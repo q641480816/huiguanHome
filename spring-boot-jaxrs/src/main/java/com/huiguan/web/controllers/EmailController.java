@@ -24,24 +24,13 @@ public class EmailController extends Application {
     EmailService emailService;
 
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Path("/")
-//    @Transactional
-//    public BaseResponse getResource() throws ApiException {
-//        System.out.println("--------------------");
-//        emailService.start();
-//        BaseResponse response = new BaseResponse(200,true);
-//        return response;
-//    }
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/")
     @Transactional
-    public BaseResponse sendEmail(CreateEmailTemplate req) throws ApiException {
+    public BaseResponse sendEmail(CreateEmailTemplate req,@HeaderParam("token") String token) throws ApiException {
+        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
         logger.info("Sending the email");
         req.setCreationTime(new Timestamp(System.currentTimeMillis()));
         BaseResponse response = emailService.send(req);
