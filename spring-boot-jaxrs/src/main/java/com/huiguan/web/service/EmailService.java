@@ -33,13 +33,20 @@ public class EmailService {
 
     @Value("${huiguan.email:howard.zhang.1995@gmail.com}")
     private String emailAddress;
+    @Value("${huiguan.path:SimHei.ttf}")
+    private String FONT;
 
     public BaseResponse send(CreateEmailTemplate req) {
         String fileName = saveToPdf(req);
         String emailSubject = "";
-        if (req.getNameEnglish()!=null&&!req.getNameEnglish().isEmpty()) emailSubject = "New registration form for: " +
-                req.getNameEnglish();
-        else emailSubject = "New registration form";
+        if (req.getBeneficiaries()==null){
+            emailSubject ="Youth club application form";
+        }
+        else{
+            emailSubject= "Membership application form";
+        }
+        if (req.getNameEnglish()!=null&&!req.getNameEnglish().isEmpty()) emailSubject = emailSubject +" for: " + req.getNameEnglish();
+
         logger.info("Creating the text content");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gson.toJson(req);
@@ -129,7 +136,6 @@ public class EmailService {
     private String saveToPdf (CreateEmailTemplate req){
         logger.info("Save data in Pdf");
         Document document = new Document();
-        String FONT = "src/main/resources/font/SimHei.ttf";
         Font titleFont = FontFactory.getFont(FontFactory.COURIER, 14, Font.BOLD, new CMYKColor(255, 0, 0, 0));
         //Font textFont = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(0, 0, 0, 255));
         Font fontChinese = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -170,7 +176,7 @@ public class EmailService {
             PdfPCell cell11 = new PdfPCell(new Paragraph("手机 Hand phone: "+ checkNull(req.getHp()),fontChinese));
             PdfPCell cell12 = new PdfPCell(new Paragraph("电邮 Email: "+ checkNull(req.getEmail()),fontChinese));
             PdfPCell cell13 = new PdfPCell(new Paragraph("原籍 Origin: "+ checkNull(req.getOrigin()),fontChinese));
-            PdfPCell cell14 = new PdfPCell(new Paragraph("学历 Education"+ checkNull(req.getEducation()),fontChinese));
+            PdfPCell cell14 = new PdfPCell(new Paragraph("学历 Education: "+ checkNull(req.getEducation()),fontChinese));
             PdfPCell cell15 = new PdfPCell(new Paragraph("住家地址 Home address: "+ checkNull(req.getHomeAddress()),fontChinese));
             PdfPCell cell16 = new PdfPCell(new Paragraph("办事处地址 Office address: "+ checkNull(req.getOfficeAddress()),fontChinese));
             PdfPCell cell17 = new PdfPCell(new Paragraph("参加之团体及职位 Other clubs"+ checkNull(req.getOtherClubs()),fontChinese));
