@@ -40,10 +40,10 @@ public class EmailService {
         String fileName = saveToPdf(req);
         String emailSubject = "";
         if (req.getBeneficiaries()==null){
-            emailSubject ="Youth club application form";
+            emailSubject ="青年团入会申请 Youth club application form";
         }
         else{
-            emailSubject= "Membership application form";
+            emailSubject= "入会申请 Membership application form";
         }
         if (req.getNameEnglish()!=null&&!req.getNameEnglish().isEmpty()) emailSubject = emailSubject +" for: " + req.getNameEnglish();
 
