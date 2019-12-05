@@ -266,8 +266,7 @@ public class HomeController extends Application {
     @Path("/search")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request,@HeaderParam("token") String token) throws ApiException {
-        if (token==null||token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new GetShortPageResponse("Not authorised");
+    public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request) throws ApiException {
         logger.info("Retrieving latest 5 articles");
         if (request.getKeyword()==null || request.getKeyword().equals("")){
             return new GetShortPageResponse("Search key word is empty");

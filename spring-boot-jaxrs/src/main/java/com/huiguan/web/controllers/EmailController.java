@@ -29,8 +29,7 @@ public class EmailController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/")
     @Transactional
-    public BaseResponse sendEmail(CreateEmailTemplate req,@HeaderParam("token") String token) throws ApiException {
-        if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
+    public BaseResponse sendEmail(CreateEmailTemplate req) throws ApiException {
         logger.info("Sending the email");
         req.setCreationTime(new Timestamp(System.currentTimeMillis()));
         BaseResponse response = emailService.send(req);
