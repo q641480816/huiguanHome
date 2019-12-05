@@ -210,8 +210,9 @@ public class EmailService {
             document.add(table);
 
 
-            document.add(titleBeneficiaries);
+
             if (req.getBeneficiaries()!=null) {
+                document.add(titleBeneficiaries);
                 logger.info("Adding beneficiaries");
                 for (Beneficiary beneficiary : req.getBeneficiaries()) {
                     document.add(getTableFromBeneficiary(beneficiary,fontChinese));
