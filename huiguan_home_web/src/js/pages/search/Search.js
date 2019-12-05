@@ -48,7 +48,7 @@ class Search extends Component {
         };
         fetch(url, {
             method: 'post',
-            headers: {'Content-Type': 'application/json', 'token': utils.token},
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(body)
         })
             .then(response => response.json())
