@@ -8,7 +8,7 @@ import AdminPage from "./js/pages/admin/adminPage/AdminPage";
 
 class App extends Component {
     componentDidMount() {
-        document.title = "晋江会馆欢迎您";
+        document.title = "新加坡晋江会馆欢迎您";
     }
 
     render() {

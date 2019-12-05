@@ -266,13 +266,18 @@ class TopNavigator extends Component {
                     </div>
                 </div>
                 <div className={this.styles.searchBase}>
-                    <Tooltip title="搜索文章">
-                        <IconButton aria-label="delete" onClick={() => {
-                            this.props.history.push("/b/search")
-                        }}>
-                            <SearchIcon color={"secondary"} style={{fontSize: 40}}/>
-                        </IconButton>
-                    </Tooltip>
+                    <div className={this.styles.searchWrapper} onClick={() => {
+                        this.props.history.push("/b/search")
+                    }}>
+                        {/*<Tooltip title="搜索文章">*/}
+                        {/*    <IconButton aria-label="delete" onClick={() => {*/}
+                        {/*        this.props.history.push("/b/search")*/}
+                        {/*    }}>*/}
+                        <SearchIcon style={{fontSize: 30, color: "white"}}/>
+                        <div className={this.styles.searchText}>搜索文章</div>
+                        {/*    </IconButton>*/}
+                        {/*</Tooltip>*/}
+                    </div>
                 </div>
                 {this.renderSubDialogMobile()}
             </div>
@@ -327,6 +332,7 @@ const styles = theme => ({
         }
     },
     naviTextWrapper: {
+        marginTop: '-12px',
         [theme.breakpoints.down('xs')]: {
             display: 'none',
         },
@@ -359,17 +365,43 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         top: 0,
         right: '30px',
         color: utils.colorScheme.secondary,
         [theme.breakpoints.down('xs')]: {
-            width: '80px'
+            width: '80px',
+            justifyContent: 'center',
         },
         [theme.breakpoints.up('sm')]: {
             width: '150px',
+            justifyContent: 'flex-end',
         }
-
+    },
+    searchWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: utils.colorScheme.secondary,
+        padding: '3px 8px 3px 8px',
+        cursor: 'pointer',
+        [theme.breakpoints.down('xs')]: {
+            marginBottom: '0px',
+            borderRadius: '30%',
+        },
+        [theme.breakpoints.up('sm')]: {
+            marginBottom: '14px',
+            borderRadius: '0 5px 5px 30px'
+        },
+    },
+    searchText: {
+        color: utils.colorScheme.back,
+        marginLeft: '4px',
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.up('sm')]: {},
+        cursor: 'pointer'
     }
 });
 

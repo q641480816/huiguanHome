@@ -29,7 +29,9 @@ class JoinUs extends Component {
         super(props);
         this.state = {
             selectedSide: -1,
-            currentHerf: '',
+            submitted: false,
+            formNormalRequired: ["nameChinese", "nameEnglish", "nric", "homeTel", "officeTel", "placeOfBirth", "occupation", "nationality", "hp", "email", "origin", "education", "homeAddress", "officeAddress", "image"],
+            formYouthRequired: ["nameChinese", "nameEnglish", "nric", "homeTel", "occupation", "nationality", "hp", "email", "origin", "education", "homeAddress", "image"],
             formNormal: {
                 nameChinese: '',
                 nameEnglish: '',
@@ -97,17 +99,18 @@ class JoinUs extends Component {
         this.renderImg = this.renderImg.bind(this);
         this.submit = this.submit.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.isError = this.isError.bind(this);
 
         this.loading = React.createRef();
     }
 
     componentDidMount() {
         utils.cancelJoinUs = this.cancel;
+        console.log(Object.keys(this.state.formYouth));
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props.location);
-        console.log(this.props.history);
+
     }
 
     componentWillUnmount() {
@@ -115,79 +118,95 @@ class JoinUs extends Component {
     }
 
     submit = () => {
-        this.toggleLoading("提交中", true);
+        this.setState({
+            submitted: true
+        });
+
         let url = utils.protocol + utils.emailUrl;
         let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
 
         let date = new Date(form.dateOfBirth);
         form.dateOfBirth = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
-        fetch(url, {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert('提交成功');
-                this.toggleLoading("", false);
-                this.setState({
-                    selectedSide: -1,
-                    formNormal: {
-                        nameChinese: '',
-                        nameEnglish: '',
-                        nric: '',
-                        dateOfBirth: new Date(),
-                        homeTel: '',
-                        officeTel: '',
-                        sex: 'M',
-                        placeOfBirth: '',
-                        occupation: '',
-                        nationality: '',
-                        hp: '',
-                        email: '',
-                        origin: '福建省',
-                        education: '',
-                        homeAddress: '',
-                        officeAddress: '',
-                        otherClubs: '',
-                        image: '',
-                        beneficiaries: [{
-                            nameChinese: '',
-                            nameEnglish: '',
-                            sex: 'M',
-                            age: '',
-                            relationship: '',
-                            nric: '',
-                            address: ''
-                        }]
-                    },
-                    formYouth: {
-                        nameChinese: '',
-                        nameEnglish: '',
-                        nric: '',
-                        dateOfBirth: new Date(),
-                        homeTel: '',
-                        sex: 'F',
-                        occupation: '',
-                        nationality: '',
-                        hp: '',
-                        email: '',
-                        origin: '福建省',
-                        education: '',
-                        homeAddress: '',
-                        otherClubs: '',
-                        introducedBy: '',
-                        image: '',
-                    },
-                });
-                window.scroll({top: 0, left: 0, behavior: 'smooth'});
-            })
-            .catch(e => {
-                this.toggleLoading("", false);
-                alert('提交失败:' + e.toString());
-            });
+        let isPass = !this.isError(Object.keys(form));
+        let isImgPass = form.image !== '';
 
+        if (isPass && isImgPass) {
+            this.toggleLoading("提交中", true);
+            fetch(url, {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(form)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.httpStatus === 200) {
+                        alert('提交成功');
+                        this.toggleLoading("", false);
+                        this.setState({
+                            selectedSide: -1,
+                            submitted: false,
+                            formNormal: {
+                                nameChinese: '',
+                                nameEnglish: '',
+                                nric: '',
+                                dateOfBirth: new Date(),
+                                homeTel: '',
+                                officeTel: '',
+                                sex: 'M',
+                                placeOfBirth: '',
+                                occupation: '',
+                                nationality: '',
+                                hp: '',
+                                email: '',
+                                origin: '福建省',
+                                education: '',
+                                homeAddress: '',
+                                officeAddress: '',
+                                otherClubs: '',
+                                image: '',
+                                beneficiaries: [{
+                                    nameChinese: '',
+                                    nameEnglish: '',
+                                    sex: 'M',
+                                    age: '',
+                                    relationship: '',
+                                    nric: '',
+                                    address: ''
+                                }]
+                            },
+                            formYouth: {
+                                nameChinese: '',
+                                nameEnglish: '',
+                                nric: '',
+                                dateOfBirth: new Date(),
+                                homeTel: '',
+                                sex: 'F',
+                                occupation: '',
+                                nationality: '',
+                                hp: '',
+                                email: '',
+                                origin: '福建省',
+                                education: '',
+                                homeAddress: '',
+                                otherClubs: '',
+                                introducedBy: '',
+                                image: '',
+                            },
+                        });
+                        window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                    } else {
+                        alert('提交失败： ' + data.errorMessage);
+                        this.toggleLoading("", false);
+                    }
+                })
+                .catch(e => {
+                    this.toggleLoading("", false);
+                    alert('提交失败:' + e.toString());
+                });
+        }else{
+            alert('个人照片或信息遗漏，请检查');
+        }
     };
 
     toggleLoading = (msg, isLoading) => {
@@ -198,9 +217,35 @@ class JoinUs extends Component {
         this.loading.current.toggleLoading(isLoading);
     };
 
+    isError = (list) => {
+        let isError = false;
+        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
+        let formRequire = this.state.selectedSide === 1 ? this.state.formNormalRequired : this.state.formYouthRequired;
+        list.forEach((i) => {
+            if (formRequire.indexOf(i) !== -1 && form[i] === '') {
+                isError = true;
+            }
+        });
+
+        if (list.indexOf('beneficiaries') !== -1) {
+            let benes = this.state.formNormal.beneficiaries;
+
+            benes.forEach(b => {
+                Object.keys(b).forEach(k => {
+                    if (b[k] === '') {
+                        isError = true;
+                    }
+                })
+            })
+        }
+
+        return isError;
+    };
+
     cancel = () => {
         this.setState({
             selectedSide: -1,
+            submitted: false,
             formNormal: {
                 nameChinese: '',
                 nameEnglish: '',
@@ -267,7 +312,8 @@ class JoinUs extends Component {
                 <div className={'questionBox'}>
                     <div className={'question-j'}>
                         <div className={'question-title'}>中文姓名</div>
-                        <TextField required className={'textFiled'}
+                        <TextField error={this.state.submitted ? this.isError(['nameChinese'], false) : false}
+                                   required className={'textFiled'}
                                    label={"中文姓名"}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.nameChinese : this.state.formYouth.nameChinese}
                                    onChange={(event) => {
@@ -279,6 +325,7 @@ class JoinUs extends Component {
                     <div className={'question-j'}>
                         <div className={'question-title'}>英文姓名</div>
                         <TextField required className={'textFiled'}
+                                   error={this.state.submitted ? this.isError(['nameEnglish'], false) : false}
                                    label={"英文姓名"}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.nameEnglish : this.state.formYouth.nameEnglish}
                                    onChange={(event) => {
@@ -292,6 +339,7 @@ class JoinUs extends Component {
                     <div className={'question-j'}>
                         <div className={'question-title'}>身份证号码</div>
                         <TextField required className={'textFiled'}
+                                   error={this.state.submitted ? this.isError(['nric'], false) : false}
                                    label={"身份证号码"}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.nric : this.state.formYouth.nric}
                                    onChange={(event) => {
@@ -331,6 +379,7 @@ class JoinUs extends Component {
                         <div className={'question-j'}>
                             <div className={'question-title'}>办公电话</div>
                             <TextField required className={'textFiled'}
+                                       error={this.state.submitted ? this.isError(['officeTel'], false) : false}
                                        label={"办公电话"}
                                        value={this.state.selectedSide === 1 ? this.state.formNormal.officeTel : this.state.formYouth.officeTel}
                                        onChange={(event) => {
@@ -344,6 +393,7 @@ class JoinUs extends Component {
                         <div className={'question-title'}>家庭电话</div>
                         <TextField required className={'textFiled'}
                                    label={"家庭电话"}
+                                   error={this.state.submitted ? this.isError(['homeTel'], false) : false}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.homeTel : this.state.formYouth.homeTel}
                                    onChange={(event) => {
                                        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -374,6 +424,7 @@ class JoinUs extends Component {
                         <div className={'question-j'}>
                             <div className={'question-title'}>出生地</div>
                             <TextField required className={'textFiled'}
+                                       error={this.state.submitted ? this.isError(['placeOfBirth'], false) : false}
                                        label={"出生地"}
                                        value={this.state.selectedSide === 1 ? this.state.formNormal.placeOfBirth : this.state.formYouth.placeOfBirth}
                                        onChange={(event) => {
@@ -388,6 +439,7 @@ class JoinUs extends Component {
                     <div className={'question-j'}>
                         <div className={'question-title'}>{this.state.selectedSide === 1 ? '职业' : '职业 / 学校'}</div>
                         <TextField required className={'textFiled'}
+                                   error={this.state.submitted ? this.isError(['occupation'], false) : false}
                                    label={this.state.selectedSide === 1 ? '职业' : '职业 / 学校'}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.occupation : this.state.formYouth.occupation}
                                    onChange={(event) => {
@@ -399,6 +451,7 @@ class JoinUs extends Component {
                     <div className={'question-j'}>
                         <div className={'question-title'}>国籍</div>
                         <TextField required className={'textFiled'}
+                                   error={this.state.submitted ? this.isError(['nationality'], false) : false}
                                    label={'国籍'}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.nationality : this.state.formYouth.nationality}
                                    onChange={(event) => {
@@ -413,6 +466,7 @@ class JoinUs extends Component {
                         <div className={'question-title'}>移动手机</div>
                         <TextField required className={'textFiled'}
                                    label={'移动手机'}
+                                   error={this.state.submitted ? this.isError(['hp'], false) : false}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.hp : this.state.formYouth.hp}
                                    onChange={(event) => {
                                        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -424,6 +478,7 @@ class JoinUs extends Component {
                         <div className={'question-title'}>邮箱地址</div>
                         <TextField required className={'textFiled'}
                                    label={'邮箱地址'}
+                                   error={this.state.submitted ? this.isError(['email'], false) : false}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.email : this.state.formYouth.email}
                                    onChange={(event) => {
                                        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -437,6 +492,7 @@ class JoinUs extends Component {
                         <div className={'question-title'} style={{width: '70%'}}>祖籍</div>
                         <TextField required className={'textFiled'} style={{width: '100%'}}
                                    label={'祖籍(省/市/县)'}
+                                   error={this.state.submitted ? this.isError(['origin'], false) : false}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.origin : this.state.formYouth.origin}
                                    onChange={(event) => {
                                        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -448,7 +504,9 @@ class JoinUs extends Component {
                 <div className={'questionBox'}>
                     <div className={'question-j'}>
                         <div className={'question-title'}>最高学历</div>
-                        <FormControl required={true}>
+                        <FormControl required={true}
+                                     error={this.state.submitted ? this.isError(['education'], false) : false}
+                        >
                             <InputLabel id="section-select-label">最高学历</InputLabel>
                             <Select
                                 labelId="section-select-label"
@@ -470,6 +528,7 @@ class JoinUs extends Component {
                         <div className={'question-title'}>家庭住址</div>
                         <TextField required className={'textFiled'}
                                    label={'家庭住址'}
+                                   error={this.state.submitted ? this.isError(['homeAddress'], false) : false}
                                    value={this.state.selectedSide === 1 ? this.state.formNormal.homeAddress : this.state.formYouth.homeAddress}
                                    onChange={(event) => {
                                        let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -484,6 +543,7 @@ class JoinUs extends Component {
                             <div className={'question-title'}>办公室地址</div>
                             <TextField required className={'textFiled'}
                                        label={'办公室地址'}
+                                       error={this.state.submitted ? this.isError(['officeAddress'], false) : false}
                                        value={this.state.selectedSide === 1 ? this.state.formNormal.officeAddress : this.state.formYouth.officeAddress}
                                        onChange={(event) => {
                                            let form = this.state.selectedSide === 1 ? this.state.formNormal : this.state.formYouth;
@@ -495,7 +555,7 @@ class JoinUs extends Component {
                     {this.state.selectedSide === 2 ?
                         <div className={'question-j'}>
                             <div className={'question-title'}>介绍人</div>
-                            <TextField required className={'textFiled'}
+                            <TextField className={'textFiled'}
                                        label={'介绍人'}
                                        value={this.state.selectedSide === 1 ? this.state.formNormal.introducedBy : this.state.formYouth.introducedBy}
                                        onChange={(event) => {
@@ -537,6 +597,7 @@ class JoinUs extends Component {
                         <div className={'question-j'}>
                             <div className={'question-title'}>中文姓名</div>
                             <TextField required className={'textFiled'}
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].nameChinese === ''}
                                        label={"中文姓名"}
                                        value={b.nameChinese}
                                        onChange={(event) => {
@@ -548,6 +609,7 @@ class JoinUs extends Component {
                         <div className={'question-j'}>
                             <div className={'question-title'}>英文姓名</div>
                             <TextField required className={'textFiled'}
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].nameEnglish === ''}
                                        label={"英文姓名"}
                                        value={b.nameEnglish}
                                        onChange={(event) => {
@@ -578,6 +640,8 @@ class JoinUs extends Component {
                         <div className={'question-j'}>
                             <div className={'question-title'}>年龄</div>
                             <TextField required className={'textFiled'}
+                                       type="number"
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].age === ''}
                                        label={"年龄"}
                                        value={b.age}
                                        onChange={(event) => {
@@ -593,6 +657,7 @@ class JoinUs extends Component {
                             <TextField required className={'textFiled'}
                                        label={"关系"}
                                        value={b.relationship}
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].relationship === ''}
                                        onChange={(event) => {
                                            let form = this.state.formNormal;
                                            form.beneficiaries[index].relationship = event.target.value;
@@ -603,6 +668,7 @@ class JoinUs extends Component {
                             <div className={'question-title'}>身份证号码</div>
                             <TextField required className={'textFiled'}
                                        label={"身份证号码"}
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].nric === ''}
                                        value={b.nric}
                                        onChange={(event) => {
                                            let form = this.state.formNormal;
@@ -617,6 +683,7 @@ class JoinUs extends Component {
                             <TextField required className={'textFiled'}
                                        label={"地址"}
                                        value={b.address}
+                                       error={this.state.submitted && this.state.formNormal.beneficiaries[index].address === ''}
                                        onChange={(event) => {
                                            let form = this.state.formNormal;
                                            form.beneficiaries[index].address = event.target.value;
@@ -655,7 +722,7 @@ class JoinUs extends Component {
                         <div className={this.styles.preContainer}>
                             <div className={this.styles.buttonContainer} style={{marginTop: '40px'}}>
                                 <div className={this.styles.lamButton} onClick={() => {
-                                    this.setState({selectedSide: 1, currentHerf: '/b/topics/join/form'},
+                                    this.setState({selectedSide: 1},
                                         () => {
                                             this.props.history.push('/b/topics/join/form')
                                         })
@@ -663,7 +730,7 @@ class JoinUs extends Component {
                                 </div>
                                 <div style={{width: '100px'}}/>
                                 <div className={this.styles.lamButton} onClick={() => {
-                                    this.setState({selectedSide: 2, currentHerf: '/b/topics/join/form'},
+                                    this.setState({selectedSide: 2},
                                         () => {
                                             this.props.history.push('/b/topics/join/form')
                                         })
