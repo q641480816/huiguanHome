@@ -95,7 +95,7 @@ class Search extends Component {
                                             {a.title}
                                         </div>
                                         <div className={this.styles.titleWrapper}
-                                             style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.time}</div>
+                                             style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.creationTime}</div>
                                         <div className={this.styles.articleContentWrapper}>
                                             {a.resource ?
                                                 <div className={this.styles.imgWrapper}>

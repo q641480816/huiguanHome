@@ -113,7 +113,7 @@ class Section extends Component {
                                             {a.isTop ?
                                                 <div className={this.styles.isTopWrapper}>置顶</div> : <div/>}
                                         </div>
-                                        <div className={this.styles.timeWrapper}>{a.time}</div>
+                                        <div className={this.styles.timeWrapper}>{a.creationTime}</div>
                                         <div className={this.styles.articleContentWrapper}>
                                             {a.resources.length !== 0 ?
                                                 <div className={this.styles.imgWrapper}>

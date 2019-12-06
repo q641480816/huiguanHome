@@ -23,6 +23,7 @@ import {Apps} from "@material-ui/icons";
 import ImageUploader from "react-images-upload";
 import Loading from "../../component/loading/Loading";
 import PropTypes from "prop-types";
+import SectionDivider from "../../component/sectionDivider/SectionDivider";
 
 class JoinUs extends Component {
     constructor(props) {
@@ -204,7 +205,7 @@ class JoinUs extends Component {
                     this.toggleLoading("", false);
                     alert('提交失败:' + e.toString());
                 });
-        }else{
+        } else {
             alert('个人照片或信息遗漏，请检查');
         }
     };
@@ -586,13 +587,35 @@ class JoinUs extends Component {
     };
 
     prepareBeneficiariesUI = () => {
-        let index = -1;
-        return this.state.formNormal.beneficiaries.map(b => {
-            index++;
-            return (
+        let count = 1;
+        let views = [];
+
+        for (let index = 0; index < this.state.formNormal.beneficiaries.length; index++) {
+            let b = this.state.formNormal.beneficiaries[index];
+            let view = (
                 <div key={index}>
-                    <div className={'question-title'}
-                         style={{fontSize: '22px', marginBottom: '20px'}}>受荫人 {index + 1}</div>
+                    <div
+                        style={{display: 'flex', flexDirection: 'row', width: '100%', justifyContent: "space-between"}}>
+                        <div className={'question-title'}
+                             style={{fontSize: '22px', marginBottom: '20px'}}>受荫人 {count}</div>
+                        {this.state.formNormal.beneficiaries.length === 1 ? <div/> :
+                            <div>
+                                <Button onClick={(event) => {
+                                    let newBene = [];
+                                    for (let i = 0; i < this.state.formNormal.beneficiaries.length; i++) {
+                                        if (i !== index) {
+                                            newBene.push(this.state.formNormal.beneficiaries[i]);
+                                        }
+                                    }
+                                    let form = this.state.formNormal;
+                                    form.beneficiaries = newBene;
+                                    this.setState({formNormal: form})
+                                }} variant="outlined" color="inherit">
+                                    <div>移除受荫人</div>
+                                </Button>
+                            </div>
+                        }
+                    </div>
                     <div className={'questionBox'}>
                         <div className={'question-j'}>
                             <div className={'question-title'}>中文姓名</div>
@@ -691,14 +714,19 @@ class JoinUs extends Component {
                                        }}/>
                         </div>
                     </div>
+                    <SectionDivider fullLength={true} showDivider={true} title={''}/>
                 </div>
-            )
-        })
+            );
+            views.push(view);
+            count++;
+        }
+
+        return views;
     };
 
     renderImg = () => {
         let img = this.state.selectedSide === 1 ? this.state.formNormal.image : this.state.formYouth.image;
-        if (img !== null && img.length != 0) {
+        if (img !== null && img.length !== 0) {
             return (
                 <img style={{height: '200px'}} src={img}
                      alt={"p1"}/>

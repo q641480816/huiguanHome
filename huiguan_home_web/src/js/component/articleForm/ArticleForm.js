@@ -305,34 +305,34 @@ class ArticleForm extends Component {
                                    }}/>
                     </div> : <div/>
                 }
-                <div className={'question'}>
-                    <div className={'question-title'}>选择日期</div>
-                    <div style={{width: '200px'}}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <Grid container justify="space-around">
-                                <KeyboardDatePicker
-                                    disableToolbar
-                                    variant="inline"
-                                    format="yyyy-MM-dd"
-                                    margin="normal"
-                                    id="date-picker-inline"
-                                    label="Date picker inline"
-                                    value={this.state.form.time}
-                                    onChange={(date) => {
-                                        let form = this.state.form;
-                                        form.time = date;
-                                        this.setState({
-                                            form: form
-                                        })
-                                    }}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                            </Grid>
-                        </MuiPickersUtilsProvider>
-                    </div>
-                </div>
+                {/*<div className={'question'}>*/}
+                {/*    <div className={'question-title'}>选择日期</div>*/}
+                {/*    <div style={{width: '200px'}}>*/}
+                {/*        <MuiPickersUtilsProvider utils={DateFnsUtils}>*/}
+                {/*            <Grid container justify="space-around">*/}
+                {/*                <KeyboardDatePicker*/}
+                {/*                    disableToolbar*/}
+                {/*                    variant="inline"*/}
+                {/*                    format="yyyy-MM-dd"*/}
+                {/*                    margin="normal"*/}
+                {/*                    id="date-picker-inline"*/}
+                {/*                    label="Date picker inline"*/}
+                {/*                    value={this.state.form.time}*/}
+                {/*                    onChange={(date) => {*/}
+                {/*                        let form = this.state.form;*/}
+                {/*                        form.time = date;*/}
+                {/*                        this.setState({*/}
+                {/*                            form: form*/}
+                {/*                        })*/}
+                {/*                    }}*/}
+                {/*                    KeyboardButtonProps={{*/}
+                {/*                        'aria-label': 'change date',*/}
+                {/*                    }}*/}
+                {/*                />*/}
+                {/*            </Grid>*/}
+                {/*        </MuiPickersUtilsProvider>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className={'question'}>
                     <div className={'question-url'}>外部链接</div>
                     <TextField inputProps={{maxLength: 100}} id="url-required"

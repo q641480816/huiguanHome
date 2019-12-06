@@ -26,6 +26,7 @@ import './Edit.css';
 import utils from "../../../common/util";
 import Loading from "../../../component/loading/Loading";
 import ArticleForm from "../../../component/articleForm/ArticleForm";
+import SectionDivider from "../../../component/sectionDivider/SectionDivider";
 
 class Edit extends Component {
     constructor(props) {
@@ -42,17 +43,21 @@ class Edit extends Component {
             selectedId: 0,
             article: null,
             isEditing: false,
-            loadingMessage: ''
+            loadingMessage: '',
+            searchResults: [],
+            isSearched: false
         };
 
         this.styles = this.props.classes;
 
         this.prepareSection = this.prepareSection.bind(this);
         this.update = this.update.bind(this);
-        this.getArticle = this.getArticle.bind(this);
+        this.getArticleFix = this.getArticleFix.bind(this);
+        this.getArticleSearch = this.getArticleSearch.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
         this.renderSwitch = this.renderSwitch.bind(this);
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
+        this.renderSearchContent = this.renderSearchContent.bind(this);
 
         this.form = React.createRef();
         this.loading = React.createRef();
@@ -132,8 +137,8 @@ class Edit extends Component {
         }
     };
 
-    getArticle = () => {
-        let id = this.state.isSearch ? this.state.searchText : this.state.section.id;
+    getArticleFix = () => {
+        let id = this.state.isSearch ? this.state.selectedId : this.state.section.id;
         if (isNaN(id)) {
             this.setState({dialog: true, dialogMsg: '文章 ID 选择错误！'})
         } else {
@@ -159,6 +164,72 @@ class Edit extends Component {
         }
     };
 
+    getArticleSearch = () => {
+        if (this.state.searchText.trim() === '') {
+            alert('关键字/id不能为空');
+        } else {
+            this.toggleLoading('文章列表获取中', true);
+            let isNumber = !isNaN(this.state.searchText.trim());
+
+            let urlId = utils.protocol + utils.baseUrl + '/articles/' + this.state.searchText.trim();
+            let urlSearch = utils.protocol + utils.baseUrl + '/search';
+            let body = {
+                keyword: this.state.searchText.trim(),
+                pageNum: 0,
+                pageSize: 100
+            };
+
+            fetch(urlSearch, {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.httpStatus === 200) {
+                        let articles = data.articleList;
+                        if (isNumber) {
+                            fetch(urlId, {
+                                method: 'get',
+                                headers: {'Content-Type': 'application/json'}
+                            })
+                                .then(response => {
+                                    this.toggleLoading('', false);
+                                    return response.json()
+                                })
+                                .then(data => {
+                                    articles.push(data);
+                                    this.setState({
+                                        searchResults: articles,
+                                        isSearched: true
+                                    });
+                                    alert('文章搜索完成，点击文章开始编辑');
+                                })
+                                .catch(e => {
+                                    alert('文章搜索完成，点击文章开始编辑');
+                                    this.setState({
+                                        searchResults: articles,
+                                        isSearched: true
+                                    });
+                                });
+                        } else {
+                            this.toggleLoading('', false);
+                            alert('文章搜索完成，点击文章开始编辑');
+                            this.setState({
+                                searchResults: articles,
+                                isSearched: true
+                            })
+                        }
+                    } else {
+                        this.toggleLoading('', false);
+                        alert('搜索错误:' + data.errorMessage);
+                    }
+                    //window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                })
+                .catch(e => console.log(e));
+        }
+    };
+
     prepareSection = () => {
         let sections = [];
         utils.naviItems.forEach(i => {
@@ -179,6 +250,20 @@ class Edit extends Component {
         this.loading.current.toggleLoading(isLoading);
     };
 
+    renderSearchContent = () => {
+        return this.state.searchResults.map(a => {
+            return (
+                <div style={{display: 'flex', flexDirection: 'column', cursor: 'pointer', marginTop: '10px'}} onClick={() => {
+                    this.setState({selectedId: a.id}, () => this.getArticleFix());
+                }}>
+                    <div>文章ID： {a.id}</div>
+                    <div>文章标题： {a.title}</div>
+                    <SectionDivider fullLength={true} showDivider={true}/>
+                </div>
+            )
+        })
+    };
+
     renderSwitch = () => {
         if (!this.state.isEditing) {
             return (
@@ -195,7 +280,7 @@ class Edit extends Component {
                                 <TextField required id="search-id" disabled={!this.state.isSearch}
                                            label={"关键字/文章ID"} value={this.state.searchText}
                                            onChange={(event) => {
-                                               this.setState({searchText: event.target.value})
+                                               this.setState({searchText: event.target.value, isSearched: false})
                                            }}/>
                             </div>
                         </div>
@@ -210,10 +295,25 @@ class Edit extends Component {
                                 {this.renderSectionSelect()}
                             </div>
                         </div>
-                        <Button onClick={(event) => this.getArticle()} variant="outlined"
-                                color="inherit" style={{height: '40px', width: '200px', marginTop: '50px'}}>
-                            <div>确认并开始编辑</div>
-                        </Button>
+                        {!this.state.isSearch ?
+                            <Button onClick={(event) => this.getArticleFix()} variant="outlined"
+                                    color="inherit" style={{height: '40px', width: '200px', marginTop: '50px'}}>
+                                <div>确认并开始编辑</div>
+                            </Button> :
+                            <Button onClick={(event) => this.getArticleSearch()} variant="outlined"
+                                    color="inherit" style={{height: '40px', width: '200px', marginTop: '50px'}}>
+                                <div>搜索文章</div>
+                            </Button>
+                        }
+                        {this.state.isSearch && this.state.isSearched ?
+                            <div>
+                                {this.state.searchResults.length !== 0 ?
+                                    <div className={this.styles.searchContentBase}>
+                                        {this.renderSearchContent()}
+                                    </div>
+                                    : <div style={{marginTop: '30px'}}>无相应文章</div>}
+                            </div> : <div/>
+                        }
                     </div>
                 </div>
             );
@@ -334,6 +434,12 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             display: 'none'
         }
+    },
+    searchContentBase: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: '30px',
+        marginTop: '40px'
     }
 });
 

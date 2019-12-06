@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {withStyles, Button, Divider} from "@material-ui/core";
 import {Room, ContactPhone, Email} from '@material-ui/icons';
+import {Link} from 'react-router-dom';
 
 import './BottomNavigater.css';
 import utils from "../../common/util";
@@ -134,6 +135,13 @@ class BottomNavigator extends Component {
                         </div>
                     </div>
                 </div>
+
+                <div className={this.styles.copyRightContainer}>
+                    版权所有新加坡晋江会馆
+                    <Link to={'/admin'} style={{textDecoration: 'none', color: utils.colorScheme.tertiary, marginLeft: '10px'}}>
+                        管理入口
+                    </Link>
+                </div>
             </div>
         );
     }
@@ -191,6 +199,16 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         }
+    },
+    copyRightContainer: {
+        width: '100%',
+        height: '60px',
+        backgroundColor: utils.colorScheme.text,
+        color: utils.colorScheme.tertiary,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
 
