@@ -24,6 +24,8 @@ class Login extends Component {
     login = () => {
         if(this.props.validate(this.state.c.username, this.state.c.token)){
             this.props.setPassword(this.state.c.username, this.state.c.token);
+        }else{
+            alert('密匙错误');
         }
     };
 

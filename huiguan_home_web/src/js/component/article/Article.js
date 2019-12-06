@@ -68,7 +68,7 @@ class Article extends Component {
             return (
                 <div className={this.styles.contentContainer}>
                     <div className={this.styles.articleTitle}>{this.state.article.title}</div>
-                    <p style={{color: utils.colorScheme.text}}>{this.state.article.time ? this.state.article.time : this.state.article.creation_time}</p>
+                    <p style={{color: utils.colorScheme.text}}>{this.state.article.creationTime}</p>
                     <div style={{
                         width: '100%',
                         display: 'flex',
