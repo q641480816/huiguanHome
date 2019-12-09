@@ -60,7 +60,7 @@ class HomeCarousel extends Component {
                                  alt={"p1"}/>
                         </div>
                         <div className={this.styles.homeCarouselLegend}>
-                            <p className={this.styles.homeCarouselLegendText}>{i.title}</p>
+                            {/*<p className={this.styles.homeCarouselLegendText}>{i.title}</p>*/}
                             <p className={this.styles.homeCarouselLegendDes}>{i.description}</p>
                         </div>
                     </div>
@@ -113,11 +113,12 @@ const styles = theme => ({
         color: 'white',
         fontWeight: 'bold',
         zIndex: '100',
+        marginTop: '20px',
         [theme.breakpoints.down('sm')]: {
-            fontSize: '12px',
+            fontSize: '17.5px',
         },
         [theme.breakpoints.up('md')]: {
-            fontSize: '30px',
+            fontSize: '40px',
         }
     },
     imgContainer: {

@@ -41,6 +41,21 @@ const utils = {
         },
         getRatioHeight:(width) => {
             return width/2;
+        },
+        sortArticles: (as) => {
+            console.log(as);
+            // as.sort((a1, a2) => {
+            //     if(a1.isTop && a2.isTop){
+            //
+            //     }else if(a1.isTop) {
+            //         return -1;
+            //     }else if(a2.isTop){
+            //         return 1;
+            //     }else{
+            //
+            //     }
+            // })
+            return as;
         }
     },
     contact: {
@@ -97,7 +112,8 @@ const utils = {
         {
             id: 4, title: '会馆服务', navigation: '/service', sub: [
                 {id: 8, title: '互助部', navigation: '/help', sub: [], isRenderList: true},
-                {id: 9, title: '妇女部', navigation: '/women', sub: [], isRenderList: true},
+                {id: 9, title: '妇女组', navigation: '/women', sub: [], isRenderList: true},
+                {id: 18, title: '福利组', navigation: '/benefit', sub: [], isRenderList: true},
                 {id: 10, title: '康乐股', navigation: '/kangle', sub: [], isRenderList: true},
                 {id: 11, title: '教育股', navigation: '/education', sub: [], isRenderList: true},
                 {id: 12, title: '青年团', navigation: '/youth', sub: [], isRenderList: true},
