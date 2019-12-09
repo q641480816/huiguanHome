@@ -67,10 +67,9 @@ class Gallery extends Component {
                             <Link key={i.id} to={'/b/topics' + i.sectionNav}>
                                 <div key={i.id}
                                      className={index_img >= 2 ? this.styles.imgWrapperMobile : this.styles.imgWrapper}>
-                                    <img className={'imgItem'} alt={i.title} src={i.url ? i.url : i.content}/>
+                                    <img className={'imgItem'} alt={i.title} src={i.content}/>
                                     <div className={'igmItemCover'}>
-                                        <div className={'imgTitle'}>{i.title}</div>
-                                        <div className={'imgDes'}>{i.description}</div>
+                                        <div className={'imgTitle'}>{i.description}</div>
                                     </div>
                                 </div>
                             </Link>

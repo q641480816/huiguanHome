@@ -119,8 +119,10 @@ class Article extends Component {
                             <img src={i.url ? i.url : i.content} alt={"p1"}/>
                         </div>
                         <div className={this.styles.carouselLegend}>
-                            <div style={{color: utils.colorScheme.back}}>{i.title}</div>
-                            <div style={{color: utils.colorScheme.tertiary}}>{i.description}</div>
+                            {/*<div style={{color: utils.colorScheme.back}}>{i.title}</div>*/}
+                            <div style={{color: utils.colorScheme.tertiary}}>
+                                {i.description}
+                            </div>
                         </div>
                     </div>
                 )
@@ -166,46 +168,39 @@ const styles = theme => ({
         },
     },
     carouselContainer: {
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             width: '87vw',
         },
-        [theme.breakpoints.up('md')]: {
-            width: '64vw',
+        [theme.breakpoints.up('sm')]: {
+            width: '55vw',
         },
     },
     imgContainer: {
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             width: '87vw',
             height: 'calc(87vw/16*9)'
         },
-        [theme.breakpoints.up('md')]: {
-            width: '64vw',
-            height: 'calc(64vw/16*9)'
+        [theme.breakpoints.up('sm')]: {
+            width: '55vw',
+            height: 'calc(55vw/16*9)'
         },
     },
     contentWrapper: {
-        marginTop: '20px',
+        marginTop: '25px',
         color: utils.colorScheme.text,
         [theme.breakpoints.down('sm')]: {
             fontSize: '16px',
         },
         [theme.breakpoints.up('md')]: {
-            fontSize: '18px',
+            fontSize: '20px',
         },
     },
     urlWrapper: {
-        marginTop: '20px',
+        marginTop: '35px',
         color: utils.colorScheme.text,
-        fontSize: '18px',
-         fontStyle: 'italic',
-        [theme.breakpoints.down('xs')]: {
-            display: 'flex',
-            flexDirection: 'column',
-        },
-        [theme.breakpoints.up('sm')]: {
-            display: 'flex',
-            flexDirection: 'row',
-        },
+        fontStyle: 'italic',
+        display: 'flex',
+        flexDirection: 'column',
     },
     carouselLegend: {
         backgroundColor: 'rgba(0,0,0,.5)',
@@ -213,16 +208,20 @@ const styles = theme => ({
         bottom: 0,
         left: 0,
         width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center',
         [theme.breakpoints.down('xs')]: {
-            height: '40%',
+            height: '35%',
             fontSize: '15px'
         },
         [theme.breakpoints.up('sm')]: {
-            height: '30%',
+            height: '25%',
             fontSize: '20px'
         },
         [theme.breakpoints.up('md')]: {
-            height: '30%',
+            height: '25%',
             fontSize: '26.5px'
         }
     }

@@ -253,12 +253,12 @@ class Edit extends Component {
     renderSearchContent = () => {
         return this.state.searchResults.map(a => {
             return (
-                <div style={{display: 'flex', flexDirection: 'column', cursor: 'pointer', marginTop: '10px'}} onClick={() => {
+                <div key={a.id} style={{display: 'flex', flexDirection: 'column', cursor: 'pointer', marginTop: '10px'}} onClick={() => {
                     this.setState({selectedId: a.id}, () => this.getArticleFix());
                 }}>
                     <div>文章ID： {a.id}</div>
                     <div>文章标题： {a.title}</div>
-                    <SectionDivider fullLength={true} showDivider={true}/>
+                    <SectionDivider fullLength={true} showDivider={true} title={''}/>
                 </div>
             )
         })

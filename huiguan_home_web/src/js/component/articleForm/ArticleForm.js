@@ -6,16 +6,17 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    TextField,
-    Grid, Paper, Button, Checkbox, FormControlLabel
+    TextField, Paper, Button, Checkbox, FormControlLabel
 } from "@material-ui/core";
-import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import BraftEditor from 'braft-editor';
+import Table from 'braft-extensions/dist/table'
 import ImageUploader from 'react-images-upload';
 
-import './ArticleForm.css'
-import './editor.css'
+import './ArticleForm.css';
+// import './editor.css';
+import 'braft-editor/dist/index.css';
+import 'braft-extensions/dist/table.css';
+
 import utils from "../../common/util";
 
 class ArticleForm extends Component {
@@ -33,9 +34,9 @@ class ArticleForm extends Component {
                 isTop: false
             },
             sections: [],
-            titleLengthLimit: 30,
+            titleLengthLimit: 60,
             imgTitleLengthLimit: 10,
-            descriptionLengthLimit: 150,
+            descriptionLengthLimit: 240,
             imgDescriptionLengthLimit: 30,
             isSection: false,
             editorControls: [
@@ -43,7 +44,7 @@ class ArticleForm extends Component {
                 'text-color', 'bold', 'italic', 'underline', 'strike-through', 'separator',
                 'superscript', 'subscript', 'remove-styles', 'emoji', 'separator', 'text-indent', 'text-align', 'separator',
                 'headings', 'list-ul', 'list-ol', 'blockquote', 'separator',
-                'link', 'separator', 'hr', 'separator', 'code', 'separator', 'clear'
+                'link', 'separator', 'hr', 'separator', 'code', 'separator', 'clear', 'table'
                 //, 'separator', 'media'
             ],
             mediaControl: {
@@ -108,7 +109,7 @@ class ArticleForm extends Component {
             sectionId: section.id,
             title: article.title,
             description: article.description,
-            content: BraftEditor.createEditorState(article.content),
+            content: BraftEditor.createEditorState(article.content, { editorId: 'editor' }),
             time: (new Date(article.time)),
             url: article.url ? article.url : '',
             resources: article.resources,
@@ -194,25 +195,25 @@ class ArticleForm extends Component {
                                 <Paper style={{paddingBottom: '15px'}}>
                                     <img style={{height: '255px'}} src={i.url ? i.url : i.content}
                                          alt={"p1"}/>
-                                    <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
-                                        <div className={'question-title'}>标题</div>
-                                        <TextField inputProps={{maxLength: this.state.imgTitleLengthLimit}} required
-                                                   style={{width: '90%'}}
-                                                   label={"标题(最大长度=" + this.state.imgTitleLengthLimit + ")"}
-                                                   value={i.title}
-                                                   onChange={(event) => {
-                                                       let form = this.state.form;
-                                                       for (let j = 0; j < form.resources.length; j++) {
-                                                           let img = form.resources[j];
-                                                           if (img.id === i.id) {
-                                                               img.title = event.target.value;
-                                                               form.resources[j] = img;
-                                                               break;
-                                                           }
-                                                       }
-                                                       this.setState({form: form})
-                                                   }}/>
-                                    </div>
+                                    {/*<div className={'question'} style={{margin: '10px 0 0px 10px'}}>*/}
+                                    {/*    <div className={'question-title'}>标题</div>*/}
+                                    {/*    <TextField inputProps={{maxLength: this.state.imgTitleLengthLimit}} required*/}
+                                    {/*               style={{width: '90%'}}*/}
+                                    {/*               label={"标题(最大长度=" + this.state.imgTitleLengthLimit + ")"}*/}
+                                    {/*               value={i.title}*/}
+                                    {/*               onChange={(event) => {*/}
+                                    {/*                   let form = this.state.form;*/}
+                                    {/*                   for (let j = 0; j < form.resources.length; j++) {*/}
+                                    {/*                       let img = form.resources[j];*/}
+                                    {/*                       if (img.id === i.id) {*/}
+                                    {/*                           img.title = event.target.value;*/}
+                                    {/*                           form.resources[j] = img;*/}
+                                    {/*                           break;*/}
+                                    {/*                       }*/}
+                                    {/*                   }*/}
+                                    {/*                   this.setState({form: form})*/}
+                                    {/*               }}/>*/}
+                                    {/*</div>*/}
                                     <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
                                         <div className={'question-description'}>简介</div>
                                         <TextField inputProps={{maxLength: this.state.imgDescriptionLengthLimit}}
@@ -335,8 +336,9 @@ class ArticleForm extends Component {
                 {/*</div>*/}
                 <div className={'question'}>
                     <div className={'question-url'}>外部链接</div>
-                    <TextField inputProps={{maxLength: 100}} id="url-required"
-                               label={"外部链接(最大长度=" + 100 + ")"} value={this.state.form.url}
+                    <TextField id="url-required"
+                               label={"外部链接"} value={this.state.form.url}
+                               multiline
                                onChange={(event) => {
                                    let form = this.state.form;
                                    form.url = event.target.value;
@@ -359,12 +361,14 @@ class ArticleForm extends Component {
                     <div id={'editor-frame'}>
                         <BraftEditor
                             value={this.state.form.content}
+                            id={"editor"}
                             controls={this.state.editorControls}
                             media={this.state.mediaControl}
                             onChange={(editorState) => {
                                 if (editorState.toHTML() !== this.state.form.content.toHTML()) {
                                     let form = this.state.form;
                                     form.content = editorState;
+                                    console.log(editorState.toHTML());
                                     this.setState({form: form})
                                 }
                             }}
@@ -389,5 +393,15 @@ ArticleForm.propTypes = {
     isSection: PropTypes.bool,
     article: PropTypes.object
 };
+
+const options = {
+    defaultColumns: 3,
+    defaultRows: 3,
+    withDropdown: true,
+    exportAttrString: '',
+    includeEditors: ["editor"],
+};
+
+BraftEditor.use(Table(options));
 
 export default withStyles(styles)(ArticleForm);
