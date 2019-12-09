@@ -119,7 +119,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Set<GetArticleResponse> findArticlePageSortBySectionAndId(int pageNum, int pageSize, int sectionId) {
-        Pageable req = PageRequest.of(pageNum, pageSize, Sort.by("isTop").descending().and(Sort.by("creationTime")));
+        Pageable req = PageRequest.of(pageNum, pageSize, Sort.by("isTop").descending().and(Sort.by("creationTime").descending()));
 
         Optional<Section> articleSection = sectionService.findById(sectionId);
         if (!articleSection.isPresent()) {

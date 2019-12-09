@@ -172,7 +172,7 @@ public class EmailService {
             PdfPCell cell7 = new PdfPCell(new Paragraph("出生地点 Place of Birth: "+ checkNull(req.getPlaceOfBirth()),fontChinese));
             PdfPCell cell8 = new PdfPCell(new Paragraph("办事处电话 Office Tel: "+ checkNull(req.getOfficeTel()),fontChinese));
             PdfPCell cell9 = new PdfPCell(new Paragraph("职业 Occupation: "+ checkNull(req.getOccupation()),fontChinese));
-            PdfPCell cell10 = new PdfPCell(new Paragraph("国籍 Nationality"+ checkNull(req.getNationality()),fontChinese));
+            PdfPCell cell10 = new PdfPCell(new Paragraph("国籍 Nationality: "+ checkNull(req.getNationality()),fontChinese));
             PdfPCell cell11 = new PdfPCell(new Paragraph("手机 Hand phone: "+ checkNull(req.getHp()),fontChinese));
             PdfPCell cell12 = new PdfPCell(new Paragraph("电邮 Email: "+ checkNull(req.getEmail()),fontChinese));
             PdfPCell cell13 = new PdfPCell(new Paragraph("原籍 Origin: "+ checkNull(req.getOrigin()),fontChinese));
