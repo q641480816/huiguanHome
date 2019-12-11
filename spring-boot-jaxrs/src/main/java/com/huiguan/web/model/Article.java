@@ -42,6 +42,9 @@ public class Article {
     @Column(name="time")
     private Timestamp time;
 
+    @Column(name="is_direct_url")
+    private Boolean isDirectUrl;
+
     @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="resources_articles_fk")
     private Set<Resource> resources = new HashSet<>();

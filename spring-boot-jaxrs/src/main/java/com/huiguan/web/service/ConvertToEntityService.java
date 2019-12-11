@@ -62,6 +62,7 @@ public class ConvertToEntityService {
         if (resources!=null && resources.size()>0){
             res.setResource(convertToResourceDto(resources.iterator().next()));
         }
+        res.setIsDirectUrl(article.getIsDirectUrl());
         res.setCreationTime(toDate(article.getCreationTime()));
         res.setDescription(article.getDescription());
         res.setDescription(article.getDescription());
@@ -78,6 +79,7 @@ public class ConvertToEntityService {
         GetShortArticleResponse res = new GetShortArticleResponse();
         res.setCreationTime(article.getCreationTime());
         res.setDescription(article.getDescription());
+        res.setIsDirectUrl(article.getIsDirectUrl());
         Set<GetResourceResponse> resources = article.getResources();
         if (resources.size()>0){
             res.setResource(resources.iterator().next());
@@ -100,7 +102,7 @@ public class ConvertToEntityService {
         res.setContent(article.getContent());
         res.setCreationTime(toDate(article.getCreationTime()));
         res.setDescription(article.getDescription());
-
+        res.setIsDirectUrl(article.getIsDirectUrl());
         if (article.getResources()!=null){
             Set<GetResourceResponse> resourcesDto = new HashSet<>();
             for (Resource resource:article.getResources()){

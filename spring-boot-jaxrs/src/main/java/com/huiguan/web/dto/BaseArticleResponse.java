@@ -15,5 +15,6 @@ public class BaseArticleResponse {
     int sectionId;
     String url;
     Boolean isTop;
+    Boolean isDirectUrl;
     public BaseArticleResponse(){}
 }

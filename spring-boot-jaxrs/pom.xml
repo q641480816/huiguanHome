@@ -12,6 +12,7 @@
     <artifactId>spring-boot-jaxrs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-jaxrs</name>
+<!--    <packaging>war</packaging>-->
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -84,6 +85,7 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <!--Documentation-->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey2-jaxrs</artifactId>
