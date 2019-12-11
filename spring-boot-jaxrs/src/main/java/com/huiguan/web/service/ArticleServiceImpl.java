@@ -103,6 +103,9 @@ public class ArticleServiceImpl implements ArticleService {
         if(article.getIsTop()!=null) {
             toBeEdited.setIsTop(article.getIsTop());
         }
+        if(article.getIsDirectUrl()!=null) {
+            toBeEdited.setIsDirectUrl(article.getIsDirectUrl());
+        }
         if (article.getUrl()!=null) {
             toBeEdited.setUrl(article.getUrl());
         }

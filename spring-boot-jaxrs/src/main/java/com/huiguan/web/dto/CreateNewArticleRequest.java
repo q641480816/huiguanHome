@@ -24,6 +24,7 @@ public class CreateNewArticleRequest {
     String url;
     String description;
     Section section;
+    Boolean isDirectUrl;
 }
 
 

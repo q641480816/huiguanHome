@@ -121,7 +121,7 @@ public class HomeController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("articles/{id}")
-    @ApiOperation("Update a promotion")
+    @ApiOperation("Update an article")
     @Transactional
     public BaseResponse updateArticle(@PathParam("id") int id,CreateNewArticleRequest req,@HeaderParam("token") String token){
         if (token==null||token.isEmpty()||!token.equals("admin_jinjiang")) return new BaseResponse("Not authorised");
@@ -265,7 +265,7 @@ public class HomeController extends Application {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/search")
     @Transactional
-    @ApiOperation("Get latest articles")
+    @ApiOperation("Search articles")
     public GetShortPageResponse getLatestShortArticlesByRange(SearchRequest request) throws ApiException {
         logger.info("Retrieving latest 5 articles");
         if (request.getKeyword()==null || request.getKeyword().equals("")){
