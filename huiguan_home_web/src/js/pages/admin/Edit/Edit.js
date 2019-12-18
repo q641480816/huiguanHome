@@ -83,12 +83,19 @@ class Edit extends Component {
         let form = this.form.current.getForm();
         let pass = true;
 
+        console.log(form)
+
         if (form.section === '' || form.title === '') {
             pass = false;
             this.setState({
                 dialog: true,
                 dialogMsg: '类别和标题不能为空'
             });
+        }
+
+        if((form.sectionId.id === 4 || form.isDirectUrl) && form.url.trim().length === 0){
+            alert("会馆动态文章的URL不能为空");
+            pass = false;
         }
 
         if (pass) {
@@ -110,7 +117,7 @@ class Edit extends Component {
             }
             body.resources = form.resources;
 
-            //save changes
+            // save changes
             this.toggleLoading('文章更新中', true);
             fetch(url, {
                 method: 'put',

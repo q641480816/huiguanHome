@@ -34,10 +34,10 @@ class HomeBody extends Component {
                     <HomeCarousel/>
                 </div>
                 <div>
-                    <div style={{marginTop: '30px'}}/>
+                    <div style={{marginTop: '50px'}}/>
                     <HomeFeed/>
                 </div>
-                <div>
+                <div style={{marginTop: '30px'}}>
                     <SectionDivider title={"情缘晋江"} showDivider={true} textColor={utils.colorScheme.secondary}
                                     color={utils.colorScheme.secondary} short={''}/>
                 </div>

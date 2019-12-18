@@ -267,7 +267,8 @@ class TopNavigator extends Component {
                 </div>
                 <div className={this.styles.searchBase}>
                     <div className={this.styles.searchWrapper} onClick={() => {
-                        this.props.history.push("/b/search")
+                        this.props.history.push("/b/search");
+                        window.scroll({top: 0, left: 0, behavior: 'smooth'});
                     }}>
                         {/*<Tooltip title="搜索文章">*/}
                         {/*    <IconButton aria-label="delete" onClick={() => {*/}
