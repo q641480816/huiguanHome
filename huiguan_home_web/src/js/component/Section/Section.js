@@ -66,6 +66,7 @@ class Section extends Component {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 this.setState({
                     articles: data.articleList,
                     offset: offset,
@@ -93,7 +94,7 @@ class Section extends Component {
             return (
                 <div className={this.styles.listWrapper}>
                     {this.state.articles.map(a => {
-                        let link = (a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ? a.url : 
+                        let link = (a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ? a.url : 
                         '/b/article' + this.state.section.navigation + "/" + a.id;
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
@@ -106,7 +107,7 @@ class Section extends Component {
                                         width: '100%'
                                     }}>
                                         <div className={this.styles.titleWrapper}>
-                                            {(a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                            {(a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
                                                 (
                                                     <a href={link}
                                                         style={{textDecoration: 'none'}}
@@ -140,7 +141,7 @@ class Section extends Component {
                                                 className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
                                         </div>
                                     </div>
-                                    {(a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                    {(a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
                                         (
                                             <a href={link} style={{textDecoration: 'none'}} target="_blank" className={'linkWrapper'}>
                                                 <Button className={this.styles.readMoreButton}
@@ -163,9 +164,10 @@ class Section extends Component {
                                     }
                                 </div>
                                 {a.id !== this.state.articles[this.state.articles.length - 1].id ?
+                                <div style={{marginTop: '15px'}}>
                                     <SectionDivider showDivider={true} fullLength={true}
-                                                    color={utils.colorScheme.secondary} title={""}/> :
-                                    <div style={{marginBottom: '10px'}}/>}
+                                                    color={utils.colorScheme.secondary} title={""}/></div> :
+                                    <div style={{marginBottom: '20px'}}/>}
 
                             </div>
                         )
@@ -341,11 +343,11 @@ const styles = theme => ({
         },
         [theme.breakpoints.up('sm')]: {
             position: 'absolute',
-            bottom: '-20px',
+            bottom: '-40px',
             right: 0,
         },
         [theme.breakpoints.up('md')]: {
-            bottom: 0,
+            bottom: '-15px',
         }
     },
     isTopWrapper: {

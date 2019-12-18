@@ -13,6 +13,8 @@
     "google-map-react": "^1.1.5",
     "html-react-parser": "^0.10.0",
     "material-ui-flat-pagination": "^4.0.0",
+    "node-adodb": "^5.0.2",
+    "node-fetch": "^2.6.0",
     "prop-types": "latest",
     "react": "^16.11.0",
     "react-device-detect": "^1.11.14",
