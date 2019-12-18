@@ -58,10 +58,6 @@ class Article extends Component {
                 this.setState({
                     article: data
                 });
-
-                if((data.sectionId === 4 || data.isDirectUrl) && data.url.length > 0 && data.url.indexOf("http") >= 0){
-                    window.location.href = data.url;
-                }
                 window.scroll({top: 0, left: 0, behavior: 'smooth'});
             })
             .catch(e => console.log(e));
