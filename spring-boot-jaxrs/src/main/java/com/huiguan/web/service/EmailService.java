@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.huiguan.web.dto.BaseResponse;
 import com.huiguan.web.dto.Beneficiary;
+import com.huiguan.web.dto.ContactEmailTemplate;
 import com.huiguan.web.dto.CreateEmailTemplate;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -35,6 +36,61 @@ public class EmailService {
     private String emailAddress;
     @Value("${huiguan.path:SimHei.ttf}")
     private String FONT;
+
+    public BaseResponse send(ContactEmailTemplate req) {
+
+        String emailSubject = "联系我们  Inquiry";
+        logger.info("Setting up the email server");
+        final String username = "chinkang.no.reply@gmail.com";
+        final String password = "chinkang123";
+
+
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("from@gmail.com"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(emailAddress)
+            );
+            message.setSubject(emailSubject);
+
+            // Adding different parts to email
+            Multipart multipart = new MimeMultipart();
+
+            // set text part
+            logger.info("Attaching the text");
+            MimeBodyPart textPart = new MimeBodyPart();
+            textPart.setText( "Please reply to this email 联系人: " + req.getReplyTo()  +"\n\n Content 反馈内容: " + req.getContent(), "utf-8" );
+            multipart.addBodyPart(textPart);
+
+            message.setContent(multipart);
+            Transport.send(message);
+
+            logger.info("Email sent successfully");
+            return new BaseResponse(200, true);
+
+
+        } catch (MessagingException | RuntimeException e) {
+            e.printStackTrace();
+            return new BaseResponse("Email not sent successfully. Please try again");
+        }
+    }
 
     public BaseResponse send(CreateEmailTemplate req) {
         String fileName = saveToPdf(req);
