@@ -217,16 +217,16 @@ const styles = theme => ({
         justifyContent: 'center',
         alignItems:'center',
         [theme.breakpoints.down('xs')]: {
-            height: '35%',
-            fontSize: '15px'
+            height: '15%',
+            fontSize: '14px'
         },
         [theme.breakpoints.up('sm')]: {
-            height: '25%',
-            fontSize: '20px'
+            height: '12%',
+            fontSize: '17px'
         },
         [theme.breakpoints.up('md')]: {
-            height: '25%',
-            fontSize: '26.5px'
+            height: '10%',
+            fontSize: '21.5px'
         }
     }
 });
