@@ -93,6 +93,8 @@ class Section extends Component {
             return (
                 <div className={this.styles.listWrapper}>
                     {this.state.articles.map(a => {
+                        let link = (a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ? a.url : 
+                        '/b/article' + this.state.section.navigation + "/" + a.id;
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>
@@ -104,12 +106,24 @@ class Section extends Component {
                                         width: '100%'
                                     }}>
                                         <div className={this.styles.titleWrapper}>
-                                            <Link to={'/b/article' + this.state.section.navigation + "/" + a.id}
-                                                  style={{textDecoration: 'none'}}
-                                                  target="_blank"
-                                                  className={'linkWrapper'}>
-                                                <div className={this.styles.title}>{a.title}</div>
-                                            </Link>
+                                            {(a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                                (
+                                                    <a href={link}
+                                                        style={{textDecoration: 'none'}}
+                                                        target="_blank"
+                                                        className={'linkWrapper'}>
+                                                        <div className={this.styles.title}>{a.title}</div>
+                                                    </a> 
+                                                ):    
+                                                (
+                                                    <Link to={link}
+                                                        style={{textDecoration: 'none'}}
+                                                        target="_blank"
+                                                        className={'linkWrapper'}>
+                                                        <div className={this.styles.title}>{a.title}</div>
+                                                    </Link>
+                                                )
+                                            }
                                             {a.isTop ?
                                                 <div className={this.styles.isTopWrapper}>置顶</div> : <div/>}
                                         </div>
@@ -126,14 +140,27 @@ class Section extends Component {
                                                 className={this.styles.descriptionWrapper}>{a.description ? parse(a.description) : 'No Content'}</div>
                                         </div>
                                     </div>
-                                    <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
-                                          className={'linkWrapper'}>
-                                        <Button className={this.styles.readMoreButton}
-                                                onClick={(event) => console.log("")} variant="outlined"
-                                                color="inherit">
-                                            <div>阅读更多</div>
-                                        </Button>
-                                    </Link>
+                                    {(a.sectionId === 4 || a.isDirectUrl) && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                        (
+                                            <a href={link} style={{textDecoration: 'none'}} target="_blank" className={'linkWrapper'}>
+                                                <Button className={this.styles.readMoreButton}
+                                                    onClick={(event) => console.log("")} variant="outlined"
+                                                    color="inherit">
+                                                    <div>阅读更多</div>
+                                                </Button>
+                                            </a>
+                                        ):    
+                                        (
+                                            <Link to={'/b/article' + this.state.section.navigation + "/" + a.id} target="_blank"
+                                                className={'linkWrapper'}>
+                                                <Button className={this.styles.readMoreButton}
+                                                    onClick={(event) => console.log("")} variant="outlined"
+                                                    color="inherit">
+                                                    <div>阅读更多</div>
+                                                </Button>
+                                            </Link>
+                                        )
+                                    }
                                 </div>
                                 {a.id !== this.state.articles[this.state.articles.length - 1].id ?
                                     <SectionDivider showDivider={true} fullLength={true}
