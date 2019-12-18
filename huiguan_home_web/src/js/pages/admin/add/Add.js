@@ -65,12 +65,14 @@ class Add extends Component {
         let form = this.form.current.getForm();
         let pass = true;
 
-        if (form.title === '') {
+        if (form.title.length === 0) {
             pass = false;
-            this.setState({
-                dialog: true,
-                dialogMsg: '类别和标题不能为空'
-            });
+            alert("类别和标题不能为空");
+        }
+
+        if((form.sectionId.id === 4 || form.isDirectUrl) && form.url.trim().length === 0){
+            alert("会馆动态文章的URL不能为空");
+            pass = false;
         }
 
         if (pass) {

@@ -58,6 +58,10 @@ class Article extends Component {
                 this.setState({
                     article: data
                 });
+
+                if((data.sectionId === 4 || data.isDirectUrl) && data.url.length > 0 && data.url.indexOf("http") >= 0){
+                    window.location.href = data.url;
+                }
                 window.scroll({top: 0, left: 0, behavior: 'smooth'});
             })
             .catch(e => console.log(e));
@@ -85,7 +89,7 @@ class Article extends Component {
                     <div style={{width: '100%'}}>
                         <div className={this.styles.contentWrapper}
                              style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
-                            {parse(this.state.article.content)}
+                            {parse(this.state.article.content === null ? "" : this.state.article.content)}
                         </div>
                         {this.state.article.url !== null && this.state.article.url.length > 0 ?
                             <div className={this.styles.urlWrapper}>
@@ -186,7 +190,7 @@ const styles = theme => ({
         },
     },
     contentWrapper: {
-        marginTop: '25px',
+        marginTop: '35px',
         color: utils.colorScheme.text,
         [theme.breakpoints.down('sm')]: {
             fontSize: '16px',

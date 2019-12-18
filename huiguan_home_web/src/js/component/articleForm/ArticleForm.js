@@ -31,7 +31,8 @@ class ArticleForm extends Component {
                 time: (new Date()),
                 url: '',
                 resources: [],
-                isTop: false
+                isTop: false,
+                isDirectUrl: true
             },
             sections: [],
             titleLengthLimit: 60,
@@ -63,7 +64,8 @@ class ArticleForm extends Component {
                 onInsert: (event) => {
                     console.log(event);
                 }
-            }
+            },
+            directUrlSection: [4]
         };
 
         this.styles = this.props.classes;
@@ -113,7 +115,8 @@ class ArticleForm extends Component {
             time: (new Date(article.time)),
             url: article.url ? article.url : '',
             resources: article.resources,
-            isTop: article.isTop
+            isTop: article.isTop,
+            isDirectUrl: article.isDirectUrl
         }
     };
 
@@ -121,6 +124,15 @@ class ArticleForm extends Component {
         let form = Object.assign({}, this.state.form);
         form.content = form.content.toHTML();
         form.sectionId = {id: form.sectionId};
+
+        //modify url
+        if(form.url.trim().length !== 0){
+            if(form.url.trim().indexOf("www") === -1){
+                form.url = "https://www." + form.url;
+            }else if(form.url.trim().indexOf("www") === 0){
+                form.url = "https://" + form.url;
+            }
+        }
         return form;
     };
 
@@ -143,13 +155,14 @@ class ArticleForm extends Component {
     clearForm = () => {
         this.setState({
             form: {
-                section: '',
+                section: 4,
                 title: '',
                 description: '',
                 content: BraftEditor.createEditorState('<p/>'),
                 time: (new Date()),
                 url: '',
-                resources: []
+                resources: [],
+                isDirectUrl: true
             },
         })
     };
@@ -166,6 +179,7 @@ class ArticleForm extends Component {
                     onChange={(event) => {
                         let form = this.state.form;
                         form.sectionId = event.target.value;
+                        form.isDirectUrl = (this.state.directUrlSection.indexOf(event.target.value) >= 0);
                         this.setState({form: form})
                     }}
                 >
@@ -356,26 +370,28 @@ class ArticleForm extends Component {
                     />
                     {this.renderImagePreview()}
                 </div>
-                <div className={'question'}>
-                    <div className={'question-title'}>内容</div>
-                    <div id={'editor-frame'}>
-                        <BraftEditor
-                            value={this.state.form.content}
-                            id={"editor"}
-                            controls={this.state.editorControls}
-                            media={this.state.mediaControl}
-                            onChange={(editorState) => {
-                                if (editorState.toHTML() !== this.state.form.content.toHTML()) {
-                                    let form = this.state.form;
-                                    form.content = editorState;
-                                    console.log(editorState.toHTML());
-                                    this.setState({form: form})
-                                }
-                            }}
-                            onSave={() => console.log('on save')}
-                        />
-                    </div>
-                </div>
+                {!this.state.form.isDirectUrl ? 
+                    <div className={'question'}>
+                        <div className={'question-title'}>内容</div>
+                        <div id={'editor-frame'}>
+                            <BraftEditor
+                                value={this.state.form.content}
+                                id={"editor"}
+                                controls={this.state.editorControls}
+                                media={this.state.mediaControl}
+                                onChange={(editorState) => {
+                                    if (editorState.toHTML() !== this.state.form.content.toHTML()) {
+                                        let form = this.state.form;
+                                        form.content = editorState;
+                                        console.log(editorState.toHTML());
+                                        this.setState({form: form})
+                                    }
+                                }}
+                                onSave={() => console.log('on save')}
+                            />
+                        </div>
+                    </div> : <div/>
+                }
             </div>
         );
     }
