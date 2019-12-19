@@ -16,6 +16,7 @@ com\huiguan\web\exception\StudentNotFoundExceptionMapper.class
 com\huiguan\web\exception\ApiExceptionMapper.class
 com\huiguan\web\exception\ApiException.class
 com\huiguan\web\model\Section.class
+com\huiguan\web\dto\GetLatest.class
 com\huiguan\web\dto\GetPageResponse.class
 com\huiguan\web\model\Resource.class
 com\huiguan\web\model\Article.class

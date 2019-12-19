@@ -26,9 +26,11 @@ public interface ArticleService {
 
     int countBySection(int sectionId);
 
-    Set<GetArticleResponse> findLatestArticles(int start, int end);
+    Set<GetArticleResponse> findLatestArticles(int start, int end,boolean hasResource);
 
-    Set<GetShortArticleResponse> findLatestShortArticles(int start,int end);
+    Set<GetShortArticleResponse> findLatestShortArticles(int start,int end, boolean hasResource);
 
     Set<GetShortArticleResponse> findByTitle(String title, int pageNum, int pageSize);
+
+    void deleteAll() throws ApiException;
 }

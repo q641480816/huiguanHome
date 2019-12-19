@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Primary
 @Service
@@ -59,5 +60,15 @@ public class ResourceServiceImpl implements ResourceService{
     @Override
     public void deleteById(int id) {
         resourceRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll(){
+        Set<Resource> resources = resourceRepository.getAllExceptInitial();
+        for (Resource resource: resources){
+            if(resource.getArticle()==null||resource.getArticle().getId()>3){
+                deleteById(resource.getId());
+            }
+        }
     }
 }

@@ -145,10 +145,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Set<GetArticleResponse> findLatestArticles(int start, int end) {
+    public Set<GetArticleResponse> findLatestArticles(int start, int end, boolean hasResource) {
         logger.info("Retrieving latest 5 articles from section 4 to section 12");
         PageRequest req = new PageRequest(0, 5, Sort.Direction.DESC, "creationTime");
-        Page<Article> articles=articleRepository.findLatestArticles(start,end,req);
+        Page<Article> articles =null;
+        if (hasResource){
+            articles = articleRepository.findLatestArticlesWithResource(start, end, req);
+        }
+        else {
+            articles = articleRepository.findLatestArticles(start, end, req);
+        }
+        if (articles ==null) return null;
         List<Article> articleList = articles.getContent();
         Set<GetArticleResponse> articleDtoList = new LinkedHashSet<>();
         for (Article article : articleList) {
@@ -161,8 +168,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public Set<GetShortArticleResponse> findLatestShortArticles(int start, int end) {
-        Set<GetArticleResponse> articles = findLatestArticles(start, end);
+    public Set<GetShortArticleResponse> findLatestShortArticles(int start, int end, boolean hasResource) {
+        Set<GetArticleResponse> articles = findLatestArticles(start, end, hasResource);
         Set<GetShortArticleResponse> res = new LinkedHashSet<>();
         for (GetArticleResponse article: articles){
             res.add(convertToEntityService.convertToShortArticleDto(article));
@@ -190,6 +197,13 @@ public class ArticleServiceImpl implements ArticleService {
             res.add(convertToEntityService.convertToShortArticleDto(article));
         }
         return res;
+    }
+
+    public void deleteAll() throws ApiException {
+        Set<Article> articles = articleRepository.getAllExceptInitial();
+        for (Article article:articles){
+            deleteById(article.getId());
+        }
     }
 
 }

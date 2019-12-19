@@ -13,4 +13,5 @@ public interface ResourceService {
     int addNewResource(Resource toBeAdded);
     Resource edit(int id, Resource resource);
     void deleteById(int id);
+    void deleteAll();
 }

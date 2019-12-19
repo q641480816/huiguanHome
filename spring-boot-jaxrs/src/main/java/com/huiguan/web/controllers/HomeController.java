@@ -262,12 +262,13 @@ public class HomeController extends Application {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/latest")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetPageResponse getLatestArticles() throws ApiException {
+    public GetPageResponse getLatestArticles(GetLatest req) throws ApiException {
         logger.info("Retrieving latest 5 articles");
-        Set<GetArticleResponse> articles = articleService.findLatestArticles(4,12);
+        Set<GetArticleResponse> articles = articleService.findLatestArticles(4,12,req.isHasResource());
         GetPageResponse res = new GetPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);
@@ -278,12 +279,13 @@ public class HomeController extends Application {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/latest/{start}/{end}")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetPageResponse getLatestArticlesByRange(@PathParam("start") int start,  @PathParam("end") int end) throws ApiException {
+    public GetPageResponse getLatestArticlesByRange(@PathParam("start") int start,  @PathParam("end") int end, GetLatest req) throws ApiException {
         logger.info("Retrieving latest 5 articles");
-        Set<GetArticleResponse> articles = articleService.findLatestArticles(start, end);
+        Set<GetArticleResponse> articles = articleService.findLatestArticles(start, end,req.isHasResource());
         GetPageResponse res = new GetPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);
@@ -293,12 +295,13 @@ public class HomeController extends Application {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/short/latest/{start}/{end}")
     @Transactional
     @ApiOperation("Get latest articles")
-    public GetShortPageResponse getLatestShortArticles(@PathParam("start") int start,  @PathParam("end") int end) throws ApiException {
+    public GetShortPageResponse getLatestShortArticles(@PathParam("start") int start,  @PathParam("end") int end, GetLatest req) throws ApiException {
         logger.info("Retrieving latest 5 articles");
-        Set<GetShortArticleResponse> articles = articleService.findLatestShortArticles(start,end);
+        Set<GetShortArticleResponse> articles = articleService.findLatestShortArticles(start,end, req.isHasResource());
         GetShortPageResponse res = new GetShortPageResponse();
         res.setSuccess(true);
         res.setHttpStatus(200);
@@ -336,6 +339,18 @@ public class HomeController extends Application {
 
         articleService.deleteById(id);
 
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @DELETE
+    @Path("/articles/flush")
+    public Response deleteArticleById(@HeaderParam("token") String token) throws ApiException {
+        if (!authService.checkToken(token)) return Response.status(Response.Status.FORBIDDEN).build();
+
+        logger.info("Deleting all articles");
+
+        articleService.deleteAll();
+        resourceService.deleteAll();
         return Response.status(Response.Status.OK).build();
     }
 

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,15 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("select r from Article r where r.section.id >= ?1 AND r.section.id <= ?2")
     Page<Article> findLatestArticles(int start, int end, Pageable request);
 
+    @Query("select r from Article r where r.section.id >= ?1 AND r.section.id <= ?2 AND r.resources is not empty ")
+    Page<Article> findLatestArticlesWithResource(int start, int end, Pageable request);
+
     int countArticleBySection(Section section);
 
     @Query("select r from Article r where r.title like %?1%")
     Page<Article> findArticlePageByTitle(String title, PageRequest req);
+
+
+    @Query("select r FROM Article r WHERE r.id>3" )
+    Set<Article> getAllExceptInitial();
 }

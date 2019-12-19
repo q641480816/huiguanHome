@@ -45,7 +45,7 @@ public class Article {
     @Column(name="is_direct_url")
     private Boolean isDirectUrl;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
     @JoinColumn(name="resources_articles_fk")
     private Set<Resource> resources = new HashSet<>();
 
