@@ -6,11 +6,13 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    TextField, Paper, Button, Checkbox, FormControlLabel
+    DialogContent,
+    TextField, Paper, Button, Checkbox, FormControlLabel, Dialog, DialogTitle, DialogActions, DialogContentText
 } from "@material-ui/core";
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table'
 import ImageUploader from 'react-images-upload';
+import { ContentUtils } from 'braft-utils';
 
 import './ArticleForm.css';
 // import './editor.css';
@@ -65,7 +67,9 @@ class ArticleForm extends Component {
                     console.log(event);
                 }
             },
-            directUrlSection: [4]
+            directUrlSection: [4],
+            videoDialog: false,
+            videoDialogText: ''
         };
 
         this.styles = this.props.classes;
@@ -76,6 +80,7 @@ class ArticleForm extends Component {
         this.prepareForm = this.prepareForm.bind(this);
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
         this.renderImagePreview = this.renderImagePreview.bind(this);
+        this.insertVideo = this.insertVideo.bind(this);
     }
 
     componentDidMount() {
@@ -166,6 +171,57 @@ class ArticleForm extends Component {
             },
         })
     };
+
+    insertVideo = (text) => {
+        let form = this.state.form;
+        text = "[YouTube: " + text + "]";
+        form.content = ContentUtils.insertText(this.state.form.content, text + '\n');
+        this.setState({
+            form: form
+        })
+    }
+
+    renderVideoDialog = () => {
+        return (
+            <div>
+              <Dialog open={this.state.videoDialog} onClose={() => {console.log('close')}} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">添加视频</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    请填写YouTube 视频 ID, 添加视频时请确认视频 ID 准, 添加完视频请确保视频在单独一行
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="YouTube Video ID"
+                    fullWidth
+                    onChange={(event) => {
+                        this.setState({videoDialogText: event.target.value})
+                    }}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => {
+                        this.setState({videoDialog: false, videoDialogText: ''});
+                        window.open('https://www.youtube.com/watch?v=' + this.state.videoDialogText.trim(),'_blank');
+                      }} color="primary">
+                    查找
+                  </Button>
+                  <Button onClick={() => {this.setState({videoDialog: false, videoDialogText: ''})}} color="primary">
+                    取消
+                  </Button>
+                  <Button onClick={() => {
+                      this.insertVideo(this.state.videoDialogText);
+                      this.setState({videoDialog: false, videoDialogText: ''});
+                    }} color="primary">
+                    添加
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+          );
+    }
 
     renderSectionSelect = () => {
         return (
@@ -378,6 +434,12 @@ class ArticleForm extends Component {
                                 value={this.state.form.content}
                                 id={"editor"}
                                 controls={this.state.editorControls}
+                                extendControls={[{
+                                    key: 'custom-button',
+                                    type: 'button',
+                                    text: '视频',
+                                    onClick: () => this.setState({videoDialog: true, videoDialogText: ''})
+                                  }]}
                                 media={this.state.mediaControl}
                                 onChange={(editorState) => {
                                     if (editorState.toHTML() !== this.state.form.content.toHTML()) {
@@ -392,6 +454,7 @@ class ArticleForm extends Component {
                         </div>
                     </div> : <div/>
                 }
+                {this.renderVideoDialog()}
             </div>
         );
     }

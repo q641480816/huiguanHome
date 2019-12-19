@@ -26,3 +26,37 @@ th, td {
     padding: 5px;
     text-align: left;
 }
+
+@media only screen and (max-width: 600px) {
+    #contentBox img {
+        width: 90vw;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    #contentBox img {
+        height: 60vh;
+    }
+}
+
+.videoContainer {
+    widows: 100%;
+    display: flex;
+    float: row;
+    justify-content: center;
+    margin: 10px 0 30px 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .videoWrapper{
+        width: 90vw;
+        height: calc(90vw/16*9)
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .videoWrapper{
+        width: 50vw;
+        height: calc(50vw/16*9)
+    }
+}

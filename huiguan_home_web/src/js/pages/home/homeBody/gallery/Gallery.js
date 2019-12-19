@@ -27,8 +27,11 @@ class Gallery extends Component {
         let url = utils.protocol + utils.baseUrl + '/short/latest/13/15';
 
         fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'}
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                hasResource: true
+            })
         })
             .then(response => response.json())
             .then(data => {
