@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {Route, withRouter} from 'react-router-dom';
 import {withStyles} from "@material-ui/core";
+import YouTubePlayer from 'youtube-player';
 
 import './Article.css';
 import utils from "../../common/util";
@@ -17,6 +18,7 @@ class Article extends Component {
             articleId: 0,
             article: null,
             section: {title: '', navigation: '', isRenderList: true},
+            vedios: []
         };
 
         this.styles = this.props.classes;
@@ -24,6 +26,8 @@ class Article extends Component {
         this.getArticle = this.getArticle.bind(this);
         this.renderArticle = this.renderArticle.bind(this);
         this.renderCarousel = this.renderCarousel.bind(this);
+        this.processArticle = this.processArticle.bind(this);
+        this.initVedio = this.initVedio.bind(this);
     }
 
     componentDidMount() {
@@ -56,12 +60,73 @@ class Article extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({
-                    article: data
+                    article: this.processArticle(data)
+                }, () => {
+                    setInterval(this.initVedio(), 500);
                 });
                 window.scroll({top: 0, left: 0, behavior: 'smooth'});
             })
             .catch(e => console.log(e));
     };
+
+    processArticle = (art) => {
+        if(art.content === null){
+            return art;
+        }
+
+        let vedios = [];
+        let wContent = art.content.split("</p>");
+        let content = '';
+    
+        for(let i = 0; i < wContent.length; i++){
+            let st = wContent[i];
+            if(st.indexOf('YouTube') >= 0){
+                let left = st.indexOf("[");
+                let right = st.indexOf("]");
+                let rawId = st.substring(left, right + 1);
+                rawId = rawId.replace('<p>','').replace("</p>",'').replace("[",'').replace("]",'').replace(':', '').replace("YouTube", '').trim();
+                let id = '';
+                let read = true;
+
+                for (let i = 0; i < rawId.length; i++){
+                    if(rawId.charAt(i) === '>'){
+                        read = true;
+                        continue;
+                    }else if(rawId.charAt(i) === '<'){
+                        read = false;
+                    }
+
+                    if(read){
+                        id += rawId.charAt(i);
+                    }
+                }
+
+                console.log(id);
+
+                st = "<div class='videoContainer'><div class='videoWrapper'><div id='" + id + "'></div></div></div>";
+                vedios.push(id);
+            }
+            content += st;
+        }
+        this.setState({vedios: vedios})
+
+        art.content = content;
+    
+        return art;
+    }
+
+    initVedio = () => {
+        console.log(this.state.vedios);
+        for(let i = 0; i < this.state.vedios.length; i++){
+            let id = this.state.vedios[i];
+            console.log(id)
+            let player = YouTubePlayer(id, {
+                videoId: id,
+                width: '100%',
+                height: '100%'
+            });
+        }
+    }
 
     renderArticle = () => {
         if (this.state.article) {
@@ -83,7 +148,7 @@ class Article extends Component {
                         </div>
                     </div>
                     <div style={{width: '100%'}}>
-                        <div className={this.styles.contentWrapper}
+                        <div id='contentBox' className={this.styles.contentWrapper}
                              style={!this.state.article.resources || this.state.article.resources.length === 0 ? {marginTop: 0} : {}}>
                             {parse(this.state.article.content === null ? "" : this.state.article.content)}
                         </div>

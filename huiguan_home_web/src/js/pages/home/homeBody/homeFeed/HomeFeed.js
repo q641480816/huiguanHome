@@ -44,8 +44,11 @@ class HomeFeed extends Component {
         let url = utils.protocol + utils.baseUrl + '/short/latest/' + parent.sub[0] + '/' + parent.sub[1];
 
         fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'}
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                hasResource: false
+            })
         })
             .then(response => response.json())
             .then(data => {
@@ -79,7 +82,7 @@ class HomeFeed extends Component {
                     {parent.data.map(a => {
                         let sectionNav = utils.getSection(a.sectionId).navigation;
                         return (
-                            <div key={a.id} style={{marginBottom: '10px'}}>
+                            <div key={a.id} style={{marginBottom: '10px'}} className={this.styles.titleContainer}>
                                 <Link key={a.id} target={'_blank'} to={'/b/article' + sectionNav + "/" + a.id}
                                       style={{textDecoration: 'none'}} className={this.styles.articleTitle}>
                                     {a.title + " (" + a.time + ")"}
@@ -142,6 +145,7 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             justifyContent: 'center',
+            alignItems: 'flex-start'
         }
     },
     sectionContainer: {
@@ -170,6 +174,17 @@ const styles = theme => ({
     articleTitle: {
         fontSize: '17px',
         color: utils.colorScheme.text,
+    },
+    titleContainer: {
+        display:'flex',
+        flexDirection: 'column',
+        [theme.breakpoints.down('sm')]: {
+            alignItems: 'center',
+            width: '90vw',
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '35vw',
+        },
     },
     carouselContainer: {
         marginTop: '15px',
