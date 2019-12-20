@@ -40,6 +40,7 @@ class Gallery extends Component {
                     if (a.resource !== null && a.resource !== '') {
                         let res = a.resource;
                         res.sectionNav = (utils.getSection(a.sectionId)).navigation;
+                        res.artTitle = a.title;
                         imagesOrg.push(res);
                     }
                 });
@@ -72,7 +73,7 @@ class Gallery extends Component {
                                      className={index_img >= 2 ? this.styles.imgWrapperMobile : this.styles.imgWrapper}>
                                     <img className={'imgItem'} alt={i.title} src={i.content}/>
                                     <div className={'igmItemCover'}>
-                                        <div className={'imgTitle'}>{i.description}</div>
+                                        <div className={'imgTitle'}>{i.artTitle}</div>
                                     </div>
                                 </div>
                             </Link>
