@@ -121,6 +121,9 @@ const processSection = (s) => {
       //近期活动
         nS = 4;
         break;
+    default:
+        nS = 4;
+        break;
   }
 
   return nS;

@@ -59,7 +59,7 @@ const utils = {
         }
     },
     contact: {
-        name: 'Chin Kang Huay Kuan',
+        name: 'Singapore Chin Kang Huay Kuan',
         tel: '(65)62235913 & 62231952 ',
         fax: '(65)62278730',
         email: 'chinkang@singnet.com.sg',

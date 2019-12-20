@@ -15,14 +15,18 @@ class HomeFeed extends Component {
                     sub: [4, 7],
                     title: '新闻动态',
                     data: [],
-                    resources: []
+                    resources: [],
+                    dataCar: [],
+                    resourcesCar: []
                 },
                 id4: {
                     id: 4,
                     sub: [8, 12],
                     title: '服务动态',
                     data: [],
-                    resources: []
+                    resources: [],
+                    dataCar: [],
+                    resourcesCar: []
                 }
             }
         };
@@ -30,6 +34,7 @@ class HomeFeed extends Component {
         this.styles = this.props.classes;
 
         this.getParentData = this.getParentData.bind(this);
+        this.getParentDataRes = this.getParentDataRes.bind(this);
         this.renderParentSection = this.renderParentSection.bind(this);
         this.renderParentCarousel = this.renderParentCarousel.bind(this);
     }
@@ -62,13 +67,48 @@ class HomeFeed extends Component {
                     }
                 });
                 parentSection['id' + parentId].data = data.articleList;
-                parentSection['id' + parentId].resources = cs;
-                this.setState({parentSection: parentSection});
+                if(cs.length >= 3){
+                    parentSection['id' + parentId].resourcesCar = cs;
+                    this.setState({parentSection: parentSection});
+                }else{
+                    this.setState({parentSection: parentSection}, this.getParentDataRes(parentId));
+                }
             })
             .catch(e => {
                 console.log(e);
             });
     };
+
+    getParentDataRes = (parentId) => {
+        let parent = this.state.parentSection['id' + parentId];
+        let url = utils.protocol + utils.baseUrl + '/short/latest/' + parent.sub[0] + '/' + parent.sub[1];
+
+        fetch(url, {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                hasResource: true
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                let parentSection = this.state.parentSection;
+                let cs = [];
+                data.articleList.forEach(a => {
+                    if (a.resource !== null && a.resource !== '') {
+                        let res = a.resource;
+                        res.sectionNav = (utils.getSection(a.sectionId)).navigation;
+                        cs.push(res);
+                    }
+                });
+                parentSection['id' + parentId].resourcesCar = cs;
+                this.setState({parentSection: parentSection});
+
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
 
     renderParentSection = () => {
         let doms = [];
@@ -77,7 +117,7 @@ class HomeFeed extends Component {
             let dom = (
                 <div key={k} className={this.styles.sectionContainer}>
                     <div className={this.styles.parentTitle}>{parent.title}</div>
-                    {this.renderParentCarousel(parent.resources)}
+                    {this.renderParentCarousel(parent.resourcesCar)}
                     <div style={{height: '15px'}}/>
                     {parent.data.map(a => {
                         let sectionNav = utils.getSection(a.sectionId).navigation;

@@ -81,6 +81,8 @@ class Search extends Component {
             return (
                 <div className={this.styles.listWrapper} style={{marginTop: '40px'}}>
                     {this.state.articles.map(a => {
+                        let link = (a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ? a.url : 
+                        '/b/article' + utils.getSection(a.sectionId).navigation + "/" + a.id;
                         return (
                             <div key={a.id} className={this.styles.articleWrapper}>
                                 <div className={this.styles.itemContainer}>
@@ -88,7 +90,8 @@ class Search extends Component {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-                                        paddingBottom: a.resource !== null ? '0px' : '50px'
+                                        paddingBottom: a.resource !== null ? '0px' : '50px',
+                                        width: '100%'
                                     }}>
                                         <div className={this.styles.titleWrapper}
                                              style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
@@ -106,19 +109,32 @@ class Search extends Component {
                                             }
                                             <div
                                                 className={this.styles.descriptionWrapper}
-                                                style={a.resource === null ? {marginLeft: 0} : {marginLeft: '20px'}}>
+                                                style={{marginLeft: a.resource === null ? 0 : '20px', marginBottom: a.description.length <= 100 ? 0 : '30px'}}>
                                                 {a.description ? parse(a.description) : 'No Content'}
                                             </div>
                                         </div>
                                     </div>
-                                    <Link to={'/b/article' + (utils.getSection(a.sectionId)).navigation + "/" + a.id} target="_blank"
-                                          className={'linkWrapper'}>
-                                        <Button className={this.styles.readMoreButton}
-                                                onClick={(event) => console.log("")} variant="outlined"
-                                                color="inherit">
-                                            <div>阅读更多</div>
-                                        </Button>
-                                    </Link>
+                                    {(a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                        (
+                                            <a href={link} style={{textDecoration: 'none'}} target="_blank" className={'linkWrapper'}>
+                                                <Button className={this.styles.readMoreButton}
+                                                    onClick={(event) => console.log("")} variant="outlined"
+                                                    color="inherit">
+                                                    <div>阅读更多</div>
+                                                </Button>
+                                            </a>
+                                        ):    
+                                        (
+                                            <Link to={'/b/article' + utils.getSection(a.sectionId).navigation + "/" + a.id} target="_blank"
+                                                className={'linkWrapper'}>
+                                                <Button className={this.styles.readMoreButton}
+                                                    onClick={(event) => console.log("")} variant="outlined"
+                                                    color="inherit">
+                                                    <div>阅读更多</div>
+                                                </Button>
+                                            </Link>
+                                        )
+                                    }
                                 </div>
                                 {a.id !== this.state.articles[this.state.articles.length - 1].id ?
                                     <SectionDivider showDivider={true} fullLength={true}

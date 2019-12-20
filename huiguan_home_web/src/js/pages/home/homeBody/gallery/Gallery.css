@@ -25,6 +25,7 @@
     opacity: 0;
     transition: 0.3s;
     cursor: pointer;
+    text-align: center;
 }
 
 .igmItemCover:hover{
@@ -35,6 +36,7 @@
     font-size: 25px;
     font-weight: 700;
     color: #585555;
+    width: 80%;
 }
 
 .imgDes{
