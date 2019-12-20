@@ -189,7 +189,7 @@ public class HomeController extends Application {
                 errorMessage+= index + ", ";
                 continue;
             }
-            article.setCreationTime(new Timestamp(System.currentTimeMillis()));
+            article.setCreationTime(req.getCreationTime());
             int id = articleService.addNewArticle(article);
             if (id<=0){
                 errorMessage+= index + ", ";
