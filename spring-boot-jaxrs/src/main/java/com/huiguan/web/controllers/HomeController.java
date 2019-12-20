@@ -260,7 +260,7 @@ public class HomeController extends Application {
         return Response.status(Response.Status.OK).entity(article).build();
     }
 
-    @GET
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/latest")
@@ -277,7 +277,7 @@ public class HomeController extends Application {
     }
 
 
-    @GET
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/latest/{start}/{end}")
@@ -293,7 +293,7 @@ public class HomeController extends Application {
         return res;
     }
 
-    @GET
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/short/latest/{start}/{end}")
