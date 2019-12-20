@@ -4,6 +4,7 @@ import com.huiguan.web.dto.GetArticleResponse;
 import com.huiguan.web.dto.GetShortArticleResponse;
 import com.huiguan.web.exception.ApiException;
 import com.huiguan.web.model.Article;
+import com.huiguan.web.model.Resource;
 import com.huiguan.web.model.Section;
 import com.huiguan.web.repository.ArticleRepository;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ConvertToEntityService convertToEntityService;
     @Autowired
     private SectionService sectionService;
-
+    @Autowired
+    private ResourceService resourceService;
     @Override
     public List<Article> findAll() {
         return articleRepository.findAll();
@@ -92,6 +94,12 @@ public class ArticleServiceImpl implements ArticleService {
         updateArticleSection(toBeEdited,article.getSection());
         toBeEdited.setCreationTime(article.getCreationTime());
         if (article.getResources()!=null) {
+            if (toBeEdited.getResources()!=null){
+                for (Resource resource: toBeEdited.getResources()){
+                    resource.setArticle(null);
+                    resourceService.deleteById(resource.getId());
+                }
+            }
             toBeEdited.setResources(article.getResources());
         }
         if(article.getContent()!=null) {
