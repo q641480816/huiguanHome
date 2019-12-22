@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {Route, Link} from 'react-router-dom';
+import {PropTypes, instanceOf} from "prop-types";
+import {Route, Link, withRouter} from 'react-router-dom';
+import cookie from 'react-cookies';
 import {
     withStyles,
     AppBar,
@@ -34,6 +35,7 @@ class Add extends Component {
 
         this.publish = this.publish.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
+        this.preview = this.preview.bind(this);
 
         this.form = React.createRef();
         this.loading = React.createRef();
@@ -59,6 +61,22 @@ class Add extends Component {
         });
         this.loading.current.toggleLoading(isLoading);
     };
+
+    preview = () => {
+        let form = this.form.current.getForm();
+
+        let index = 0;
+        form.resources.map(r => {
+            index ++;
+            r.id = index;
+            return r;
+        })
+        console.log(form);
+        localStorage.setItem('preview', JSON.stringify(form));
+        window.open(
+            utils.previewUrl, '_blank'
+        );
+    }
 
     publish = () => {
         let url = utils.protocol + utils.baseUrl + '/articles/';
@@ -124,12 +142,15 @@ class Add extends Component {
                     <div className={this.styles.bodyContainer}>
                         <ArticleForm sections={this.state.sections} ref={this.form}/>
                         <div style={{
-                            width: '100%', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center',
+                            width: '100%', display: 'flex', flexDirection: 'row',
+                            justifyContent: 'center',
                             marginBottom: '30px'
                         }}>
-                            <Button onClick={(event) => this.publish()} variant="outlined" color="inherit">
-                                <div style={{paddingLeft: '7.5px'}}>上传文章</div>
+                            <Button onClick={(event) => this.preview()} variant="outlined" color="inherit">
+                                <div>预览</div>
+                            </Button>
+                            <Button onClick={(event) => this.publish()} variant="outlined" color="inherit" style={{marginLeft : '50px'}}>
+                                <div>上传文章</div>
                             </Button>
                         </div>
                         <Loading loadingMessage={"文章上传中"} isMax={true} initialState={false} ref={this.loading}/>
@@ -178,7 +199,9 @@ const styles = theme => ({
 });
 
 Add.propTypes = {
-    sections: PropTypes.array.isRequired
+    sections: PropTypes.array.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Add);
+export default withRouter(withStyles(styles)(Add));

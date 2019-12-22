@@ -85,15 +85,12 @@ class AdminPage extends Component {
     };
 
     render() {
-        if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
-            this.props.history.push('/admin/login');
-        }
+        // if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
+        //     this.props.history.push('/admin/login');
+        // }
 
         return (
             <div>
-                {!this.validate(this.state.username, this.state.token) ?
-                    <Redirect to="/admin/login"/> : <div/>
-                }
                 <Route exact path="/admin">
                     {this.state.isLoggedIn ? this.renderOptions() : this.renderLogin()}
                 </Route>

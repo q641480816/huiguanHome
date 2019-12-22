@@ -12,13 +12,16 @@ class HomeCarousel extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            homeCarousel: []
+            homeCarousel: [],
+            imgDimensions: {}
         };
 
         this.styles = this.props.classes;
 
         this.getHomeCarousel = this.getHomeCarousel.bind(this);
         this.renderHomeCarousel = this.renderHomeCarousel.bind(this);
+        this.getMeta = this.getMeta.bind(this);
+        this.getCarouselImg = this.getCarouselImg.bind(this);
 
         this.loading = React.createRef();
     }
@@ -39,29 +42,70 @@ class HomeCarousel extends Component {
             .then(response => response.json())
             .then(data => {
                 let cs = [];
-                data.articleList.forEach(a => {
+                let imgDimensions = {};
+                for(let i = 0; i < data.articleList.length; i++){
+                    let a = data.articleList[i];
                     if (a.resource !== null && a.resource !== '') {
                         let res = a.resource;
                         res.sectionNav = (utils.getSection(a.sectionId)).navigation;
                         cs.push(res);
+                        imgDimensions[res.id] = {w: 0, h: 0}
                     }
-                });
-                this.setState({homeCarousel: cs});
+                }
+                this.setState({homeCarousel: cs, imgDimensions: imgDimensions});
             })
             .catch(e => {
                 console.log(e);
             });
     };
 
+    getMeta = (i) => {
+        let img = new Image;
+        img.src = i.content;
+        img.onload = () => {
+            let imgDimensions = this.state.imgDimensions;
+            imgDimensions[i.id] = {
+                w: img.width,
+                h: img.height
+            };
+            this.setState({
+                imgDimensions: imgDimensions
+            });
+        };
+    }
+
+    getCarouselImg = (i) => {
+        let di = this.state.imgDimensions[i.id];
+        let dif;
+
+        if(di.h > di.w){
+            return (
+                <div className={this.styles.imgContainer}>
+                    <img style={{height: '100%', width: 'auto'}} src={i.url !== null ? i.url : i.content}
+                        alt={"p1"}/>
+                </div>
+            )
+        }else{
+            return (
+                <div className={this.styles.imgContainer}>
+                    <div>
+                        <img src={i.url !== null ? i.url : i.content}
+                            alt={"p1"}/>
+                    </div>
+                </div>
+            )
+        }
+    }
+
     renderHomeCarousel = () => {
         return this.state.homeCarousel.map((i) => {
+            if(this.state.imgDimensions[i.id].w === 0 && this.state.imgDimensions[i.id].h === 0){
+                this.getMeta(i);
+            }
             return (
                 <Link key={i.id} target={'_blank'} to={'/b/article' + i.sectionNav + "/" + i.articleId}>
                     <div>
-                        <div className={this.styles.imgContainer}>
-                            <img src={i.url !== null ? i.url : i.content}
-                                 alt={"p1"}/>
-                        </div>
+                        {this.getCarouselImg(i)}
                         <div className={this.styles.homeCarouselLegend}>
                             {/*<p className={this.styles.homeCarouselLegendText}>{i.title}</p>*/}
                             <p className={this.styles.homeCarouselLegendDes}>{i.description}</p>
