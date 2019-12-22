@@ -19,6 +19,7 @@ class Preview extends Component {
     componentDidMount() {
         if(typeof(localStorage.getItem("preview")) !== 'undefined'){
             let art = JSON.parse(localStorage.getItem('preview'));
+            console.log(art)
             let date = new Date();
             let time = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
             console.log(time)
