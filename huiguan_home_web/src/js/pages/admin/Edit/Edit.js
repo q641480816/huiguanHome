@@ -88,7 +88,6 @@ class Edit extends Component {
             r.id = index;
             return r;
         })
-        console.log(form);
         localStorage.setItem('preview', JSON.stringify(form));
         window.open(
             utils.previewUrl, '_blank'
