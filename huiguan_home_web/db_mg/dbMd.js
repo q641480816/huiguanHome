@@ -129,6 +129,27 @@ const processSection = (s) => {
   return nS;
 }
 
+const processTitle = (title) => {
+  let nT = '';
+  let read = true;
+
+  for(let i = 0; i < title.length; i++){
+    if(title.charAt(i) === '<'){
+      read = false;
+    }else if(title.charAt(i) === ">"){
+      read = true;
+      continue;
+    }
+
+    if(read){
+      nT += title.charAt(i);
+    }
+
+  }
+
+  return nT;
+}
+
 const processContent = (t, res ,content) => {
   let wC = content.split("\r\n");
   let newC = '';
@@ -224,11 +245,8 @@ connection
         //isTop
         nA.isTop = false;
 
-        //time
-        nA.time = "2019-12-18";
-
         //title
-        nA.title = a.Title,
+        nA.title = processTitle(a.Title);
 
         //url
         nA.url = '';
@@ -238,12 +256,14 @@ connection
         nA.description = processDes(wDes);
 
         let date = new Date(a.AddTime);
-        let time = date.getFullYear() + date.getMonth() + date.getDate();
+        let time = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
         nA.creationTime = time;
+        nA.time = time
 
         //section
         nA.section = {id: processSection(a.ClassID)}
+        
 
         let temp;
 
