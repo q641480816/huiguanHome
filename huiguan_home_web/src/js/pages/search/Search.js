@@ -273,6 +273,7 @@ const styles = theme => ({
     },
     titleWrapper: {
         fontSize: '27px',
+        cursor: 'default',
         fontWeight: 'bold',
         marginBottom: '20px',
         color: utils.colorScheme.secondary,

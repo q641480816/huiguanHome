@@ -18,7 +18,8 @@ class Article extends Component {
             articleId: 0,
             article: null,
             section: {title: '', navigation: '', isRenderList: true},
-            vedios: []
+            vedios: [],
+            imgDimensions: {}
         };
 
         this.styles = this.props.classes;
@@ -28,6 +29,8 @@ class Article extends Component {
         this.renderCarousel = this.renderCarousel.bind(this);
         this.processArticle = this.processArticle.bind(this);
         this.initVedio = this.initVedio.bind(this);
+        this.getCarouselImg = this.getCarouselImg.bind(this);
+        this.getMeta = this.getMeta.bind(this);
     }
 
     componentDidMount() {
@@ -51,22 +54,49 @@ class Article extends Component {
     }
 
     getArticle = (id) => {
-        let url = utils.protocol + utils.baseUrl + '/articles/' + id;
-
-        fetch(url, {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'}
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    article: this.processArticle(data)
-                }, () => {
-                    setInterval(this.initVedio(), 500);
-                });
-                window.scroll({top: 0, left: 0, behavior: 'smooth'});
+        if(this.props.isPreview){
+            console.log(this.props.previewArticle);
+            
+            let art = this.props.previewArticle;
+            console.log(art.resources);
+            let res = art.resources;
+            let imgDimensions = {};
+            res.forEach((i) => {
+                imgDimensions[i.id] = {w: 0, h: 0}
             })
-            .catch(e => console.log(e));
+
+            this.setState({
+                article: this.processArticle(art),
+                imgDimensions: imgDimensions
+            }, () => {
+                setInterval(this.initVedio(), 500);
+            });
+            window.scroll({top: 0, left: 0, behavior: 'smooth'});
+        }else{
+            let url = utils.protocol + utils.baseUrl + '/articles/' + id;
+
+            fetch(url, {
+                method: 'get',
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let res = data.resources;
+                    let imgDimensions = {};
+                    res.forEach((i) => {
+                        imgDimensions[i.id] = {w: 0, h: 0}
+                    })
+
+                    this.setState({
+                        article: this.processArticle(data),
+                        imgDimensions: imgDimensions
+                    }, () => {
+                        setInterval(this.initVedio(), 500);
+                    });
+                    window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                })
+                .catch(e => console.log(e));
+        }
     };
 
     processArticle = (art) => {
@@ -101,8 +131,6 @@ class Article extends Component {
                     }
                 }
 
-                console.log(id);
-
                 st = "<div class='videoContainer'><div class='videoWrapper'><div id='" + id + "'></div></div></div>";
                 vedios.push(id);
             }
@@ -116,15 +144,51 @@ class Article extends Component {
     }
 
     initVedio = () => {
-        console.log(this.state.vedios);
         for(let i = 0; i < this.state.vedios.length; i++){
             let id = this.state.vedios[i];
-            console.log(id)
             let player = YouTubePlayer(id, {
                 videoId: id,
                 width: '100%',
                 height: '100%'
             });
+        }
+    }
+
+    getMeta = (i) => {
+        let img = new Image;
+        img.src = i.content;
+        img.onload = () => {
+            let imgDimensions = this.state.imgDimensions;
+            imgDimensions[i.id] = {
+                w: img.width,
+                h: img.height
+            };
+            this.setState({
+                imgDimensions: imgDimensions
+            });
+        };
+    }
+
+    getCarouselImg = (i) => {
+        let di = this.state.imgDimensions[i.id];
+        let dif;
+
+        if(di.h > di.w){
+            return (
+                <div className={this.styles.imgContainer}>
+                    <img style={{height: '100%', width: 'auto'}} src={i.content}
+                        alt={"p1"}/>
+                </div>
+            )
+        }else{
+            return (
+                <div className={this.styles.imgContainer}>
+                    <div>
+                        <img src={i.content}
+                            alt={"p1"}/>
+                    </div>
+                </div>
+            )
         }
     }
 
@@ -176,13 +240,15 @@ class Article extends Component {
     };
 
     renderCarousel = () => {
+        console.log(this.state.article.resources);
         if (this.state.article.resources && this.state.article.resources.length > 0) {
             return this.state.article.resources.map((i) => {
+                if(this.state.imgDimensions[i.id].w === 0 && this.state.imgDimensions[i.id].h === 0){
+                    this.getMeta(i);
+                }
                 return (
                     <div key={i.id} className={this.styles.imgContainer}>
-                        <div style={{width: '100%', height: '100%', overflow: 'hidden'}}>
-                            <img src={i.url ? i.url : i.content} alt={"p1"}/>
-                        </div>
+                        {this.getCarouselImg(i)}
                         <div className={this.styles.carouselLegend}>
                             {/*<div style={{color: utils.colorScheme.back}}>{i.title}</div>*/}
                             <div style={{color: utils.colorScheme.tertiary}}>
@@ -297,6 +363,8 @@ Article.propTypes = {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     section: PropTypes.object.isRequired,
+    previewArticle: PropTypes.object,
+    isPreview: PropTypes.bool
 };
 
 export default withRouter(withStyles(styles)(Article));

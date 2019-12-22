@@ -237,10 +237,15 @@ connection
         let wDes = a.Content.split("\r\n");
         nA.description = processDes(wDes);
 
+        let date = new Date(a.AddTime);
+        let time = date.getFullYear() + date.getMonth() + date.getDate();
+
+        nA.creationTime = time;
+
         //section
         nA.section = {id: processSection(a.ClassID)}
 
-        let temp
+        let temp;
 
         let body = {
           articles: [nA]

@@ -177,7 +177,9 @@ const utils = {
             description: 'xeqewxqn qwe'
         },
     ],
-    cancelJoinUs: null
+    cancelJoinUs: null,
+    previewArticle: null,
+    previewUrl: "http://www.callmedady.com/#/preview"
 };
 
 export default utils;

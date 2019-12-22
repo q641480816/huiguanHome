@@ -5,6 +5,7 @@ import logo from './recources/img/tits.jpg';
 import './App.css';
 import Home from "./js/pages/home/Home";
 import AdminPage from "./js/pages/admin/adminPage/AdminPage";
+import Preview from './js/pages/preview/preview';
 
 class App extends Component {
     componentDidMount() {
@@ -13,19 +14,23 @@ class App extends Component {
 
     render() {
         return (
-            <HashRouter
-                basename={'/'}
-            >
-                <Route exact path='/'>
-                    <Redirect to="/b" />
-                </Route>
-                <Route path="/b">
-                    <Home/>
-                </Route>
-                <Route path="/admin">
-                    <AdminPage/>
-                </Route>
-            </HashRouter>
+
+                <HashRouter
+                    basename={'/'}
+                >
+                    <Route exact path='/'>
+                        <Redirect to="/b" />
+                    </Route>
+                    <Route path="/b">
+                        <Home/>
+                    </Route>
+                    <Route path="/admin">
+                        <AdminPage/>
+                    </Route>
+                    <Route path="/preview">
+                        <Preview/>
+                    </Route>
+                </HashRouter>
         );
     }
 }

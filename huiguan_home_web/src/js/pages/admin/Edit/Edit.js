@@ -58,6 +58,7 @@ class Edit extends Component {
         this.renderSwitch = this.renderSwitch.bind(this);
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
         this.renderSearchContent = this.renderSearchContent.bind(this);
+        this.preview = this.preview.bind(this);
 
         this.form = React.createRef();
         this.loading = React.createRef();
@@ -78,12 +79,26 @@ class Edit extends Component {
         }
     }
 
+    preview = () => {
+        let form = this.form.current.getForm();
+
+        let index = 0;
+        form.resources.map(r => {
+            index ++;
+            r.id = index;
+            return r;
+        })
+        console.log(form);
+        localStorage.setItem('preview', JSON.stringify(form));
+        window.open(
+            utils.previewUrl, '_blank'
+        );
+    }
+
     update = () => {
         let url = utils.protocol + utils.baseUrl + '/articles/' + this.state.article.id;
         let form = this.form.current.getForm();
         let pass = true;
-
-        console.log(form)
 
         if (form.section === '' || form.title === '') {
             pass = false;
@@ -380,12 +395,15 @@ class Edit extends Component {
                                          isSection={!this.state.isSearch}
                                          article={this.state.article}/>
                             <div style={{
-                                width: '100%', display: 'flex', flexDirection: 'column',
-                                alignItems: 'center',
+                                width: '100%', display: 'flex', flexDirection: 'row',
+                                justifyContent: 'center',
                                 marginBottom: '30px'
                             }}>
-                                <Button onClick={(event) => this.update()} variant="outlined" color="inherit">
-                                    <div style={{paddingLeft: '7.5px'}}>更新文章</div>
+                                <Button onClick={(event) => this.preview()} variant="outlined" color="inherit">
+                                    <div>预览</div>
+                                </Button>
+                                <Button onClick={(event) => this.update()} variant="outlined" color="inherit" style={{marginLeft: '40px'}}>
+                                    <div>更新文章</div>
                                 </Button>
                             </div>
                         </div> :
