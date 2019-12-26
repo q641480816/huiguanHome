@@ -175,7 +175,7 @@ class ArticleForm extends Component {
     insertVideo = (text) => {
         let form = this.state.form;
         text = "[YouTube: " + text + "]";
-        form.content = ContentUtils.insertText(this.state.form.content, text + '\n');
+        form.content = ContentUtils.insertText(this.state.form.content, text);
         this.setState({
             form: form
         })
@@ -285,11 +285,15 @@ class ArticleForm extends Component {
                                     {/*               }}/>*/}
                                     {/*</div>*/}
                                     <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
+                                        <div className={'question-description'}>Tag Id:</div>
+                                        <div className={'question-description'} style={{fontWeight: 'bold'}}>{index}</div>
+                                    </div>
+                                    <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
                                         <div className={'question-description'}>简介</div>
                                         <TextField inputProps={{maxLength: this.state.imgDescriptionLengthLimit}}
                                                    required
                                                    style={{width: '90%'}}
-                                                   label={"标题(最大长度=" + this.state.imgDescriptionLengthLimit + ")"}
+                                                   label={"简介(最大长度=" + this.state.imgDescriptionLengthLimit + ")"}
                                                    value={i.description}
                                                    multiline
                                                    onChange={(event) => {
