@@ -249,11 +249,11 @@ class Article extends Component {
                 return (
                     <div key={i.id} className={this.styles.imgContainer}>
                         {this.getCarouselImg(i)}
-                        <div className={this.styles.carouselLegend}>
+                        <div className={this.styles.carouselLegend} style={{color: utils.colorScheme.tertiary}}>
                             {/*<div style={{color: utils.colorScheme.back}}>{i.title}</div>*/}
-                            <div style={{color: utils.colorScheme.tertiary}}>
+                
                                 {i.description}
-                            </div>
+              
                         </div>
                     </div>
                 )
@@ -343,16 +343,15 @@ const styles = theme => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems:'center',
+        paddingTop: '5px',
+        paddingBottom: '5px',
         [theme.breakpoints.down('xs')]: {
-            height: '15%',
             fontSize: '14px'
         },
         [theme.breakpoints.up('sm')]: {
-            height: '12%',
             fontSize: '17px'
         },
         [theme.breakpoints.up('md')]: {
-            height: '10%',
             fontSize: '21.5px'
         }
     }

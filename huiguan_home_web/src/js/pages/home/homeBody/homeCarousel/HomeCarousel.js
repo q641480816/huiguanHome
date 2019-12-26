@@ -78,23 +78,30 @@ class HomeCarousel extends Component {
         let di = this.state.imgDimensions[i.id];
         let dif;
 
-        if(di.h > di.w){
-            return (
+        // if(di.h > di.w){
+        //     return (
+        //         <div className={this.styles.imgContainer}>
+        //             <img style={{height: '100%', width: 'auto'}} src={i.url !== null ? i.url : i.content}
+        //                 alt={"p1"}/>
+        //         </div>
+        //     )
+        // }else{
+        //     return (
+        //         <div className={this.styles.imgContainer}>
+        //             <div>
+        //                 <img src={i.url !== null ? i.url : i.content}
+        //                     alt={"p1"}/>
+        //             </div>
+        //         </div>
+        //     )
+        // }
+
+        return (
                 <div className={this.styles.imgContainer}>
                     <img style={{height: '100%', width: 'auto'}} src={i.url !== null ? i.url : i.content}
                         alt={"p1"}/>
                 </div>
-            )
-        }else{
-            return (
-                <div className={this.styles.imgContainer}>
-                    <div>
-                        <img src={i.url !== null ? i.url : i.content}
-                            alt={"p1"}/>
-                    </div>
-                </div>
-            )
-        }
+        )
     }
 
     renderHomeCarousel = () => {

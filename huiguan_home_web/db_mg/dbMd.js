@@ -61,7 +61,7 @@ const processDes = (wDes) => {
   return newDes;
 }
 
-const processSection = (s) => {
+const processSection = (s, title) => {
   let nS = '';
 
   switch(s){
@@ -81,49 +81,61 @@ const processSection = (s) => {
       //理事风采
         nS = 5;
         break;
-    case 5:
+    case 6:
       //世界晋江
         nS = 15;
         break;
-    case 6:
+    case 7:
       //会馆新闻
         nS = 4;
         break;
-    case 7:
+    case 8:
       //会馆活动
         nS = 4;
         break;
-    case 8:
+    case 9:
       //其它宗乡
         nS = 15;
         break;
-    case 9:
-      //情源晋江
-        nS = 14;
-        break;
     case 10:
+      //情源晋江
+        nS = 15;
+        break;
+    case 11:
       //通知公告
         nS = 4;
         break;
-    case 11:
+    case 15:
       //会馆青年团
         nS = 12;
         break;
-    case 12:
+    case 16:
       //青年活动
         nS = 12;
         break;
-    case 13:
+    case 17:
       //慈善义工
         nS = 4;
         break;
-    case 14:
+    case 18:
       //近期活动
         nS = 4;
         break;
     default:
         nS = 4;
         break;
+  }
+
+  if(title.indexOf('互助部') >= 0){
+    nS = 8;
+  }else if(title.indexOf('妇女组') >= 0){
+    nS = 9;
+  }else if(title.indexOf('福利股') >= 0){
+    nS = 18;
+  }else if(title.indexOf('康乐') >= 0){
+    nS = 10;
+  }else if(title.indexOf('教育股') >= 0){
+    nS = 11;
   }
 
   return nS;
@@ -262,7 +274,12 @@ connection
         nA.time = time
 
         //section
-        nA.section = {id: processSection(a.ClassID)}
+        nA.section = {id: processSection(a.ClassID, nA.title)}
+
+        if(nA.resources.length > 0){
+          nA.resources[0].description = nA.title;
+        }
+       
         
 
         let temp;
