@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {withStyles} from "@material-ui/core";
+import {withStyles, Button} from "@material-ui/core";
 import utils from "../../../../common/util";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {Carousel} from "react-responsive-carousel";
-
+import {PropTypes, instanceOf} from "prop-types";
 
 class HomeFeed extends Component {
     constructor(props) {
@@ -12,6 +12,7 @@ class HomeFeed extends Component {
             parentSection: {
                 id3: {
                     id: 3,
+                    nav: '/events',
                     sub: [4, 7],
                     title: '新闻动态',
                     data: [],
@@ -22,6 +23,7 @@ class HomeFeed extends Component {
                 id4: {
                     id: 4,
                     sub: [8, 12],
+                    nav: '/help',
                     title: '服务动态',
                     data: [],
                     resources: [],
@@ -116,21 +118,28 @@ class HomeFeed extends Component {
             let parent = this.state.parentSection[k];
             let dom = (
                 <div key={k} className={this.styles.sectionContainer}>
-                    <div className={this.styles.parentTitle}>{parent.title}</div>
-                    {this.renderParentCarousel(parent.resourcesCar)}
-                    <div style={{height: '15px'}}/>
-                    {parent.data.map(a => {
-                        let sectionNav = utils.getSection(a.sectionId).navigation;
-                        return (
-                            <div key={a.id} style={{marginBottom: '10px'}} className={this.styles.titleContainer}>
-                                <Link key={a.id} target={'_blank'} to={'/b/article' + sectionNav + "/" + a.id}
-                                      style={{textDecoration: 'none'}} className={this.styles.articleTitle}>
-                                    {a.title + " (" + a.time + ")"}
-                                </Link>
-                            </div>
-
-                        )
-                    })}
+                    
+                        {/* <div className={this.styles.parentTitle}>{parent.title}</div> */}
+                        {this.renderParentCarousel(parent.resourcesCar)}
+                        <div style={{height: '15px'}}/>
+                        {parent.data.map(a => {
+                            let sectionNav = utils.getSection(a.sectionId).navigation;
+                            return (
+                                <div key={a.id} style={{marginBottom: '10px'}} className={this.styles.titleContainer}>
+                                    <Link key={a.id} target={'_blank'} to={'/b/article' + sectionNav + "/" + a.id}
+                                        style={{textDecoration: 'none'}} className={this.styles.articleTitle}>
+                                        {a.title + " (" + a.time + ")"}
+                                    </Link>
+                                </div>
+                            )
+                        })}
+                        <div style={{marginTop: '10px'}}>
+                            <Button onClick={(event) => this.props.history.push('/b/topics' + parent.nav)} variant="outlined" color="inherit"
+                                    style={{display: 'flex', flexDirection: 'row'}}>
+                                <div>阅读更多</div>
+                            </Button>
+                        </div>
+                    
                 </div>
             );
             doms.push(dom);
@@ -246,8 +255,21 @@ const styles = theme => ({
             height: 'calc(35vw/16*9)'
         },
     },
+    readMoreContainrt: {
+        marginTop: '7.5px', 
+        [theme.breakpoints.down('sm')]: {
+           
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '100%',
+            marginLeft: '30px'
+        },
+    }
 });
 
-HomeFeed.propTypes = {};
+HomeFeed.propTypes = {
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+};
 
-export default withStyles(styles)(HomeFeed);
+export default withRouter(withStyles(styles)(HomeFeed));

@@ -85,9 +85,9 @@ class AdminPage extends Component {
     };
 
     render() {
-        if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
-            this.props.history.push('/admin/login');
-        }
+        // if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
+        //     this.props.history.push('/admin/login');
+        // }
 
         return (
             <div>
