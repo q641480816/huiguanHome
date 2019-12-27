@@ -56,6 +56,12 @@ const utils = {
             //     }
             // })
             return as;
+        },
+        sortImgs: (rs) => {
+            rs.sort((a1, a2) => {
+                return parseInt(a1.title.trim() - a2.title.trim());
+            })
+            return rs;
         }
     },
     contact: {
