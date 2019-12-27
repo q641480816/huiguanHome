@@ -36,37 +36,41 @@ class Search extends Component {
     }
 
     searchArticle = (isMore) => {
-        this.setState({
-            isFirst: false
-        });
-        this.toggleLoading(true);
-        let url = utils.protocol + utils.baseUrl + '/search';
-        let body = {
-            keyword: this.state.keyword,
-            pageNum: isMore ? this.state.pageNum + 1 : 0,
-            pageSize: this.state.pageSize
-        };
-        fetch(url, {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(body)
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.toggleLoading(false);
-                let articles = this.state.articles;
-                if (!isMore) {
-                    articles = [];
-                }
-                articles = articles.concat(data.articleList);
-                this.setState({
-                    articles: articles,
-                    pageNum: isMore ? this.state.pageNum + 1 : 0,
-                    isLast: !isMore ? false : data.articleList.length === 0
-                })
-                //window.scroll({top: 0, left: 0, behavior: 'smooth'});
+        if(this.state.keyword === null || this.state.keyword.trim().length === 0){
+            alert('请提供关键字');
+        }else{
+            this.setState({
+                isFirst: false
+            });
+            this.toggleLoading(true);
+            let url = utils.protocol + utils.baseUrl + '/search';
+            let body = {
+                keyword: this.state.keyword,
+                pageNum: isMore ? this.state.pageNum + 1 : 0,
+                pageSize: this.state.pageSize
+            };
+            fetch(url, {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
             })
-            .catch(e => console.log(e));
+                .then(response => response.json())
+                .then(data => {
+                    this.toggleLoading(false);
+                    let articles = this.state.articles;
+                    if (!isMore) {
+                        articles = [];
+                    }
+                    articles = articles.concat(data.articleList);
+                    this.setState({
+                        articles: articles,
+                        pageNum: isMore ? this.state.pageNum + 1 : 0,
+                        isLast: !isMore ? false : data.articleList.length === 0
+                    })
+                    //window.scroll({top: 0, left: 0, behavior: 'smooth'});
+                })
+                .catch(e => console.log(e));
+        }
     };
 
     toggleLoading = (isLoading) => {
@@ -171,7 +175,11 @@ class Search extends Component {
     render() {
         return (
             <div className={this.styles.bodyContainer}>
-                <Paper component="form" className={this.styles.searchBox}>
+                <Paper component="form" className={this.styles.searchBox} onKeyDown={(e) => {
+                    if(e.key === 'Enter' && this.state.isFirst){
+                        this.searchArticle(false);
+                    }
+                }} >
                     <InputBase
                         className={this.styles.input}
                         placeholder="关键字搜索"
