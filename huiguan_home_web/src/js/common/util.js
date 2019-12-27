@@ -185,8 +185,8 @@ const utils = {
     ],
     cancelJoinUs: null,
     previewArticle: null,
-    // previewUrl: "http://www.callmedady.com/#/preview",
-    previewUrl: "http://localhost:3000/#/preview"
+    previewUrl: "http://www.callmedady.com/#/preview",
+    // previewUrl: "http://localhost:3000/#/preview"
 };
 
 export default utils;
