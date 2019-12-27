@@ -12,7 +12,7 @@
     <artifactId>spring-boot-jaxrs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-jaxrs</name>
-<!--    <packaging>war</packaging>-->
+    <packaging>war</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
