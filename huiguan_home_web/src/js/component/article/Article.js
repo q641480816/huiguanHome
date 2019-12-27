@@ -133,6 +133,36 @@ class Article extends Component {
 
                 st = "<div class='videoContainer'><div class='videoWrapper'><div id='" + id + "'></div></div></div>";
                 vedios.push(id);
+            }else if(st.indexOf('[img:') >= 0){
+                let left = st.indexOf("[");
+                let right = st.indexOf("]");
+                let rawId = st.substring(left, right + 1);
+                rawId = rawId.replace('<p>','').replace("</p>",'').replace("[",'').replace("]",'').replace(':', '').replace("img", '').trim();
+                let id = '';
+                let read = true;
+
+                for (let i = 0; i < rawId.length; i++){
+                    if(rawId.charAt(i) === '>'){
+                        read = true;
+                        continue;
+                    }else if(rawId.charAt(i) === '<'){
+                        read = false;
+                    }
+
+                    if(read){
+                        id += rawId.charAt(i);
+                    }
+                }
+
+                let img = null;
+                for(let i = 0; i < art.resources.length; i++){
+                    if((art.resources[i].title + '').trim() === id.trim()){
+                        img = art.resources[i];
+                        break;
+                    }
+                }
+
+                st = img !== null ? '<p align="center"><img src="' + img.content + '"/></p>' : '<p align="center">[找不到图片]</p>';
             }
             content += st;
         }

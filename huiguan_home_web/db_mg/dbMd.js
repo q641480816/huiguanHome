@@ -277,6 +277,7 @@ connection
         nA.section = {id: processSection(a.ClassID, nA.title)}
 
         if(nA.resources.length > 0){
+          nA.resources[0].title = 1;
           nA.resources[0].description = nA.title;
         }
        

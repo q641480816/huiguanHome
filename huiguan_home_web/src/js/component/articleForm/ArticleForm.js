@@ -69,7 +69,9 @@ class ArticleForm extends Component {
             },
             directUrlSection: [4],
             videoDialog: false,
-            videoDialogText: ''
+            imgDialog: false,
+            videoDialogText: '',
+            imgDialogText: ''
         };
 
         this.styles = this.props.classes;
@@ -81,6 +83,8 @@ class ArticleForm extends Component {
         this.renderSectionSelect = this.renderSectionSelect.bind(this);
         this.renderImagePreview = this.renderImagePreview.bind(this);
         this.insertVideo = this.insertVideo.bind(this);
+        this.insertImg = this.insertImg.bind(this);
+        this.renderImgDialog = this.renderImgDialog.bind(this);
     }
 
     componentDidMount() {
@@ -119,7 +123,7 @@ class ArticleForm extends Component {
             content: BraftEditor.createEditorState(article.content, { editorId: 'editor' }),
             time: (new Date(article.time)),
             url: article.url ? article.url : '',
-            resources: article.resources,
+            resources: utils.common.sortImgs(article.resources),
             isTop: article.isTop,
             isDirectUrl: article.isDirectUrl
         }
@@ -147,7 +151,7 @@ class ArticleForm extends Component {
                 let form = this.state.form;
                 form.resources.push({
                     content: res,
-                    title: 'temp title',
+                    title: form.resources.length + 1,
                     description: 'temp description'
                 });
                 this.setState({
@@ -181,6 +185,15 @@ class ArticleForm extends Component {
         })
     }
 
+    insertImg = (text) => {
+        let form = this.state.form;
+        text = "[img: " + text + "]";
+        form.content = ContentUtils.insertText(this.state.form.content, text);
+        this.setState({
+            form: form
+        })
+    }
+
     renderVideoDialog = () => {
         return (
             <div>
@@ -203,7 +216,6 @@ class ArticleForm extends Component {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={() => {
-                        this.setState({videoDialog: false, videoDialogText: ''});
                         window.open('https://www.youtube.com/watch?v=' + this.state.videoDialogText.trim(),'_blank');
                       }} color="primary">
                     查找
@@ -214,6 +226,48 @@ class ArticleForm extends Component {
                   <Button onClick={() => {
                       this.insertVideo(this.state.videoDialogText);
                       this.setState({videoDialog: false, videoDialogText: ''});
+                    }} color="primary">
+                    添加
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+          );
+    }
+
+    renderImgDialog = () => {
+        return (
+            <div>
+              <Dialog open={this.state.imgDialog} onClose={() => {console.log('close')}} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">添加图片</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    请填写图片Tag ID(可在图片预览去找到), 添加视频时请确认图片Tag ID 准, 添加完图片请确保图片在单独一行
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="图片 Tag ID"
+                    fullWidth
+                    onChange={(event) => {
+                        this.setState({imgDialogText: event.target.value})
+                    }}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  {/* <Button onClick={() => {
+                        this.setState({imgDialog: false, imgDialogText: ''});
+                        window.open('https://www.youtube.com/watch?v=' + this.state.videoDialogText.trim(),'_blank');
+                      }} color="primary">
+                    查找
+                  </Button> */}
+                  <Button onClick={() => {this.setState({imgDialog: false, imgDialogText: ''})}} color="primary">
+                    取消
+                  </Button>
+                  <Button onClick={() => {
+                      this.insertImg(this.state.imgDialogText);
+                      this.setState({imgDialog: false, imgDialogText: ''});
                     }} color="primary">
                     添加
                   </Button>
@@ -286,7 +340,7 @@ class ArticleForm extends Component {
                                     {/*</div>*/}
                                     <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
                                         <div className={'question-description'}>Tag Id:</div>
-                                        <div className={'question-description'} style={{fontWeight: 'bold'}}>{index}</div>
+                                        <div className={'question-description'} style={{fontWeight: 'bold'}}>{i.title}</div>
                                     </div>
                                     <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
                                         <div className={'question-description'}>简介</div>
@@ -313,9 +367,15 @@ class ArticleForm extends Component {
                                             onClick={(event) => {
                                                 let newResources = [];
                                                 this.state.form.resources.forEach((l) => {
-                                                    if (l.id !== i.id) {
+                                                    if (l.title !== i.title) {
                                                         newResources.push(l);
                                                     }
+                                                });
+                                                let lIndex = 0;
+                                                newResources.map((l) => {
+                                                    lIndex ++;
+                                                    l.title = lIndex;
+                                                    return l;
                                                 });
                                                 let form = this.state.form;
                                                 form.resources = newResources;
@@ -439,10 +499,15 @@ class ArticleForm extends Component {
                                 id={"editor"}
                                 controls={this.state.editorControls}
                                 extendControls={[{
-                                    key: 'custom-button',
+                                    key: 'video-button',
                                     type: 'button',
                                     text: '视频',
                                     onClick: () => this.setState({videoDialog: true, videoDialogText: ''})
+                                  }, {
+                                    key: 'img-button',
+                                    type: 'button',
+                                    text: '已选图片',
+                                    onClick: () => this.setState({imgDialog: true, imgDialogText: ''})
                                   }]}
                                 media={this.state.mediaControl}
                                 onChange={(editorState) => {
@@ -459,6 +524,7 @@ class ArticleForm extends Component {
                     </div> : <div/>
                 }
                 {this.renderVideoDialog()}
+                {this.renderImgDialog()}
             </div>
         );
     }
