@@ -55,7 +55,7 @@ const processDes = (wDes) => {
 
   wDes.forEach(d => {
       let des = processSingleDes(d);
-      if(exclude.indexOf(des) === -1 && newDes.length < low){
+      if(exclude.indexOf(des) === -1 && newDes.length < low && des.length > 0){
         newDes += "<p>" + des + "</p>";
       }
   });
