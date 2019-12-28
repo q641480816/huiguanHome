@@ -35,7 +35,7 @@ public class EmailService {
 
     @Value("${huiguan.email:howard.zhang.1995@gmail.com}")
     private String emailAddress;
-    @Value("${huiguan.path:SimHei.ttf}")
+    @Value("${huiguan.path}")
     private String FONT;
     @Value("${huiguan.pdf.path:/usr/pdfdata}")
     private String pdfPath;
