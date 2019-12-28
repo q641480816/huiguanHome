@@ -43,7 +43,7 @@ public class EmailService {
     public BaseResponse send(ContactEmailTemplate req) {
         logger.info("Current working directory is: "+Paths.get(".").toAbsolutePath().normalize().toString());
         String name = "from: ";
-        if(req.getReplyTo()==null || !req.getReplyTo().isEmpty()){
+        if(req.getReplyTo()==null || req.getReplyTo().isEmpty()){
             name+="No contact";
         }
         else{
