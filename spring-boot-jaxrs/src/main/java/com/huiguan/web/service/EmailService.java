@@ -42,8 +42,14 @@ public class EmailService {
 
     public BaseResponse send(ContactEmailTemplate req) {
         logger.info("Current working directory is: "+Paths.get(".").toAbsolutePath().normalize().toString());
-
-        String emailSubject = "联系我们  Inquiry";
+        String name = "from: ";
+        if(req.getReplyTo()==null || !req.getReplyTo().isEmpty()){
+            name+="No contact";
+        }
+        else{
+            name+=req.getReplyTo();
+        }
+        String emailSubject = "联系我们  Inquiry"+name;
         logger.info("Setting up the email server");
         final String username = "chinkang.no.reply@gmail.com";
         final String password = "chinkang123";
