@@ -34,11 +34,15 @@ class HomeBody extends Component {
                     <HomeCarousel/>
                 </div>
                 <div>
-                    <div style={{marginTop: '30px'}}>
+                    <div style={{marginTop: '30px'}} className={this.styles.feadTitleWeb}>
                         <SectionDivider title={"会员活动"} showDivider={false} textColor={utils.colorScheme.secondary}
                                         color={utils.colorScheme.secondary} short={''}/>
                     </div>
-                    <div style={{marginTop: '50px'}}/>
+                    <div style={{marginTop: '30px'}} className={this.styles.feedTitleMobile}>
+                        <SectionDivider title={"会员活动"} showDivider={true} textColor={utils.colorScheme.secondary}
+                                        color={utils.colorScheme.secondary} short={''}/>
+                    </div>
+                    <div style={{marginTop: '30px'}}/>
                     <HomeFeed/>
                 </div>
                 <div style={{marginTop: '30px'}}>
@@ -69,6 +73,22 @@ const styles = theme => ({
         },
         [theme.breakpoints.up('md')]: {
             fontSize: '40px',
+        }
+    },
+    feadTitleWeb: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
+        },
+        [theme.breakpoints.up('md')]: {
+            display: 'block'
+        }
+    },
+    feedTitleMobile: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'block'
+        },
+        [theme.breakpoints.up('md')]: {
+            display: 'none'
         }
     }
 });
