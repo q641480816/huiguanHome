@@ -18,6 +18,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +39,7 @@ public class EmailService {
     private String FONT;
 
     public BaseResponse send(ContactEmailTemplate req) {
+        logger.info("Current working directory is: "+Paths.get(".").toAbsolutePath().normalize().toString());
 
         String emailSubject = "联系我们  Inquiry";
         logger.info("Setting up the email server");
@@ -150,11 +152,13 @@ public class EmailService {
             logger.info("Attaching the Pdf");
             File f = new File(fileName);
             if (!fileName.isEmpty() && f.exists()){
+                logger.info("Pdf created successfully, sending the pdf");
                 MimeBodyPart pdfAttachmentPart = new MimeBodyPart();
                 pdfAttachmentPart.attachFile(f,"application/pdf",null);
                 multipart.addBodyPart(pdfAttachmentPart);
             }else{
                 // creates message part
+                logger.info("Pdf failed, sending the Json String");
                 MimeBodyPart messageBodyPart = new MimeBodyPart();
                 messageBodyPart.setText( jsonString, "utf-8" );
 
@@ -277,7 +281,7 @@ public class EmailService {
 
             document.close();
             writer.close();
-
+            logger.info("Pdf is saved at "+Paths.get(".").toAbsolutePath().normalize().toString());
             return fileName;
         } catch (DocumentException e)
         {
