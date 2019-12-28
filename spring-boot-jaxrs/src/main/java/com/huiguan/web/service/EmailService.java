@@ -37,6 +37,8 @@ public class EmailService {
     private String emailAddress;
     @Value("${huiguan.path:SimHei.ttf}")
     private String FONT;
+    @Value("${huiguan.pdf.path:/usr/pdfdata}")
+    private String pdfPath;
 
     public BaseResponse send(ContactEmailTemplate req) {
         logger.info("Current working directory is: "+Paths.get(".").toAbsolutePath().normalize().toString());
@@ -95,6 +97,8 @@ public class EmailService {
     }
 
     public BaseResponse send(CreateEmailTemplate req) {
+        logger.info("Current working directory is: "+Paths.get(".").toAbsolutePath().normalize().toString());
+
         String fileName = saveToPdf(req);
         String emailSubject = "";
         if (req.getBeneficiaries()==null){
@@ -201,11 +205,12 @@ public class EmailService {
         Font fontChinese = FontFactory.getFont(FONT, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
         try
         {
-            String fileName = "Application form";
+            String fileName = pdfPath+"/Application_form";
             if (req.getNameEnglish()!=null){
                 fileName=fileName+"_"+req.getNameEnglish();
             }
             fileName+=".pdf";
+            logger.info("Pdf is saved at "+fileName);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
 
@@ -281,7 +286,7 @@ public class EmailService {
 
             document.close();
             writer.close();
-            logger.info("Pdf is saved at "+Paths.get(".").toAbsolutePath().normalize().toString());
+            logger.info("Pdf is saved successfully at "+fileName);
             return fileName;
         } catch (DocumentException e)
         {
