@@ -12,8 +12,10 @@ const utils = {
     username: 'admin',
     token: 'admin_jinjiang',
     protocol: 'http://',
-    baseUrl: 'www.callmedady.com:8080/huiguan/list',
-    emailUrl: 'www.callmedady.com:8080/huiguan/email',
+    // baseUrl: 'www.callmedady.com:8080/huiguan/list',
+    // emailUrl: 'www.callmedady.com:8080/huiguan/email',
+    baseUrl: '58.84.43.75:8080/server/huiguan/list',
+    emailUrl: '58.84.43.75:8080/server/huiguan/email',
     uiConfig: {
         topNavigator: {
             heightMd: '135px',
