@@ -73,7 +73,7 @@ class Gallery extends Component {
                                      className={index_img >= 2 ? this.styles.imgWrapperMobile : this.styles.imgWrapper}>
                                     <img className={'imgItem'} alt={i.title} src={i.content}/>
                                     <div className={'igmItemCover'}>
-                                        <div className={'imgTitle'}>{i.artTitle}</div>
+                                        <div className={this.styles.imgTitle}>{i.artTitle}</div>
                                     </div>
                                 </div>
                             </Link>
@@ -110,10 +110,10 @@ const styles = theme => ({
     galleryContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: 'column'
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             flexDirection: 'row'
         }
     },
@@ -127,11 +127,11 @@ const styles = theme => ({
         overflow: 'hidden',
         borderWidth: '2.5px 2.5px 2.5px 2.5px',
         border: 'solid lightslategray',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: '70vw',
             height: 'calc(70vw/16*9)'
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '23vw',
             height: 'calc(23vw/16*9)'
         }
@@ -147,14 +147,20 @@ const styles = theme => ({
         overflow: 'hidden',
         borderWidth: '2.5px 2.5px 2.5px 2.5px',
         border: 'solid lightslategray',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: '70vw',
             height: 'calc(70vw/16*9)'
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '23vw',
             height: 'calc(23vw/16*9)'
         }
+    },
+    imgTitle: {
+        fontSize: '20px',
+        fontWeight: 700,
+        color: '#585555',
+        width: '80%'
     }
 });
 

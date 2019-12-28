@@ -1,7 +1,7 @@
 'use strict';
  
 const fetch = require("node-fetch");
-const uriPrefix = 'http://www.chinkang.org.sg/';
+const uriPrefix = 'http://58.84.43.75/';
 const ADODB = require('node-adodb');
 const connection = ADODB.open('Provider=Microsoft.Jet.OLEDB.4.0;Data Source=U:\\Project\\huiguanHome\\huiguan_home_web\\db_mg\\PPXWData.mdb;');
 const processSingleDes = (des) => {

@@ -1,7 +1,7 @@
 'use strict';
  
 const fetch = require("node-fetch");
-const uriPrefix = 'http://www.chinkang.org.sg/';
+const uriPrefix = 'http://58.84.43.75/';
 const ADODB = require('node-adodb');
 const connection = ADODB.open('Provider=Microsoft.Jet.OLEDB.4.0;Data Source=U:\\Project\\huiguanHome\\huiguan_home_web\\db_mg\\PPXWData.mdb;');
 const processSingleDes = (des) => {
@@ -22,6 +22,8 @@ const processSingleDes = (des) => {
       nDes += des.charAt(i);
     }
   }
+
+  nDes.replace("[/NextPage/]", "");
 
   const replace = [':', '：', ';', '；'];
 
@@ -162,6 +164,19 @@ const processTitle = (title) => {
   return nT;
 }
 
+const processResUrl = (url) => {
+  let nU = '';
+  if(url.indexOf('PPEditor') >= 0){
+      let index = url.lastIndexOf('/');
+      let name = url.substring(index + 1);
+      nU = uriPrefix + 'PPUploadFile/' + name;
+  }else{
+    nU = url;
+  }
+
+  return nU;
+};
+
 const processContent = (t, res ,content) => {
   let wC = content.split("\r\n");
   let newC = '';
@@ -177,7 +192,7 @@ const processContent = (t, res ,content) => {
       let pre = s.substr(0, start + 1);
       let tail = s.substr(end);
 
-      let url = uriPrefix + s.substr(start + 1, end - start - 1);
+      let url = processResUrl(uriPrefix + s.substr(start + 1, end - start - 1));
       if(url.indexOf('PPEditor/images/common.gif') < 0){
         // console.log(pre)
         // console.log(url)
@@ -276,9 +291,11 @@ connection
         //section
         nA.section = {id: processSection(a.ClassID, nA.title)}
 
+        //res transform
         if(nA.resources.length > 0){
           nA.resources[0].title = 1;
           nA.resources[0].description = nA.title;
+          nA.resources[0].content = processResUrl(nA.resources[0].content);
         }
        
         
