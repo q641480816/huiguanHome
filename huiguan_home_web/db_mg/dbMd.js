@@ -289,7 +289,7 @@ connection
           articles: [nA]
         };
 
-        let url = "http://www.callmedady.com:8080/huiguan/list/upload";
+        let url = "http://58.84.43.75:8080/server/huiguan/list/upload";
         //boom
         fetch(url, {
             method: 'post',

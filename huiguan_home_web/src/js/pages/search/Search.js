@@ -97,9 +97,25 @@ class Search extends Component {
                                         paddingBottom: a.resource !== null ? '0px' : '50px',
                                         width: '100%'
                                     }}>
-                                        <div className={this.styles.titleWrapper}
-                                             style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                            {a.title}
+                                        <div className={this.styles.titleWrapper}>
+                                            {(a.sectionId === 4 || a.isDirectUrl) && a.url !== null && a.url.length > 0 && a.url.indexOf("http") >= 0 ?
+                                            (
+                                                <a href={link} style={{textDecoration: 'none'}} target="_blank" className={'linkWrapper'}>
+                                                    <div className={this.styles.titleWrapper}
+                                                        style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                                        {a.title}
+                                                    </div>
+                                                </a>
+                                            ):    
+                                            (
+                                                <Link to={'/b/article' + utils.getSection(a.sectionId).navigation + "/" + a.id} target="_blank"
+                                                    className={'linkWrapper'}>
+                                                    <div className={this.styles.titleWrapper}
+                                                        style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                                        {a.title}
+                                                    </div>
+                                                </Link>
+                                            )}
                                         </div>
                                         <div className={this.styles.titleWrapper}
                                              style={{fontSize: '15px', color: utils.colorScheme.text}}>{a.creationTime}</div>
