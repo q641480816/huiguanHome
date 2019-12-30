@@ -193,7 +193,7 @@ const processContent = (t, res ,content) => {
       let tail = s.substr(end);
 
       let url = processResUrl(uriPrefix + s.substr(start + 1, end - start - 1));
-      if(url.indexOf('PPEditor/images/common.gif') < 0){
+      if(url.indexOf('common.gif') < 0){
         // console.log(pre)
         // console.log(url)
         // console.log(tail)
@@ -315,9 +315,7 @@ connection
                 'token': 'admin_jinjiang'
             },
             body: JSON.stringify(body)
-        }).then(response =>{
-          response.json();
-        })
+        }).then(response => response.json())
             .then(data => {
                 if(typeof data.httpStatus !== "undefined" && data.httpStatus === 200){
                   console.log("boom liao");
@@ -331,10 +329,7 @@ connection
 
         nAs.push(nA);
       }
-
       // console.log(JSON.stringify(body))
-
-      
      })
     .catch(error => {
       console.error(error);
