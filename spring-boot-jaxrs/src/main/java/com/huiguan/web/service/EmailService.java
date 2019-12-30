@@ -250,7 +250,7 @@ public class EmailService {
             PdfPCell cell14 = new PdfPCell(new Paragraph("学历 Education: "+ checkNull(req.getEducation()),fontChinese));
             PdfPCell cell15 = new PdfPCell(new Paragraph("住家地址 Home address: "+ checkNull(req.getHomeAddress()),fontChinese));
             PdfPCell cell16 = new PdfPCell(new Paragraph("办事处地址 Office address: "+ checkNull(req.getOfficeAddress()),fontChinese));
-            PdfPCell cell17 = new PdfPCell(new Paragraph("参加之团体及职位 Other clubs"+ checkNull(req.getOtherClubs()),fontChinese));
+            PdfPCell cell17 = new PdfPCell(new Paragraph("参加之团体及职位 Other clubs: "+ checkNull(req.getOtherClubs()),fontChinese));
             PdfPCell cell18 = new PdfPCell(new Paragraph("介绍人 Introduced by: "+ checkNull(req.getIntroducedBy()),fontChinese));
             PdfPCell cell19 = new PdfPCell(new Paragraph("申请日期 Submitted time: "+ checkNull(toDate(req.getCreationTime())),fontChinese));
             PdfPCell cell20 = new PdfPCell(new Paragraph(""));
