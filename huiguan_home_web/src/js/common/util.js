@@ -187,7 +187,7 @@ const utils = {
     ],
     cancelJoinUs: null,
     previewArticle: null,
-    previewUrl: "http://www.callmedady.com/#/preview",
+    previewUrl: "http://www.chinkang.org.sg/#/preview",
     // previewUrl: "http://localhost:3000/#/preview"
 };
 

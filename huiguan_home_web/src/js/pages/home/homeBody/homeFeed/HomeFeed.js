@@ -133,11 +133,13 @@ class HomeFeed extends Component {
                                 </div>
                             )
                         })}
-                        <div style={{marginTop: '10px'}}>
-                            <Button onClick={(event) => this.props.history.push('/b/topics' + parent.nav)} variant="outlined" color="inherit"
-                                    style={{display: 'flex', flexDirection: 'row'}}>
-                                <div>阅读更多</div>
-                            </Button>
+                        <div style={{marginTop: '10px'}} className={this.styles.titleContainer}>
+                            <div>
+                                <Button onClick={(event) => this.props.history.push('/b/topics' + parent.nav)} variant="outlined" color="inherit"
+                                        style={{display: 'flex', flexDirection: 'row'}}>
+                                    <div>阅读更多</div>
+                                </Button>
+                            </div>
                         </div>
                     
                 </div>
@@ -201,9 +203,9 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             width: '90%',
-            alignItems: 'center',
             marginTop: '15px'
         },
         [theme.breakpoints.up('md')]: {
