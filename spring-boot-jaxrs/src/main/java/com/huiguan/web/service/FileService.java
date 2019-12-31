@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.HeaderParam;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Base64;

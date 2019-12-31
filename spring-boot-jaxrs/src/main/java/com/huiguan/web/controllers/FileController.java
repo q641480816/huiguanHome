@@ -4,6 +4,7 @@ import com.huiguan.web.dto.BaseResponse;
 import com.huiguan.web.dto.GetPathResponse;
 import com.huiguan.web.dto.UploadFileRequest;
 import com.huiguan.web.dto.UploadFileResponse;
+import com.huiguan.web.service.AuthService;
 import com.huiguan.web.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,8 @@ public class FileController {
 
     @Autowired
     private FileService fileService;
-
+    @Autowired
+    private AuthService authService;
     @GET
     @Path("/path")
     @Produces(MediaType.APPLICATION_JSON)
@@ -35,7 +37,8 @@ public class FileController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/upload")
-    public BaseResponse uploadFile(UploadFileRequest uploadFileRequest){
+    public BaseResponse uploadFile(@HeaderParam("token") String token,UploadFileRequest uploadFileRequest){
+        if (!authService.checkToken(token)) return new BaseResponse("Not authorised");
         return  fileService.uploadFile(uploadFileRequest);
     }
 }
