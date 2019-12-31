@@ -72,6 +72,8 @@ public class FileService {
         catch (Exception e)
         {
             logger.error("Couldn't write to file...");
+            logger.error(e.getMessage());
+            e.printStackTrace();
             return new BaseResponse("Conversion failed");
         }
         return new BaseResponse(200,true);
