@@ -1,4 +1,6 @@
 com\huiguan\web\dto\GetResourceResponse.class
+com\huiguan\web\service\FileService.class
+com\huiguan\web\dto\UploadFileResponse.class
 com\huiguan\web\WebConfig.class
 com\huiguan\web\dto\SearchRequest.class
 com\huiguan\web\dto\UploadArticles.class
@@ -25,12 +27,15 @@ com\huiguan\web\config\ModelMapperConfig.class
 com\huiguan\web\dto\BaseArticleResponse.class
 com\huiguan\web\service\AuthService.class
 com\huiguan\web\dto\BaseResponse.class
+com\huiguan\web\dto\GetPathResponse.class
 com\huiguan\web\service\EmailService.class
 com\huiguan\web\service\ArticleServiceImpl.class
 com\huiguan\web\controllers\HomeController.class
+com\huiguan\web\dto\UploadFileRequest.class
 com\huiguan\web\service\SectionService.class
 com\huiguan\web\dto\CreateEmailTemplate.class
 com\huiguan\web\controllers\EmailController.class
+com\huiguan\web\controllers\FileController.class
 com\huiguan\web\dto\GetShortArticleResponse.class
 com\huiguan\web\dto\GetShortPageResponse.class
 com\huiguan\web\dto\CreateNewArticleRequest.class

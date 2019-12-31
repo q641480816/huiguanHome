@@ -29,7 +29,7 @@ import java.util.Set;
 
 @Component
 @Path("/list")
-@Api(value = "/list", description = "123")
+@Api(value = "/list", description = "Resources")
 public class HomeController extends Application {
     private static final Logger logger = LogManager.getLogger(HomeController.class);
     @Autowired

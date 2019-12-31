@@ -1,4 +1,6 @@
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\UploadFileRequest.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\model\User.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\controllers\FileController.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\WebConfig.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateNewResourceRequest.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\StudentServiceImpl.java
@@ -23,6 +25,7 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\UpdateResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\UploadArticles.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ResourceService.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\UploadFileResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\SectionServiceImpl.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\filter\CorsFilter.java
@@ -36,8 +39,10 @@ D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\w
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\CreateEmailTemplate.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\ConvertToEntityService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetResourceResponse.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\service\FileService.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\exception\ApiException.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\Beneficiary.java
+D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetPathResponse.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\model\Resource.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\dto\GetLatest.java
 D:\Development\backend\huiguanHome\spring-boot-jaxrs\src\main\java\com\huiguan\web\controllers\HomeController.java
