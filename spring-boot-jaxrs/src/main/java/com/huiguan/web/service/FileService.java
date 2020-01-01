@@ -94,6 +94,7 @@ public class FileService {
         }
         if (f.exists()){
             try {
+                logger.info("Giving permission");
                 setPermission(f);
             } catch (IOException e) {
                 logger.error("Couldn't write to file...");
