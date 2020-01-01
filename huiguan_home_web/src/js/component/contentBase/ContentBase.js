@@ -11,6 +11,7 @@ import Article from "../article/Article";
 import ContactUs from "../../pages/contactUs/ContactUs";
 import Search from "../../pages/search/Search";
 import JoinUs from "../../pages/joinUs/JoinUs";
+import Download from '../../pages/download/download';
 
 class ContentBase extends Component {
     constructor(props) {
@@ -103,6 +104,9 @@ class ContentBase extends Component {
                 </Route>
                 <Route path={"/b/search"}>
                     <Search/>
+                </Route>
+                <Route path={"/b/download"}>
+                    <Download/>
                 </Route>
             </div>
         );

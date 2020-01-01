@@ -24,7 +24,7 @@ class HomeFeed extends Component {
                     id: 4,
                     sub: [8, 12],
                     nav: '/help',
-                    title: '服务动态',
+                    title: '会员活动',
                     data: [],
                     resources: [],
                     dataCar: [],
@@ -119,7 +119,8 @@ class HomeFeed extends Component {
             let dom = (
                 <div key={k} className={this.styles.sectionContainer}>
                     
-                        {/* <div className={this.styles.parentTitle}>{parent.title}</div> */}
+                        <div className={this.styles.parentTitle}>{parent.title}</div>
+                        <div style={{marginTop: '30px'}}/>
                         {this.renderParentCarousel(parent.resourcesCar)}
                         <div style={{height: '15px'}}/>
                         {parent.data.map(a => {
