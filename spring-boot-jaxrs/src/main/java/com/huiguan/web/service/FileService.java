@@ -13,14 +13,13 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.HeaderParam;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Base64;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,12 +93,34 @@ public class FileService {
             return new BaseResponse("Conversion failed");
         }
         if (f.exists()){
-            f.setExecutable(true);
-            f.setReadable(true);
-            f.setWritable(false);
+            try {
+                setPermission(f);
+            } catch (IOException e) {
+                logger.error("Couldn't write to file...");
+                logger.error(e.getMessage());
+                e.printStackTrace();
+                return new BaseResponse("Uploaded successfully, but permission set failed");
+            }
         }
         return new BaseResponse(200,true);
 
+    }
+
+    public void setPermission(File file) throws IOException{
+        Set<PosixFilePermission> perms = new HashSet<>();
+        perms.add(PosixFilePermission.OWNER_READ);
+        perms.add(PosixFilePermission.OWNER_WRITE);
+        perms.add(PosixFilePermission.OWNER_EXECUTE);
+
+        perms.add(PosixFilePermission.OTHERS_READ);
+        perms.add(PosixFilePermission.OTHERS_WRITE);
+        perms.add(PosixFilePermission.OTHERS_EXECUTE);
+
+        perms.add(PosixFilePermission.GROUP_READ);
+        perms.add(PosixFilePermission.GROUP_WRITE);
+        perms.add(PosixFilePermission.GROUP_EXECUTE);
+
+        Files.setPosixFilePermissions(file.toPath(), perms);
     }
 
 }
