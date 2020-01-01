@@ -39,10 +39,10 @@ public class FileController {
         return  fileService.uploadFile(uploadFileRequest);
     }
 
-    @DELETE
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/")
+    @Path("/delete")
     public BaseResponse deleteFile(@HeaderParam("token") String token,DeleteFileRequest request){
         if (!authService.checkToken(token)) return new BaseResponse("Not authorised");
         return  fileService.deleteFile(request);
