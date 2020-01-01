@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {withStyles, Button, Divider} from "@material-ui/core";
-import {Room, ContactPhone, Email} from '@material-ui/icons';
+import {Room, ContactPhone, Email, Rowing} from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 
 import './BottomNavigater.css';
@@ -136,6 +136,20 @@ class BottomNavigator extends Component {
                     </div>
                 </div>
 
+                <div style={{width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <div style={{fontSize: '25px', fontWeight: 'bold', color: utils.colorScheme.secondary, marginBottom: '10px'}}>
+                        友情链接
+                    </div>
+
+                    <div className={this.styles.linksContainer}>
+                        {utils.friendlyLinks.map((l) => {
+                            return(
+                                <a key={l.title} href={l.url} target={'_blank'} className={this.styles.linkWrapper}>{l.title}</a>
+                            )
+                        })}
+                    </div>
+                </div>
+
                 <div className={this.styles.copyRightContainer}>
                     版权所有新加坡晋江会馆
                     <Link to={'/admin'} style={{textDecoration: 'none', color: utils.colorScheme.tertiary, marginLeft: '10px'}}>
@@ -154,7 +168,7 @@ const styles = theme => ({
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-
+        alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
             marginBottom: '20px',
@@ -209,6 +223,37 @@ const styles = theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    friendlyLinksContainer: {
+        width: '100%',
+        marginTop: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    linksContainer: {
+        width: '95%',
+        textAlign: 'center',
+        marginBottom: '25px',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        [theme.breakpoints.up('md')]: {
+        }
+    },
+    linkWrapper: {
+        display: 'inline-block',
+        fontSize: '19px', 
+        fontWeight: 'bold', 
+        color: utils.colorScheme.text,
+        marginLeft: '10px',
+        marginRight: '10px',
+        marginTop: '10px',
+        textDecoration: 'none'
     }
 });
 

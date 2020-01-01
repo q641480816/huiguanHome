@@ -41,6 +41,7 @@ const processDocument = (line) => {
 
         name = (name + url.substring(sufixIndex)).split(' ').join("").replace('(','').replace(')','').replace("（",'').replace("）",'');
 
+        name = name.split("/").join("");
 
         doc.name = name.split("&nbsp;").join("");
         doc.url = url.split('%20').join(' ');
@@ -51,7 +52,7 @@ const processDocument = (line) => {
     return doc;
 }
 
-const upload = (d) => {
+const upload = (d, index) => {
     // console.log(d);
     let url = "http://58.84.43.75:8080/server/huiguan/file/upload";
     fetch(url, {
@@ -97,16 +98,17 @@ connection
         // }).catch((reason) => {
         //     console.log(reason);
         // });
-
+        let index = 0;
         res.forEach(r => {
+            index ++; 
             if(r !== null){
                 fetchBase64.local('U:/Project/test/' + r.url).then((data) => {
                     // console.log(data);
 
                     upload({
-                        name: r.name,
+                        name: "[" + index + "]" + r.name,
                         value: data[1]
-                    })
+                    }, index)
                 }).catch((reason) => {});
             }
         })
