@@ -81,7 +81,7 @@ public class FileService {
         logger.info("Outputting the file");
         try(
 
-                OutputStream stream = new FileOutputStream(filePath)
+                OutputStream stream = new FileOutputStream(filePath);
         )
         {
             stream.write(data);
@@ -92,6 +92,11 @@ public class FileService {
             logger.error(e.getMessage());
             e.printStackTrace();
             return new BaseResponse("Conversion failed");
+        }
+        if (f.exists()){
+            f.setExecutable(true);
+            f.setReadable(true);
+            f.setWritable(false);
         }
         return new BaseResponse(200,true);
 
