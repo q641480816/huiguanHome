@@ -64,7 +64,7 @@ class ArticleForm extends Component {
                 },
                 pasteImage: false,
                 onInsert: (event) => {
-                    console.log(event);
+                  
                 }
             },
             directUrlSection: [4],
@@ -514,7 +514,6 @@ class ArticleForm extends Component {
                                     if (editorState.toHTML() !== this.state.form.content.toHTML()) {
                                         let form = this.state.form;
                                         form.content = editorState;
-                                        console.log(editorState.toHTML());
                                         this.setState({form: form})
                                     }
                                 }}

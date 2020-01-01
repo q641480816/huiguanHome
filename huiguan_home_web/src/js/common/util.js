@@ -189,7 +189,28 @@ const utils = {
     cancelJoinUs: null,
     previewArticle: null,
     previewUrl: "http://www.chinkang.org.sg/#/preview",
-    // previewUrl: "http://localhost:3000/#/preview"
+    // previewUrl: "http://localhost:3000/#/preview"，
+    friendlyLinks:[
+        {
+            title: '新加坡宗乡会馆联合总会',
+            url: 'https://www.sfcca.sg'
+        }, {
+            title: '新加坡福建会馆',
+            url: 'http://www.shhk.com.sg'
+        }, {
+            title: '世界晋江青年联谊会',
+            url: 'http://www.wjjya.com/'
+        }, {
+            title: '新加坡厦门公会',
+            url: 'http://www.amoy.com.sg'
+        }, {
+            title: '新加坡南安会馆',
+            url: 'https://www.lamann.org'
+        }, {
+            title: '新加坡永春会馆',
+            url: 'https://echk.gbs2u.com'
+        }
+    ]
 };
 
 export default utils;
