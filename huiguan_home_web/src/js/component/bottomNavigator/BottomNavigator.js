@@ -117,7 +117,7 @@ class BottomNavigator extends Component {
                                 <div className={"text"}
                                      style={{marginLeft: '10px'}}>Tel: {this.state.contact.tel}</div>
                                 <div className={"text"}
-                                     style={{marginLeft: '10px'}}>Fex: {this.state.contact.fax}</div>
+                                     style={{marginLeft: '10px'}}>Fax: {this.state.contact.fax}</div>
                             </div>
                         </div>
                     </div>

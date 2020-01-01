@@ -16,6 +16,7 @@ const utils = {
     // emailUrl: 'www.callmedady.com:8080/huiguan/email',
     baseUrl: '58.84.43.75:8080/server/huiguan/list',
     emailUrl: '58.84.43.75:8080/server/huiguan/email',
+    fileUrl: '58.84.43.75:8080/server/huiguan/file',
     uiConfig: {
         topNavigator: {
             heightMd: '135px',
@@ -128,7 +129,7 @@ const utils = {
             ]
         },
         {
-            id: 5, title: '情缘晋江', navigation: '/history', sub: [
+            id: 5, title: '情源晋江', navigation: '/history', sub: [
                 {id: 13, title: '晋江时事', navigation: '/now', sub: [], isRenderList: true},
                 {id: 14, title: '晋江历史', navigation: '/past', sub: [], isRenderList: true},
                 {id: 15, title: '世界晋江', navigation: '/world', sub: [], isRenderList: true},
@@ -140,9 +141,9 @@ const utils = {
                 {id: 17, title: '加入我们', navigation: '/join', sub: [], isRenderList: false, isSpecial: true},
             ]
         },
-        // {
-        //     id: 7, title: '搜索文章', navigation: '/b/search', sub: []
-        // }
+        {
+            id: 7, title: '资源下载', navigation: '/b/download', sub: []
+        }
     ],
     getSection: (id) => {
         let ss = {};

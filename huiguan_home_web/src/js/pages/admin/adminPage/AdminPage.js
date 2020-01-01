@@ -7,6 +7,7 @@ import Add from '../add/Add';
 import Edit from "../Edit/Edit";
 import utils from "../../../common/util";
 import Login from "./login/Login";
+import FileDownload from '../fileDownload/fileDownload';
 
 class AdminPage extends Component {
     constructor(props) {
@@ -80,14 +81,19 @@ class AdminPage extends Component {
                         修改已知页面
                     </Link>
                 </p>
+                <p>
+                    <Link to={'/admin/file'}>
+                        更改文件
+                    </Link>
+                </p>
             </div>
         )
     };
 
     render() {
-        if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
-            this.props.history.push('/admin/login');
-        }
+        // if (!this.validate(this.state.c.username, this.state.c.token) && this.props.location.pathname.indexOf('/admin/login') !== 0){
+        //     this.props.history.push('/admin/login');
+        // }
 
         return (
             <div>
@@ -99,6 +105,7 @@ class AdminPage extends Component {
                 </Route>
                 <Add sections={this.state.sections}/>
                 <Edit sections={this.state.sections}/>
+                <FileDownload/>
             </div>
         );
     }

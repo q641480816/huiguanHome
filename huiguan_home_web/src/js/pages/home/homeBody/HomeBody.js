@@ -34,15 +34,15 @@ class HomeBody extends Component {
                     <HomeCarousel/>
                 </div>
                 <div>
-                    <div style={{marginTop: '30px'}} className={this.styles.feadTitleWeb}>
+                    {/* <div style={{marginTop: '30px'}} className={this.styles.feadTitleWeb}>
                         <SectionDivider title={"会员活动"} showDivider={false} textColor={utils.colorScheme.secondary}
                                         color={utils.colorScheme.secondary} short={''}/>
-                    </div>
-                    <div style={{marginTop: '30px'}} className={this.styles.feedTitleMobile}>
+                    </div> */}
+                    {/* <div style={{marginTop: '30px'}} className={this.styles.feedTitleMobile}>
                         <SectionDivider title={"会员活动"} showDivider={true} textColor={utils.colorScheme.secondary}
                                         color={utils.colorScheme.secondary} short={''}/>
-                    </div>
-                    <div style={{marginTop: '30px'}}/>
+                    </div> */}
+                    <div style={{marginTop: '50px'}}/>
                     <HomeFeed/>
                 </div>
                 <div style={{marginTop: '30px'}}>
@@ -50,7 +50,7 @@ class HomeBody extends Component {
                                     color={utils.colorScheme.secondary} short={''}/>
                 </div>
                 <div>
-                    <div style={{marginTop: '30px'}}/>
+                    <div style={{marginTop: '10px'}}/>
                     <Gallery/>
                 </div>
             </div>
