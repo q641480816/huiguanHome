@@ -2,7 +2,9 @@ package com.huiguan.web.service;
 
 import com.huiguan.web.controllers.EmailController;
 import com.huiguan.web.dto.BaseResponse;
+import com.huiguan.web.dto.DeleteFileRequest;
 import com.huiguan.web.dto.UploadFileRequest;
+import com.sun.tools.rngom.parse.host.Base;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,10 +47,25 @@ public class FileService {
         return new ArrayList<>();
     }
 
+    public BaseResponse deleteFile(DeleteFileRequest request){
+        String filePath =defaultPath+"/"+request.getName();
+        logger.info("Checking file under " + filePath);
+        File f = new File(filePath);
+        if (!f.exists()) return  new BaseResponse("File does not exist");
+        if (f.delete()) {
+            logger.info("File is deleted");
+            return new BaseResponse(200,true);
+        }
+        else {
+            logger.info("File is not deleted");
+            return new BaseResponse("File is not deleted successfully");
+        }
+    }
+
     public BaseResponse uploadFile(UploadFileRequest uploadFileRequest) {
         String filePath =defaultPath+"/"+uploadFileRequest.getName();
+        logger.info("Checking file under " + filePath);
         File f = new File(filePath);
-        logger.info("Check existing file");
         if (f.exists()) return  new BaseResponse("File already exists");
         String contentString="";
         if (uploadFileRequest.getValue().contains(",")){

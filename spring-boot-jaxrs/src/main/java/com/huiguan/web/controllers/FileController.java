@@ -1,9 +1,6 @@
 package com.huiguan.web.controllers;
 
-import com.huiguan.web.dto.BaseResponse;
-import com.huiguan.web.dto.GetPathResponse;
-import com.huiguan.web.dto.UploadFileRequest;
-import com.huiguan.web.dto.UploadFileResponse;
+import com.huiguan.web.dto.*;
 import com.huiguan.web.service.AuthService;
 import com.huiguan.web.service.FileService;
 import org.apache.logging.log4j.LogManager;
@@ -40,5 +37,14 @@ public class FileController {
     public BaseResponse uploadFile(@HeaderParam("token") String token,UploadFileRequest uploadFileRequest){
         if (!authService.checkToken(token)) return new BaseResponse("Not authorised");
         return  fileService.uploadFile(uploadFileRequest);
+    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    public BaseResponse deleteFile(@HeaderParam("token") String token,DeleteFileRequest request){
+        if (!authService.checkToken(token)) return new BaseResponse("Not authorised");
+        return  fileService.deleteFile(request);
     }
 }

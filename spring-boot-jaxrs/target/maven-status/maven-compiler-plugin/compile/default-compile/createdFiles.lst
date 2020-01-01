@@ -45,6 +45,7 @@ com\huiguan\web\service\ArticleService.class
 com\huiguan\web\dto\UpdateResponse.class
 com\huiguan\web\dto\CreateResponse.class
 com\huiguan\web\dto\UploadResponse.class
+com\huiguan\web\dto\DeleteFileRequest.class
 com\huiguan\web\dto\CreateNewResourceRequest.class
 com\huiguan\web\dto\CreateNewSectionRequest.class
 com\huiguan\web\service\ResourceService.class
