@@ -11,7 +11,7 @@ import p5g from '../../recources/temp/5_g.png';
 const utils = {
     username: 'admin',
     // token: 'admin_jinjiang',
-    token: 'this_is_good_password_for_huiguan@chinkang.org.sg',
+    token: 'Chinkang#_00!',
     protocol: 'http://',
     // baseUrl: 'www.callmedady.com:8080/huiguan/list',
     // emailUrl: 'www.callmedady.com:8080/huiguan/email',
