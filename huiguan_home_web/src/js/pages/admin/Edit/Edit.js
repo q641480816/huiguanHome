@@ -376,7 +376,7 @@ class Edit extends Component {
                     <AppBar position="static">
                         <Toolbar variant="dense">
                             <Link to={'/admin'} style={{textDecoration: 'none', color: 'white'}}>
-                                <ArrowBackIosIcon color="inherit" fontSize="large"/>
+                                <ArrowBackIosIcon color="inherit" fontSize="large" onClick={(event) => this.setState({isEditing: false, article: null})}/>
                             </Link>
                             <Typography variant="h6" color="inherit">
                                 更改文章

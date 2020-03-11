@@ -319,25 +319,6 @@ class ArticleForm extends Component {
                                 <Paper style={{paddingBottom: '15px'}}>
                                     <img style={{height: '255px'}} src={i.url ? i.url : i.content}
                                          alt={"p1"}/>
-                                    {/*<div className={'question'} style={{margin: '10px 0 0px 10px'}}>*/}
-                                    {/*    <div className={'question-title'}>标题</div>*/}
-                                    {/*    <TextField inputProps={{maxLength: this.state.imgTitleLengthLimit}} required*/}
-                                    {/*               style={{width: '90%'}}*/}
-                                    {/*               label={"标题(最大长度=" + this.state.imgTitleLengthLimit + ")"}*/}
-                                    {/*               value={i.title}*/}
-                                    {/*               onChange={(event) => {*/}
-                                    {/*                   let form = this.state.form;*/}
-                                    {/*                   for (let j = 0; j < form.resources.length; j++) {*/}
-                                    {/*                       let img = form.resources[j];*/}
-                                    {/*                       if (img.id === i.id) {*/}
-                                    {/*                           img.title = event.target.value;*/}
-                                    {/*                           form.resources[j] = img;*/}
-                                    {/*                           break;*/}
-                                    {/*                       }*/}
-                                    {/*                   }*/}
-                                    {/*                   this.setState({form: form})*/}
-                                    {/*               }}/>*/}
-                                    {/*</div>*/}
                                     <div className={'question'} style={{margin: '10px 0 0px 10px'}}>
                                         <div className={'question-description'}>Tag Id:</div>
                                         <div className={'question-description'} style={{fontWeight: 'bold'}}>{i.title}</div>
@@ -354,7 +335,7 @@ class ArticleForm extends Component {
                                                        let form = this.state.form;
                                                        for (let j = 0; j < form.resources.length; j++) {
                                                            let img = form.resources[j];
-                                                           if (img.id === i.id) {
+                                                           if (img.title === i.title) {
                                                                img.description = event.target.value;
                                                                form.resources[j] = img;
                                                                break;

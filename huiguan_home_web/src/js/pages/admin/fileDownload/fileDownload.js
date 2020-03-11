@@ -144,7 +144,7 @@ class FileDownload extends Component {
                     method: 'post',
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': 'admin_jinjiang'
+                        'token': utils.token
                     },
                     body: JSON.stringify(body)
                 }).then(response => response.json())

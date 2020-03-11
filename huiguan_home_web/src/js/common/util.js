@@ -62,9 +62,13 @@ const utils = {
             return as;
         },
         sortImgs: (rs) => {
-            rs.sort((a1, a2) => {
-                return parseInt(a1.title.trim() - a2.title.trim());
-            })
+            console.log(rs);
+            if(rs !== null && rs.length > 0){
+                rs.sort((a1, a2) => {
+                    return parseInt(a1.title - a2.title);
+                })
+            }
+            
             return rs;
         }
     },
