@@ -56,7 +56,7 @@ public class HomeController extends Application {
             @PathParam("section") String section,
             @PathParam("pageNum") int pageNum,
             @PathParam("pageSize")int pageSize) throws ApiException {
-        logger.info("Retrieving resource info");
+        logger.info("Retrieving page info");
         Set<GetArticleResponse> res = articleService.findArticlePageSortBySectionAndId(pageNum,pageSize,section);
         return res;
     }
